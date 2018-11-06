@@ -10,7 +10,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
 import br.com.victorpfranca.mybudget.accesscontroll.CredentialsStore;
-import br.com.victorpfranca.mybudget.view.AnoMes;
+import br.com.victorpfranca.mybudget.view.MonthYear;
 
 @Stateful
 public class PeriodoPlanejamento implements Serializable {
@@ -22,12 +22,12 @@ public class PeriodoPlanejamento implements Serializable {
 
 	private static final Integer QUANT_MESES_FUTURO = 36;
 
-	private AnoMes mesInicio;
+	private MonthYear mesInicio;
 
-	private List<AnoMes> periodoAnterior;
-	private AnoMes mesAtual;
-	private List<AnoMes> periodoFuturo;
-	private List<AnoMes> periodoCompleto;
+	private List<MonthYear> periodoAnterior;
+	private MonthYear mesAtual;
+	private List<MonthYear> periodoFuturo;
+	private List<MonthYear> periodoCompleto;
 
 	@PostConstruct
 	public void init() {
@@ -40,15 +40,15 @@ public class PeriodoPlanejamento implements Serializable {
 
 	private void initMesInicio() {
 		LocalDate dataInicio = credentialsStore.recuperarUsuarioLogado().getDataCadastroLocalDate();
-		this.mesInicio = new AnoMes(dataInicio.getYear(), dataInicio.getMonthValue());
+		this.mesInicio = new MonthYear(dataInicio.getYear(), dataInicio.getMonthValue());
 	}
 
 	private void initPeriodoAnterior() {
-		periodoAnterior = new ArrayList<AnoMes>();
-		AnoMes anoMesAtual = AnoMes.getCurrent();
+		periodoAnterior = new ArrayList<MonthYear>();
+		MonthYear anoMesAtual = MonthYear.getCurrent();
 		LocalDate dataInicio = credentialsStore.recuperarUsuarioLogado().getDataCadastroLocalDate();
 
-		AnoMes anoMesInicio = new AnoMes(dataInicio.getYear(), dataInicio.getMonthValue());
+		MonthYear anoMesInicio = new MonthYear(dataInicio.getYear(), dataInicio.getMonthValue());
 		while (anoMesAtual.compareTo(anoMesInicio) > 0) {
 			periodoAnterior.add(anoMesInicio);
 			anoMesInicio = anoMesInicio.plusMonths(1);
@@ -56,47 +56,47 @@ public class PeriodoPlanejamento implements Serializable {
 	}
 
 	private void initMesAtual() {
-		this.mesAtual = AnoMes.getCurrent();
+		this.mesAtual = MonthYear.getCurrent();
 
 	}
 
 	private void initPeriodoFuturo() {
-		periodoFuturo = new ArrayList<AnoMes>();
+		periodoFuturo = new ArrayList<MonthYear>();
 
-		AnoMes anoMesAtual = AnoMes.getCurrent();
+		MonthYear anoMesAtual = MonthYear.getCurrent();
 		for (int i = 1; i <= PeriodoPlanejamento.QUANT_MESES_FUTURO - 1; i++) {
 			periodoFuturo.add(anoMesAtual.plusMonths(i));
 		}
 	}
 
 	private void initPeriodoCompleto() {
-		periodoCompleto = new ArrayList<AnoMes>();
+		periodoCompleto = new ArrayList<MonthYear>();
 		periodoCompleto.addAll(periodoAnterior);
 		periodoCompleto.add(mesAtual);
 		periodoCompleto.addAll(periodoFuturo);
 	}
 
-	public List<AnoMes> getPeriodoAnterior() {
+	public List<MonthYear> getPeriodoAnterior() {
 		return this.periodoAnterior;
 	}
 
-	public AnoMes getMesAtual() {
+	public MonthYear getMesAtual() {
 		return mesAtual;
 	}
 
-	public AnoMes getMesFinal() {
+	public MonthYear getMesFinal() {
 		return mesAtual.plusMonths(QUANT_MESES_FUTURO - 1);
 	}
 
-	public List<AnoMes> getPeriodoCompleto() {
+	public List<MonthYear> getPeriodoCompleto() {
 		return this.periodoCompleto;
 	}
 
-	public List<AnoMes> getPeriodoFuturo() {
+	public List<MonthYear> getPeriodoFuturo() {
 		return this.periodoFuturo;
 	}
 
-	public AnoMes getMesInicio() {
+	public MonthYear getMesInicio() {
 		return mesInicio;
 	}
 

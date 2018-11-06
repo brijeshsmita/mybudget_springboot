@@ -34,8 +34,8 @@ import br.com.victorpfranca.mybudget.InOut;
 import br.com.victorpfranca.mybudget.LocalDateConverter;
 import br.com.victorpfranca.mybudget.accesscontroll.CredentialsStore;
 import br.com.victorpfranca.mybudget.accesscontroll.User;
-import br.com.victorpfranca.mybudget.lancamento.Lancamento;
-import br.com.victorpfranca.mybudget.lancamento.LancamentoFaturaCartaoItem;
+import br.com.victorpfranca.mybudget.transaction.CreditCardInvoiceTransactionItem;
+import br.com.victorpfranca.mybudget.transaction.Transaction;
 
 @Entity
 @Table(name = "conta_saldo")
@@ -107,14 +107,14 @@ public class AccountBalance implements Serializable {
 		this.valor = valor;
 	}
 
-	public void add(Lancamento lancamento) {
-		BigDecimal valorAtualLancamentoComSinal = lancamento.getValor();
+	public void add(Transaction transaction) {
+		BigDecimal valorAtualLancamentoComSinal = transaction.getValor();
 
-		BigDecimal valorAnteriorLancamentoComSinal = lancamento.getValorAnterior() != null
-				? lancamento.getValorAnterior()
+		BigDecimal valorAnteriorLancamentoComSinal = transaction.getValorAnterior() != null
+				? transaction.getValorAnterior()
 				: BigDecimal.ZERO;
 
-		if (lancamento.getInOut().equals(InOut.S)) {
+		if (transaction.getInOut().equals(InOut.S)) {
 			valorAtualLancamentoComSinal = valorAtualLancamentoComSinal.negate();
 			valorAnteriorLancamentoComSinal = valorAnteriorLancamentoComSinal.negate();
 		}
@@ -122,9 +122,9 @@ public class AccountBalance implements Serializable {
 		setValor(getValor().subtract(valorAnteriorLancamentoComSinal).add(valorAtualLancamentoComSinal));
 	}
 
-	public void remove(Lancamento lancamento) {
-		BigDecimal valorAtualLancamentoComSinal = lancamento.getValor();
-		if (lancamento.getInOut().equals(InOut.S) || (lancamento instanceof LancamentoFaturaCartaoItem)) {
+	public void remove(Transaction transaction) {
+		BigDecimal valorAtualLancamentoComSinal = transaction.getValor();
+		if (transaction.getInOut().equals(InOut.S) || (transaction instanceof CreditCardInvoiceTransactionItem)) {
 			valorAtualLancamentoComSinal = valorAtualLancamentoComSinal.negate();
 		}
 		setValor(getValor().subtract(valorAtualLancamentoComSinal));

@@ -15,11 +15,11 @@ import org.apache.commons.lang3.ObjectUtils;
 
 import br.com.victorpfranca.mybudget.account.rules.BankAccountService;
 import br.com.victorpfranca.mybudget.account.rules.SameNameException;
-import br.com.victorpfranca.mybudget.lancamento.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.lancamento.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.lancamento.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.lancamento.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.lancamento.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
+import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
+import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
+import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
+import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
 
 @Stateless
 public class InitialAccountsBuilder {

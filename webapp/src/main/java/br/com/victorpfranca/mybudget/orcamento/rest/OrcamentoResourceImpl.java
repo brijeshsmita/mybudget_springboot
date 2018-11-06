@@ -16,7 +16,7 @@ import br.com.victorpfranca.mybudget.orcamento.ConsultaOrcamentos;
 import br.com.victorpfranca.mybudget.orcamento.OrcadoRealDTO;
 import br.com.victorpfranca.mybudget.orcamento.OrcadoRealMesCategoria;
 import br.com.victorpfranca.mybudget.orcamento.OrcamentoResource;
-import br.com.victorpfranca.mybudget.view.AnoMes;
+import br.com.victorpfranca.mybudget.view.MonthYear;
 
 public class OrcamentoResourceImpl implements OrcamentoResource {
 
@@ -37,27 +37,27 @@ public class OrcamentoResourceImpl implements OrcamentoResource {
 
 	@Override
 	public List<OrcadoRealDTO> receitasReaisOrcadas() {
-		AnoMes anoMes = new AnoMes(ano, mes);
-		return consultaOrcamentos.recuperarReceitasPorCategoriaOrcada(anoMes).stream().map(conversorOrcadoReal(anoMes))
+		MonthYear monthYear = new MonthYear(ano, mes);
+		return consultaOrcamentos.recuperarReceitasPorCategoriaOrcada(monthYear).stream().map(conversorOrcadoReal(monthYear))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<OrcadoRealDTO> despesasReaisOrcadas() {
-		AnoMes anoMes = new AnoMes(ano, mes);
-		return consultaOrcamentos.recuperarDespesasPorCategoriaOrcada(anoMes).stream().map(conversorOrcadoReal(anoMes))
+		MonthYear monthYear = new MonthYear(ano, mes);
+		return consultaOrcamentos.recuperarDespesasPorCategoriaOrcada(monthYear).stream().map(conversorOrcadoReal(monthYear))
 				.collect(Collectors.toList());
 	}
 
-	private Function<OrcadoRealMesCategoria, OrcadoRealDTO> conversorOrcadoReal(AnoMes anoMes) {
-		return orcadoRealMesCategoria -> converter(orcadoRealMesCategoria, anoMes);
+	private Function<OrcadoRealMesCategoria, OrcadoRealDTO> conversorOrcadoReal(MonthYear monthYear) {
+		return orcadoRealMesCategoria -> converter(orcadoRealMesCategoria, monthYear);
 	}
 
-	private OrcadoRealDTO converter(OrcadoRealMesCategoria ent, AnoMes anoMes) {
+	private OrcadoRealDTO converter(OrcadoRealMesCategoria ent, MonthYear monthYear) {
 		compose(OrcadoRealMesCategoria::getCategoria, Category::getNome);
 		String categoria = nullSafeConvert(ent, compose(OrcadoRealMesCategoria::getCategoria, Category::getNome));
-		String data = nullSafeConvert(anoMes,
-				compose(AnoMes::getDate, DateUtils::localDateToDate).andThen(DateUtils::iso8601));
+		String data = nullSafeConvert(monthYear,
+				compose(MonthYear::getDate, DateUtils::localDateToDate).andThen(DateUtils::iso8601));
 		BigDecimal orcado = nullSafeConvert(ent, OrcadoRealMesCategoria::getOrcado);
 		BigDecimal realizado = nullSafeConvert(ent, OrcadoRealMesCategoria::getRealizado);
 		return new OrcadoRealDTO(categoria, data, orcado, realizado);

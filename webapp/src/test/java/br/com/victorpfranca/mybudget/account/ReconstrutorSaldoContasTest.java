@@ -26,8 +26,8 @@ import br.com.victorpfranca.mybudget.account.AccountBalance;
 import br.com.victorpfranca.mybudget.account.BankAccount;
 import br.com.victorpfranca.mybudget.account.CheckingAccount;
 import br.com.victorpfranca.mybudget.account.rules.AccountBalanceFixer;
-import br.com.victorpfranca.mybudget.lancamento.LancamentoContaCorrente;
-import br.com.victorpfranca.mybudget.view.AnoMes;
+import br.com.victorpfranca.mybudget.transaction.CheckingAccountTransaction;
+import br.com.victorpfranca.mybudget.view.MonthYear;
 
 @RunWith(Parameterized.class)
 public class ReconstrutorSaldoContasTest {
@@ -36,10 +36,10 @@ public class ReconstrutorSaldoContasTest {
 	public CheckingAccount contaInput;
 
 	@Parameter(1)
-	public List<LancamentoContaCorrente> lancamentosInput;
+	public List<CheckingAccountTransaction> lancamentosInput;
 
 	@Parameter(2)
-	public Map<AnoMes, AccountBalance> saldosExpected;
+	public Map<MonthYear, AccountBalance> saldosExpected;
 
 	@Parameters
 	public static Collection<Object[]> data() {
@@ -50,28 +50,28 @@ public class ReconstrutorSaldoContasTest {
 		int dia1 = 1;
 
 		// Input 1(sem lançamento)
-		List<LancamentoContaCorrente> lancamentosInput1 = new ArrayList<LancamentoContaCorrente>();
-		Map<AnoMes, AccountBalance> saldosExpected1 = new LinkedHashMap<AnoMes, AccountBalance>();
+		List<CheckingAccountTransaction> lancamentosInput1 = new ArrayList<CheckingAccountTransaction>();
+		Map<MonthYear, AccountBalance> saldosExpected1 = new LinkedHashMap<MonthYear, AccountBalance>();
 
 		// Input 2
-		List<LancamentoContaCorrente> lancamentosInput2 = new ArrayList<LancamentoContaCorrente>();
+		List<CheckingAccountTransaction> lancamentosInput2 = new ArrayList<CheckingAccountTransaction>();
 		addLancamento(InOut.S, ano2000, Month.JANUARY, dia1, BigDecimal.TEN, lancamentosInput2);
 		addLancamento(InOut.E, ano2000, Month.OCTOBER, dia1, BigDecimal.TEN, lancamentosInput2);
 		addLancamento(InOut.S, ano2000, Month.NOVEMBER, dia1, BigDecimal.TEN, lancamentosInput2);
 		addLancamento(InOut.S, ano2000, Month.DECEMBER, dia1, BigDecimal.TEN, lancamentosInput2);
 		addLancamento(InOut.S, ano2000, Month.DECEMBER, dia1, BigDecimal.TEN, lancamentosInput2);
 
-		Map<AnoMes, AccountBalance> saldosExpected2 = new LinkedHashMap<AnoMes, AccountBalance>();
-		saldosExpected2.put(new AnoMes(ano2000, Month.JANUARY.getValue()),
+		Map<MonthYear, AccountBalance> saldosExpected2 = new LinkedHashMap<MonthYear, AccountBalance>();
+		saldosExpected2.put(new MonthYear(ano2000, Month.JANUARY.getValue()),
 				new AccountBalance(contaInput, ano2000, Month.JANUARY.getValue(), BigDecimal.TEN.negate()));
 
-		saldosExpected2.put(new AnoMes(ano2000, Month.OCTOBER.getValue()),
+		saldosExpected2.put(new MonthYear(ano2000, Month.OCTOBER.getValue()),
 				new AccountBalance(contaInput, ano2000, Month.OCTOBER.getValue(), BigDecimal.ZERO));
 
-		saldosExpected2.put(new AnoMes(ano2000, Month.NOVEMBER.getValue()),
+		saldosExpected2.put(new MonthYear(ano2000, Month.NOVEMBER.getValue()),
 				new AccountBalance(contaInput, ano2000, Month.NOVEMBER.getValue(), BigDecimal.TEN.negate()));
 
-		saldosExpected2.put(new AnoMes(ano2000, Month.DECEMBER.getValue()),
+		saldosExpected2.put(new MonthYear(ano2000, Month.DECEMBER.getValue()),
 				new AccountBalance(contaInput, ano2000, Month.DECEMBER.getValue(), new BigDecimal(30).negate()));
 
 		Object[][] data = new Object[][] { { contaInput, lancamentosInput1, saldosExpected1 },
@@ -81,8 +81,8 @@ public class ReconstrutorSaldoContasTest {
 	}
 
 	private static void addLancamento(InOut inOut, int ano, Month mes, int dia, BigDecimal valor,
-			List<LancamentoContaCorrente> lancamentos) {
-		LancamentoContaCorrente lancamento = new LancamentoContaCorrente();
+			List<CheckingAccountTransaction> lancamentos) {
+		CheckingAccountTransaction lancamento = new CheckingAccountTransaction();
 		lancamento.setInOut(inOut);
 		lancamento.setData(toDate(ano, mes, dia));
 		lancamento.setValor(valor);
@@ -94,14 +94,14 @@ public class ReconstrutorSaldoContasTest {
 
 		AccountBalanceFixer accountBalanceFixer = new AccountBalanceFixer();
 
-		Map<AnoMes, AccountBalance> saldosGerados = accountBalanceFixer.reconstruirSaldosContasDoInicio(contaInput,
+		Map<MonthYear, AccountBalance> saldosGerados = accountBalanceFixer.reconstruirSaldosContasDoInicio(contaInput,
 				lancamentosInput);
 
 		assertTrue(saldosGerados.keySet().size() == saldosExpected.keySet().size());
 		assertTrue(saldosGerados.values().size() == saldosExpected.values().size());
 
-		for (Iterator<AnoMes> iterator = saldosExpected.keySet().iterator(); iterator.hasNext();) {
-			AnoMes anoMesExpected = (AnoMes) iterator.next();
+		for (Iterator<MonthYear> iterator = saldosExpected.keySet().iterator(); iterator.hasNext();) {
+			MonthYear anoMesExpected = (MonthYear) iterator.next();
 
 			AccountBalance saldoContaGerado = saldosGerados.get(anoMesExpected);
 			AccountBalance saldoContaExpected = saldosExpected.get(anoMesExpected);

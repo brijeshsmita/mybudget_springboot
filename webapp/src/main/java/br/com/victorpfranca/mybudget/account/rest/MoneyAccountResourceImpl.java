@@ -20,12 +20,12 @@ import br.com.victorpfranca.mybudget.account.rules.SameNameException;
 import br.com.victorpfranca.mybudget.conta.ContaDTO;
 import br.com.victorpfranca.mybudget.conta.ContaDinheiroDTO;
 import br.com.victorpfranca.mybudget.conta.ContaDinheiroResource;
-import br.com.victorpfranca.mybudget.lancamento.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.lancamento.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.lancamento.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.lancamento.rules.RemocaoNaoPermitidaException;
-import br.com.victorpfranca.mybudget.lancamento.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.lancamento.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
+import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
+import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
+import br.com.victorpfranca.mybudget.transaction.rules.RemocaoNaoPermitidaException;
+import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
+import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
 
 @Path("contasDinheiro")
 public class MoneyAccountResourceImpl implements ContaDinheiroResource{

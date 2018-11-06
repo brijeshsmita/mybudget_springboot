@@ -8,12 +8,12 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import br.com.victorpfranca.mybudget.account.CheckingAccount;
-import br.com.victorpfranca.mybudget.lancamento.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.lancamento.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.lancamento.rules.CriadorLancamentoContaCorrente;
-import br.com.victorpfranca.mybudget.lancamento.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.lancamento.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.lancamento.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
+import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
+import br.com.victorpfranca.mybudget.transaction.rules.CriadorLancamentoContaCorrente;
+import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
+import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
+import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
 
 @Stateless
 public class CheckingAccountBuilder {

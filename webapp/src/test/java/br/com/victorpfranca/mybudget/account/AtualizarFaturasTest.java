@@ -16,10 +16,10 @@ import br.com.victorpfranca.mybudget.LocalDateConverter;
 import br.com.victorpfranca.mybudget.account.BankAccount;
 import br.com.victorpfranca.mybudget.account.CheckingAccount;
 import br.com.victorpfranca.mybudget.account.CreditCardAccount;
-import br.com.victorpfranca.mybudget.lancamento.Lancamento;
-import br.com.victorpfranca.mybudget.lancamento.LancamentoCartaoCredito;
-import br.com.victorpfranca.mybudget.lancamento.LancamentoStatus;
-import br.com.victorpfranca.mybudget.lancamento.rules.ContaNotNullException;
+import br.com.victorpfranca.mybudget.transaction.CreditCardTransaction;
+import br.com.victorpfranca.mybudget.transaction.Transaction;
+import br.com.victorpfranca.mybudget.transaction.TransactionStatus;
+import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
 
 public class AtualizarFaturasTest {
 
@@ -48,15 +48,15 @@ public class AtualizarFaturasTest {
 	@Test
 	public void testSemFatura() {
 		LocalDate date = LocalDate.of(ANO_2000, MES_1, DIA_1);
-		LancamentoCartaoCredito lancamento = new LancamentoCartaoCredito(InOut.S, LancamentoStatus.NAO_CONFIRMADO);
+		CreditCardTransaction lancamento = new CreditCardTransaction(InOut.S, TransactionStatus.NAO_CONFIRMADO);
 		lancamento.setValor(VALOR_100);
 		lancamento.setData(LocalDateConverter.toDate(date));
 		lancamento.setQtdParcelas(1);
 
-		List<Lancamento> faturasExistentes = new ArrayList<Lancamento>();
+		List<Transaction> faturasExistentes = new ArrayList<Transaction>();
 
 		try {
-			List<Lancamento> faturas = creditCardAccount.carregarFaturas(lancamento, faturasExistentes);
+			List<Transaction> faturas = creditCardAccount.carregarFaturas(lancamento, faturasExistentes);
 			assertTrue(1 == faturas.size());
 			assertTrue(faturas.get(0).getValor().compareTo(VALOR_100) == 0);
 		} catch (ContaNotNullException e) {

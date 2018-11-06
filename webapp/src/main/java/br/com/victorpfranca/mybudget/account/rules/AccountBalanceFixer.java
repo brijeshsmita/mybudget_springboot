@@ -19,8 +19,8 @@ import br.com.victorpfranca.mybudget.account.AccountBalance;
 import br.com.victorpfranca.mybudget.account.BankAccount;
 import br.com.victorpfranca.mybudget.account.CheckingAccount;
 import br.com.victorpfranca.mybudget.account.MoneyAccount;
-import br.com.victorpfranca.mybudget.lancamento.LancamentoContaCorrente;
-import br.com.victorpfranca.mybudget.view.AnoMes;
+import br.com.victorpfranca.mybudget.transaction.CheckingAccountTransaction;
+import br.com.victorpfranca.mybudget.view.MonthYear;
 
 /**
  * Este processamento é um apoio para a administração do sistema em casos
@@ -37,43 +37,43 @@ public class AccountBalanceFixer {
 
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public Map<Account, Map<AnoMes, AccountBalance>> reconstruirSaldosContasDoInicio() {
+	public Map<Account, Map<MonthYear, AccountBalance>> reconstruirSaldosContasDoInicio() {
 
-		Map<Account, Map<AnoMes, AccountBalance>> map = new LinkedHashMap<Account, Map<AnoMes, AccountBalance>>();
+		Map<Account, Map<MonthYear, AccountBalance>> map = new LinkedHashMap<Account, Map<MonthYear, AccountBalance>>();
 
 		List<CheckingAccount> contas = carregarContas();
 
 		for (Iterator<CheckingAccount> iterator = contas.iterator(); iterator.hasNext();) {
 			CheckingAccount conta = iterator.next();
 
-			List<LancamentoContaCorrente> lancamentos = carregarLancamentos(conta);
+			List<CheckingAccountTransaction> lancamentos = carregarLancamentos(conta);
 
-			Map<AnoMes, AccountBalance> mapSaldoContaAnoMes = reconstruirSaldosContasDoInicio(conta, lancamentos);
+			Map<MonthYear, AccountBalance> mapSaldoContaAnoMes = reconstruirSaldosContasDoInicio(conta, lancamentos);
 
 			map.put(conta, mapSaldoContaAnoMes);
 		}
 
 		removerSaldosExistentes();
 
-		for (Map.Entry<Account, Map<AnoMes, AccountBalance>> contaEntry : map.entrySet()) {
-			Map<AnoMes, AccountBalance> saldoMap = ((Map<AnoMes, AccountBalance>) contaEntry.getValue());
+		for (Map.Entry<Account, Map<MonthYear, AccountBalance>> contaEntry : map.entrySet()) {
+			Map<MonthYear, AccountBalance> saldoMap = ((Map<MonthYear, AccountBalance>) contaEntry.getValue());
 			gravarSaldos(saldoMap);
 		}
 
 		return map;
 	}
 
-	public Map<AnoMes, AccountBalance> reconstruirSaldosContasDoInicio(CheckingAccount conta,
-			List<LancamentoContaCorrente> lancamentos) {
+	public Map<MonthYear, AccountBalance> reconstruirSaldosContasDoInicio(CheckingAccount conta,
+			List<CheckingAccountTransaction> lancamentos) {
 
-		Map<AnoMes, AccountBalance> mapSaldoContaAnoMes = new LinkedHashMap<AnoMes, AccountBalance>();
+		Map<MonthYear, AccountBalance> mapSaldoContaAnoMes = new LinkedHashMap<MonthYear, AccountBalance>();
 
 		BigDecimal saldo = BigDecimal.ZERO;
 
-		for (Iterator<LancamentoContaCorrente> iterator2 = lancamentos.iterator(); iterator2.hasNext();) {
-			LancamentoContaCorrente lancamento = iterator2.next();
+		for (Iterator<CheckingAccountTransaction> iterator2 = lancamentos.iterator(); iterator2.hasNext();) {
+			CheckingAccountTransaction lancamento = iterator2.next();
 
-			AnoMes anoMesLancamento = new AnoMes(lancamento.getAno(), lancamento.getMes());
+			MonthYear anoMesLancamento = new MonthYear(lancamento.getAno(), lancamento.getMes());
 			AccountBalance accountBalance = mapSaldoContaAnoMes.get(anoMesLancamento);
 			if (accountBalance == null) {
 				accountBalance = new AccountBalance(conta, anoMesLancamento.getAno(), anoMesLancamento.getMes(), saldo);
@@ -88,9 +88,9 @@ public class AccountBalanceFixer {
 		return mapSaldoContaAnoMes;
 	}
 
-	private List<LancamentoContaCorrente> carregarLancamentos(Account account) {
-		return em.createQuery("select c from LancamentoContaCorrente c where account = :account order by ano asc, mes asc",
-				LancamentoContaCorrente.class).setParameter("account", account).getResultList();
+	private List<CheckingAccountTransaction> carregarLancamentos(Account account) {
+		return em.createQuery("select c from CheckingAccountTransaction c where account = :account order by ano asc, mes asc",
+				CheckingAccountTransaction.class).setParameter("account", account).getResultList();
 	}
 
 	private List<CheckingAccount> carregarContas() {
@@ -106,7 +106,7 @@ public class AccountBalanceFixer {
 		return contas;
 	}
 
-	private void gravarSaldos(Map<AnoMes, AccountBalance> mapSaldoContaAnoMes) {
+	private void gravarSaldos(Map<MonthYear, AccountBalance> mapSaldoContaAnoMes) {
 		// gravar os novos saldos de contas
 		Collection<AccountBalance> saldos = mapSaldoContaAnoMes.values();
 		for (Iterator<AccountBalance> iterator2 = saldos.iterator(); iterator2.hasNext();) {

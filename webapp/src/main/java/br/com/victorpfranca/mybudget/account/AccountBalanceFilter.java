@@ -2,19 +2,19 @@ package br.com.victorpfranca.mybudget.account;
 
 import java.util.Objects;
 
-import br.com.victorpfranca.mybudget.view.AnoMes;
+import br.com.victorpfranca.mybudget.view.MonthYear;
 
 public class AccountBalanceFilter {
     
-    private AnoMes anoMes;
+    private MonthYear monthYear;
     private Integer conta;
     
     public static class Builder {
-        private AnoMes anoMes;
+        private MonthYear monthYear;
         private Integer conta;
         
-        public AccountBalanceFilter.Builder anoMes(AnoMes anoMes) {
-            this.anoMes=anoMes;
+        public AccountBalanceFilter.Builder monthYear(MonthYear monthYear) {
+            this.monthYear=monthYear;
             return this;
         }
         public AccountBalanceFilter.Builder conta(Integer conta) {
@@ -23,23 +23,23 @@ public class AccountBalanceFilter {
         }
         
         public AccountBalanceFilter build() {
-            return new AccountBalanceFilter(anoMes, conta);
+            return new AccountBalanceFilter(monthYear, conta);
         }
     }
     
     public AccountBalanceFilter(AccountBalanceFilter accountBalanceFilter) {
         this(accountBalanceFilter.getAnoMes(), accountBalanceFilter.getAccount());
     }
-    public AccountBalanceFilter(AnoMes anoMes, Integer conta) {
-        this.anoMes = Objects.requireNonNull(anoMes);
+    public AccountBalanceFilter(MonthYear monthYear, Integer conta) {
+        this.monthYear = Objects.requireNonNull(monthYear);
         this.conta=conta;
     }
     
-    public AnoMes getAnoMes() {
-        return anoMes;
+    public MonthYear getAnoMes() {
+        return monthYear;
     }
-    public void setAnoMes(AnoMes anoMes) {
-        this.anoMes = anoMes;
+    public void setAnoMes(MonthYear monthYear) {
+        this.monthYear = monthYear;
     }
     public Integer getAccount() {
         return conta;
@@ -52,7 +52,7 @@ public class AccountBalanceFilter {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((anoMes == null) ? 0 : anoMes.hashCode());
+        result = prime * result + ((monthYear == null) ? 0 : monthYear.hashCode());
         result = prime * result + ((conta == null) ? 0 : conta.hashCode());
         return result;
     }
@@ -68,11 +68,11 @@ public class AccountBalanceFilter {
             return false;
         }
         AccountBalanceFilter other = (AccountBalanceFilter) obj;
-        if (anoMes == null) {
-            if (other.anoMes != null) {
+        if (monthYear == null) {
+            if (other.monthYear != null) {
                 return false;
             }
-        } else if (!anoMes.equals(other.anoMes)) {
+        } else if (!monthYear.equals(other.monthYear)) {
             return false;
         }
         if (conta == null) {

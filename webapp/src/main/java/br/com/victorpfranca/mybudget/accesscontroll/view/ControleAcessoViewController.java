@@ -20,11 +20,11 @@ import br.com.victorpfranca.mybudget.accesscontroll.LogAcessoService;
 import br.com.victorpfranca.mybudget.accesscontroll.User;
 import br.com.victorpfranca.mybudget.accesscontroll.UserService;
 import br.com.victorpfranca.mybudget.category.SameNameException;
-import br.com.victorpfranca.mybudget.lancamento.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.lancamento.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.lancamento.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.lancamento.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.lancamento.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
+import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
+import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
+import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
+import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
 import br.com.victorpfranca.mybudget.view.FacesMessages;
 import br.com.victorpfranca.mybudget.view.Messages;
 

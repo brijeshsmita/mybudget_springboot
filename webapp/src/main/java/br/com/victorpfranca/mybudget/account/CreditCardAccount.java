@@ -23,10 +23,10 @@ import javax.validation.constraints.NotNull;
 
 import br.com.victorpfranca.mybudget.InOut;
 import br.com.victorpfranca.mybudget.LocalDateConverter;
-import br.com.victorpfranca.mybudget.lancamento.Lancamento;
-import br.com.victorpfranca.mybudget.lancamento.LancamentoCartaoCredito;
-import br.com.victorpfranca.mybudget.lancamento.LancamentoContaCorrente;
-import br.com.victorpfranca.mybudget.lancamento.rules.ContaNotNullException;
+import br.com.victorpfranca.mybudget.transaction.CheckingAccountTransaction;
+import br.com.victorpfranca.mybudget.transaction.CreditCardTransaction;
+import br.com.victorpfranca.mybudget.transaction.Transaction;
+import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
 
 @Entity
 @DiscriminatorValue("1")
@@ -54,15 +54,15 @@ public class CreditCardAccount extends Account implements Serializable {
 	private Integer cartaoDiaPagamentoAnterior;
 
 	@Transient
-	protected List<Lancamento> lancamentos;
+	protected List<Transaction> transactions;
 	
 	public CreditCardAccount() {
-		this.lancamentos = new ArrayList<Lancamento>();
+		this.transactions = new ArrayList<Transaction>();
 	}
 
 	public CreditCardAccount(String nome) {
 		super(nome);
-		this.lancamentos = new ArrayList<Lancamento>();
+		this.transactions = new ArrayList<Transaction>();
 	}
 
 	@PostLoad
@@ -101,15 +101,15 @@ public class CreditCardAccount extends Account implements Serializable {
 		return cal.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	}
 
-	public List<Lancamento> carregarFaturas(LancamentoCartaoCredito lancamento, List<Lancamento> faturasExistentes)
+	public List<Transaction> carregarFaturas(CreditCardTransaction lancamento, List<Transaction> faturasExistentes)
 			throws ContaNotNullException {
 
 		return carregarFaturasAPartirDe(lancamento, faturasExistentes,
 				LocalDateConverter.toDate(getDataPagamentoProximo(lancamento.getData())));
 	}
 
-	public List<Lancamento> carregarFaturasAPartirDe(LancamentoCartaoCredito lancamento,
-			List<Lancamento> faturasExistentes, Date dateProximoPagamento) throws ContaNotNullException {
+	public List<Transaction> carregarFaturasAPartirDe(CreditCardTransaction lancamento,
+			List<Transaction> faturasExistentes, Date dateProximoPagamento) throws ContaNotNullException {
 		LocalDate localDateProximoPagamento = LocalDateConverter.fromDate(dateProximoPagamento);
 
 		int qtdParcelas = lancamento.getQtdParcelas();
@@ -121,20 +121,20 @@ public class CreditCardAccount extends Account implements Serializable {
 		if (!faturasExistentes.isEmpty()
 				&& faturasExistentes.get(0).getData().after(LocalDateConverter.toDate(localDateProximoPagamento))) {
 			faturasExistentes.add(0,
-					LancamentoContaCorrente.buildFaturaCartao(this,
+					CheckingAccountTransaction.buildFaturaCartao(this,
 							Date.from(localDateProximoPagamento.atStartOfDay(ZoneId.systemDefault()).toInstant()),
 							BigDecimal.ZERO));
 		}
 
-		List<Lancamento> faturas = new ArrayList<Lancamento>();
+		List<Transaction> faturas = new ArrayList<Transaction>();
 		for (int i = 0; i < qtdParcelas; i++) {
-			Lancamento fatura = null;
+			Transaction fatura = null;
 			if (faturasExistentes.size() - 1 >= i) {
 				fatura = faturasExistentes.get(i);
 				fatura.setValorAnterior(fatura.getValor());
 				fatura.setValor(fatura.getValor().add(valorParcela));
 			} else {
-				fatura = LancamentoContaCorrente.buildFaturaCartao(this,
+				fatura = CheckingAccountTransaction.buildFaturaCartao(this,
 						Date.from(localDateProximoPagamento.atStartOfDay(ZoneId.systemDefault()).toInstant()),
 						valorParcela);
 			}
@@ -184,12 +184,12 @@ public class CreditCardAccount extends Account implements Serializable {
 		this.contaPagamentoFatura = contaPagamentoFatura;
 	}
 
-	public List<Lancamento> getLancamentos() {
-		return lancamentos;
+	public List<Transaction> getLancamentos() {
+		return transactions;
 	}
 
-	public void setLancamentos(List<Lancamento> lancamentos) {
-		this.lancamentos = lancamentos;
+	public void setLancamentos(List<Transaction> transactions) {
+		this.transactions = transactions;
 	}
 
 }

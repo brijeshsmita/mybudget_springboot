@@ -25,11 +25,11 @@ import br.com.victorpfranca.mybudget.controleacesso.api.UsuarioSignup;
 import br.com.victorpfranca.mybudget.infra.AppExceptionMapper;
 import br.com.victorpfranca.mybudget.infra.exception.SystemException;
 import br.com.victorpfranca.mybudget.infra.security.jwt.JwtActions;
-import br.com.victorpfranca.mybudget.lancamento.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.lancamento.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.lancamento.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.lancamento.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.lancamento.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
+import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
+import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
+import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
+import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
 import br.com.victorpfranca.mybudget.view.Messages;
 
 @Path("auth")

@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import br.com.victorpfranca.mybudget.InOut;
-import br.com.victorpfranca.mybudget.lancamento.LancamentoContaCorrente;
-import br.com.victorpfranca.mybudget.lancamento.LancamentoStatus;
+import br.com.victorpfranca.mybudget.transaction.CheckingAccountTransaction;
+import br.com.victorpfranca.mybudget.transaction.TransactionStatus;
 
 public abstract class CheckingAccount extends Account implements Serializable {
 
@@ -30,8 +30,8 @@ public abstract class CheckingAccount extends Account implements Serializable {
 		setSaldoInicial(BigDecimal.ZERO);
 	}
 
-	public LancamentoContaCorrente buildLancamentoSaldoInicial() {
-		LancamentoContaCorrente lancamento = new LancamentoContaCorrente(InOut.E, LancamentoStatus.CONFIRMADO);
+	public CheckingAccountTransaction buildLancamentoSaldoInicial() {
+		CheckingAccountTransaction lancamento = new CheckingAccountTransaction(InOut.E, TransactionStatus.CONFIRMADO);
 
 		lancamento.setAccount(this);
 		lancamento.setValor(getSaldoInicial());

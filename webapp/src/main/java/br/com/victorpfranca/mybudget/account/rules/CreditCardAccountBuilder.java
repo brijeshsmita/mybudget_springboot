@@ -12,16 +12,16 @@ import javax.persistence.EntityManager;
 
 import br.com.victorpfranca.mybudget.accesscontroll.CredentialsStore;
 import br.com.victorpfranca.mybudget.account.CreditCardAccount;
-import br.com.victorpfranca.mybudget.lancamento.Lancamento;
-import br.com.victorpfranca.mybudget.lancamento.LancamentoCartaoCredito;
-import br.com.victorpfranca.mybudget.lancamento.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.lancamento.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.lancamento.rules.CriadorLancamentoCartaoCredito;
-import br.com.victorpfranca.mybudget.lancamento.rules.CriadorLancamentosIniciaisCartaoCredito;
-import br.com.victorpfranca.mybudget.lancamento.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.lancamento.rules.RemovedorLancamentoCartao;
-import br.com.victorpfranca.mybudget.lancamento.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.lancamento.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.transaction.CreditCardTransaction;
+import br.com.victorpfranca.mybudget.transaction.Transaction;
+import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
+import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
+import br.com.victorpfranca.mybudget.transaction.rules.CriadorLancamentoCartaoCredito;
+import br.com.victorpfranca.mybudget.transaction.rules.CriadorLancamentosIniciaisCartaoCredito;
+import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
+import br.com.victorpfranca.mybudget.transaction.rules.RemovedorLancamentoCartao;
+import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
+import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
 
 @Stateless
 public class CreditCardAccountBuilder {
@@ -48,7 +48,7 @@ public class CreditCardAccountBuilder {
 	private EntityManager em;
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public CreditCardAccount save(CreditCardAccount conta, List<Lancamento> lancamentos)
+	public CreditCardAccount save(CreditCardAccount conta, List<Transaction> transactions)
 			throws SameNameException, ContaNotNullException, MesLancamentoAlteradoException,
 			TipoContaException, CategoriasIncompativeisException, ValorLancamentoInvalidoException {
 
@@ -65,7 +65,7 @@ public class CreditCardAccountBuilder {
 
 		creditCardInitialTransactionsRemover.execute(conta);
 
-		criadorLancamentosIniciaisCartaoCredito.save(conta, lancamentos);
+		criadorLancamentosIniciaisCartaoCredito.save(conta, transactions);
 
 		if (!((cartaoDiaFechmentoAnterior == conta.getCartaoDiaFechamento().intValue())
 				&& (cartaoDiaPagamentoAnterior == conta.getCartaoDiaPagamento().intValue()))) {
@@ -79,15 +79,15 @@ public class CreditCardAccountBuilder {
 			throws ContaNotNullException, MesLancamentoAlteradoException, TipoContaException,
 			CategoriasIncompativeisException, ValorLancamentoInvalidoException {
 
-		List<LancamentoCartaoCredito> lancamentosAnteriores = em
-				.createNamedQuery(Lancamento.FIND_LANCAMENTO_CARTAO_QUERY, LancamentoCartaoCredito.class)
+		List<CreditCardTransaction> lancamentosAnteriores = em
+				.createNamedQuery(Transaction.FIND_LANCAMENTO_CARTAO_QUERY, CreditCardTransaction.class)
 				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado()).setParameter("serie", null)
 				.setParameter("saldoInicial", false).setParameter("account", conta).getResultList();
 
-		for (Iterator<LancamentoCartaoCredito> iterator = lancamentosAnteriores.iterator(); iterator.hasNext();) {
-			LancamentoCartaoCredito lancamentoCartaoCredito = iterator.next();
-			removedorLancamentoCartao.remover(lancamentoCartaoCredito, false);
-			LancamentoCartaoCredito lancamento = (LancamentoCartaoCredito) lancamentoCartaoCredito.clone();
+		for (Iterator<CreditCardTransaction> iterator = lancamentosAnteriores.iterator(); iterator.hasNext();) {
+			CreditCardTransaction creditCardTransaction = iterator.next();
+			removedorLancamentoCartao.remover(creditCardTransaction, false);
+			CreditCardTransaction lancamento = (CreditCardTransaction) creditCardTransaction.clone();
 			lancamento.setId(null);
 			lancamento.setAccount(conta);
 			lancamento.setSaldoInicial(false);

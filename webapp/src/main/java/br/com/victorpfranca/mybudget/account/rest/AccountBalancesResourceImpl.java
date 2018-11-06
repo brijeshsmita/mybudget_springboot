@@ -6,7 +6,7 @@ import javax.ws.rs.Path;
 import br.com.victorpfranca.mybudget.conta.SaldoResource;
 import br.com.victorpfranca.mybudget.conta.SaldosResource;
 import br.com.victorpfranca.mybudget.lancamento.MeuFuturoResource;
-import br.com.victorpfranca.mybudget.lancamento.rest.LancamentosMensaisResourceImpl;
+import br.com.victorpfranca.mybudget.transaction.rest.LancamentosMensaisResourceImpl;
 
 @Path("saldos")
 public class AccountBalancesResourceImpl implements SaldosResource {

@@ -24,7 +24,7 @@ import br.com.victorpfranca.mybudget.category.CategoryBuilder;
 import br.com.victorpfranca.mybudget.category.InitialCategoriesBuilder;
 import br.com.victorpfranca.mybudget.category.SameNameException;
 import br.com.victorpfranca.mybudget.periodo.PeriodoPlanejamento;
-import br.com.victorpfranca.mybudget.view.AnoMes;
+import br.com.victorpfranca.mybudget.view.MonthYear;
 
 @Stateless
 public class CriadorOrcamentosIniciais {
@@ -42,7 +42,7 @@ public class CriadorOrcamentosIniciais {
 	
 	private List<Category> categoriasDespesas;
 	
-	private List<AnoMes> periodo;
+	private List<MonthYear> periodo;
 	
 	@EJB
 	private CategoryBuilder categoryBuilder;
@@ -97,13 +97,13 @@ public class CriadorOrcamentosIniciais {
 			if(category == null)
 				continue;
 			
-			for (Iterator<AnoMes> iterator = periodo.iterator(); iterator.hasNext();) {
-				AnoMes anoMes = (AnoMes) iterator.next();
+			for (Iterator<MonthYear> iterator = periodo.iterator(); iterator.hasNext();) {
+				MonthYear monthYear = (MonthYear) iterator.next();
 
 				Orcamento orcamento = new Orcamento();
 				orcamento.setCategory(category);
-				orcamento.setAno(anoMes.getAno());
-				orcamento.setMes(anoMes.getMes());
+				orcamento.setAno(monthYear.getAno());
+				orcamento.setMes(monthYear.getMes());
 				orcamento.setValor(new BigDecimal(valor));
 				orcamentos.add(orcamento);
 			}

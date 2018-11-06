@@ -18,18 +18,18 @@ import br.com.victorpfranca.mybudget.account.Account;
 import br.com.victorpfranca.mybudget.account.AccountBalance;
 import br.com.victorpfranca.mybudget.account.CheckingAccount;
 import br.com.victorpfranca.mybudget.account.CreditCardAccount;
-import br.com.victorpfranca.mybudget.lancamento.Lancamento;
-import br.com.victorpfranca.mybudget.lancamento.LancamentoCartaoCredito;
-import br.com.victorpfranca.mybudget.lancamento.LancamentoContaCorrente;
-import br.com.victorpfranca.mybudget.lancamento.extractors.saldofuturo.GeradorSaldoFuturo;
-import br.com.victorpfranca.mybudget.lancamento.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.lancamento.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.lancamento.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.lancamento.rules.RemocaoNaoPermitidaException;
-import br.com.victorpfranca.mybudget.lancamento.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.lancamento.rules.ValorLancamentoInvalidoException;
 import br.com.victorpfranca.mybudget.periodo.PeriodoPlanejamento;
-import br.com.victorpfranca.mybudget.view.AnoMes;
+import br.com.victorpfranca.mybudget.transaction.CheckingAccountTransaction;
+import br.com.victorpfranca.mybudget.transaction.CreditCardTransaction;
+import br.com.victorpfranca.mybudget.transaction.Transaction;
+import br.com.victorpfranca.mybudget.transaction.extractors.saldofuturo.GeradorSaldoFuturo;
+import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
+import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
+import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
+import br.com.victorpfranca.mybudget.transaction.rules.RemocaoNaoPermitidaException;
+import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
+import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.view.MonthYear;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -93,14 +93,14 @@ public class BankAccountService {
 				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado()).getResultList();
 	}
 
-	public List<LancamentoCartaoCredito> findLancamentosIniciaisCartao(CreditCardAccount conta) {
-		return em.createNamedQuery(Lancamento.FIND_LANCAMENTO_INICIAL_CARTAO_QUERY, LancamentoCartaoCredito.class)
+	public List<CreditCardTransaction> findLancamentosIniciaisCartao(CreditCardAccount conta) {
+		return em.createNamedQuery(Transaction.FIND_LANCAMENTO_INICIAL_CARTAO_QUERY, CreditCardTransaction.class)
 				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado()).setParameter("account", conta)
 				.getResultList();
 	}
 
-	public List<LancamentoContaCorrente> findFaturas(CreditCardAccount conta) {
-		return em.createNamedQuery(Lancamento.FIND_LANCAMENTO_CONTA_CORRENTE_QUERY, LancamentoContaCorrente.class)
+	public List<CheckingAccountTransaction> findFaturas(CreditCardAccount conta) {
+		return em.createNamedQuery(Transaction.FIND_LANCAMENTO_CONTA_CORRENTE_QUERY, CheckingAccountTransaction.class)
 				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado())
 				.setParameter("cartaoCreditoFatura", conta).setParameter("faturaCartao", true)
 				.setParameter("saldoInicial", null).setParameter("ano", null).setParameter("mes", null)
@@ -164,19 +164,19 @@ public class BankAccountService {
 			TipoContaException, CategoriasIncompativeisException, ValorLancamentoInvalidoException {
 		for (Iterator<Account> iterator = accounts.iterator(); iterator.hasNext();) {
 			Account account = iterator.next();
-			saveContaCartao(account, new ArrayList<Lancamento>());
+			saveContaCartao(account, new ArrayList<Transaction>());
 		}
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public Account saveContaCartao(Account account, List<Lancamento> lancamentos)
+	public Account saveContaCartao(Account account, List<Transaction> transactions)
 			throws SameNameException, ContaNotNullException, MesLancamentoAlteradoException,
 			TipoContaException, CategoriasIncompativeisException, ValorLancamentoInvalidoException {
 
 		if (account instanceof CheckingAccount) {
 			account = checkingAccountBuilder.save((CheckingAccount) account);
 		} else if (account instanceof CreditCardAccount) {
-			account = creditCardAccountBuilder.save((CreditCardAccount) account, lancamentos);
+			account = creditCardAccountBuilder.save((CreditCardAccount) account, transactions);
 		}
 
 		return account;
@@ -193,18 +193,18 @@ public class BankAccountService {
 
 	}
 
-	public Map<Account, Map<AnoMes, AccountBalance>> reconstruirSaldosContas() {
+	public Map<Account, Map<MonthYear, AccountBalance>> reconstruirSaldosContas() {
 		return accountBalanceFixer.reconstruirSaldosContasDoInicio();
 	}
 
 	public List<AccountBalance> carregarSaldoFuturoPrevisto() {
-		AnoMes anoMesAtual = periodoPlanejamento.getMesAtual();
-		AnoMes anoMesFinal = periodoPlanejamento.getMesFinal();
+		MonthYear anoMesAtual = periodoPlanejamento.getMesAtual();
+		MonthYear anoMesFinal = periodoPlanejamento.getMesFinal();
 
 		return carregarSaldoFuturoPrevisto(anoMesAtual, anoMesFinal);
 	}
 
-	public List<AccountBalance> carregarSaldoFuturoPrevisto(AnoMes anoMesAtual, AnoMes anoMesFinal) {
+	public List<AccountBalance> carregarSaldoFuturoPrevisto(MonthYear anoMesAtual, MonthYear anoMesFinal) {
 		return geradorSaldoFuturo.execute(anoMesAtual.getAno(), anoMesAtual.getMes(), anoMesFinal.getAno(),
 				anoMesFinal.getMes());
 	}

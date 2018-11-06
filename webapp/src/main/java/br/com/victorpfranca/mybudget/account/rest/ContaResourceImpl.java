@@ -22,13 +22,13 @@ import br.com.victorpfranca.mybudget.account.rules.SameNameException;
 import br.com.victorpfranca.mybudget.conta.ContaDTO;
 import br.com.victorpfranca.mybudget.conta.ContaResource;
 import br.com.victorpfranca.mybudget.infra.date.DateUtils;
-import br.com.victorpfranca.mybudget.lancamento.Lancamento;
-import br.com.victorpfranca.mybudget.lancamento.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.lancamento.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.lancamento.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.lancamento.rules.RemocaoNaoPermitidaException;
-import br.com.victorpfranca.mybudget.lancamento.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.lancamento.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.transaction.Transaction;
+import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
+import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
+import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
+import br.com.victorpfranca.mybudget.transaction.rules.RemocaoNaoPermitidaException;
+import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
+import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
 
 @Path("contas")
 public class ContaResourceImpl implements ContaResource {
@@ -82,7 +82,7 @@ public class ContaResourceImpl implements ContaResource {
 			if (!contaDTO.getTipo().equals(AccountType.CARTAO_CREDITO.getValue())) {
 				bankAccountService.saveContaCorrente(account);
 			}else {
-				bankAccountService.saveContaCartao(account, new ArrayList<Lancamento>());
+				bankAccountService.saveContaCartao(account, new ArrayList<Transaction>());
 			}
 		} catch (SameNameException | ContaNotNullException | MesLancamentoAlteradoException
 				| TipoContaException | CategoriasIncompativeisException | ValorLancamentoInvalidoException e) {

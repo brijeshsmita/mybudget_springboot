@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import br.com.victorpfranca.mybudget.account.CreditCardAccount;
-import br.com.victorpfranca.mybudget.lancamento.rules.RemocaoNaoPermitidaException;
+import br.com.victorpfranca.mybudget.transaction.rules.RemocaoNaoPermitidaException;
 
 @Stateless
 public class CreditCardAccountRemover {

@@ -25,17 +25,17 @@ import br.com.victorpfranca.mybudget.account.MoneyAccount;
 import br.com.victorpfranca.mybudget.account.rules.BankAccountService;
 import br.com.victorpfranca.mybudget.account.rules.CantRemoveException;
 import br.com.victorpfranca.mybudget.account.rules.SameNameException;
-import br.com.victorpfranca.mybudget.lancamento.Lancamento;
-import br.com.victorpfranca.mybudget.lancamento.LancamentoCartaoCredito;
-import br.com.victorpfranca.mybudget.lancamento.LancamentoStatus;
-import br.com.victorpfranca.mybudget.lancamento.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.lancamento.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.lancamento.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.lancamento.rules.RemocaoNaoPermitidaException;
-import br.com.victorpfranca.mybudget.lancamento.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.lancamento.rules.ValorLancamentoInvalidoException;
 import br.com.victorpfranca.mybudget.periodo.PeriodoPlanejamento;
-import br.com.victorpfranca.mybudget.view.AnoMes;
+import br.com.victorpfranca.mybudget.transaction.CreditCardTransaction;
+import br.com.victorpfranca.mybudget.transaction.Transaction;
+import br.com.victorpfranca.mybudget.transaction.TransactionStatus;
+import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
+import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
+import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
+import br.com.victorpfranca.mybudget.transaction.rules.RemocaoNaoPermitidaException;
+import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
+import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.view.MonthYear;
 import br.com.victorpfranca.mybudget.view.FacesMessages;
 import br.com.victorpfranca.mybudget.view.Messages;
 
@@ -99,10 +99,10 @@ public class AccountViewController implements Serializable {
 
 		Calendar cal = Calendar.getInstance();
 
-		List<LancamentoCartaoCredito> lancamentosCartaoExistentes = bankAccountService
+		List<CreditCardTransaction> lancamentosCartaoExistentes = bankAccountService
 				.findLancamentosIniciaisCartao((CreditCardAccount) getObjeto());
-		for (Iterator<LancamentoCartaoCredito> iterator = lancamentosCartaoExistentes.iterator(); iterator.hasNext();) {
-			Lancamento faturaExistente = (Lancamento) iterator.next();
+		for (Iterator<CreditCardTransaction> iterator = lancamentosCartaoExistentes.iterator(); iterator.hasNext();) {
+			Transaction faturaExistente = (Transaction) iterator.next();
 
 			for (Iterator<Date> iterator2 = faturasPreview.keySet().iterator(); iterator2.hasNext();) {
 				Date faturaPreviewDate = (Date) iterator2.next();
@@ -121,8 +121,8 @@ public class AccountViewController implements Serializable {
 	private Map<Date, BigDecimal> carregarFaturasPreview() {
 		Map<Date, BigDecimal> faturasParaView = new LinkedHashMap<Date, BigDecimal>();
 
-		AnoMes anoMesInicio = periodoPlanejamento.getMesInicio();
-		AnoMes anoMesFinal = periodoPlanejamento.getMesFinal();
+		MonthYear anoMesInicio = periodoPlanejamento.getMesInicio();
+		MonthYear anoMesFinal = periodoPlanejamento.getMesFinal();
 
 		while (anoMesInicio.compareTo(anoMesFinal) <= 0) {
 			LocalDate localDate = LocalDate.of(anoMesInicio.getAno(), anoMesInicio.getMes(), 1);
@@ -171,7 +171,7 @@ public class AccountViewController implements Serializable {
 
 		try {
 			if (account instanceof CreditCardAccount) {
-				List<Lancamento> lancamentosCartao = criarLancamentosCartao((CreditCardAccount) account);
+				List<Transaction> lancamentosCartao = criarLancamentosCartao((CreditCardAccount) account);
 				setObjeto(bankAccountService.saveContaCartao(account, lancamentosCartao));
 			} else {
 				setObjeto(bankAccountService.saveContaCorrente(account));
@@ -185,8 +185,8 @@ public class AccountViewController implements Serializable {
 		voltar();
 	}
 
-	private List<Lancamento> criarLancamentosCartao(CreditCardAccount conta) throws ContaNotNullException {
-		List<Lancamento> lancamentosCartao = new ArrayList<Lancamento>();
+	private List<Transaction> criarLancamentosCartao(CreditCardAccount conta) throws ContaNotNullException {
+		List<Transaction> lancamentosCartao = new ArrayList<Transaction>();
 		for (Iterator<Date> iterator = faturasPreview.keySet().iterator(); iterator.hasNext();) {
 			Date faturaDate = (Date) iterator.next();
 			if (faturasPreview.get(faturaDate) != null) {
@@ -195,14 +195,14 @@ public class AccountViewController implements Serializable {
 				Date date = LocalDateConverter
 						.toDate(LocalDateConverter.fromDate(faturaDate).withDayOfMonth(conta.getCartaoDiaPagamento()));
 
-				LancamentoCartaoCredito lancamentoCartao = new LancamentoCartaoCredito();
+				CreditCardTransaction lancamentoCartao = new CreditCardTransaction();
 				lancamentoCartao.setSaldoInicial(true);
 				lancamentoCartao.setAccount(conta);
 				lancamentoCartao.setData(date);
 				lancamentoCartao.setValor(valor);
 				lancamentoCartao.setQtdParcelas(1);
 				lancamentoCartao.setInOut(InOut.S);
-				lancamentoCartao.setStatus(LancamentoStatus.NAO_CONFIRMADO);
+				lancamentoCartao.setStatus(TransactionStatus.NAO_CONFIRMADO);
 
 				lancamentosCartao.add(lancamentoCartao);
 			}

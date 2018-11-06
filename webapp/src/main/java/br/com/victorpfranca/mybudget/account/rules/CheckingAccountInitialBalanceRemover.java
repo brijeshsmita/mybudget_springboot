@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
 
 import br.com.victorpfranca.mybudget.accesscontroll.CredentialsStore;
 import br.com.victorpfranca.mybudget.account.Account;
-import br.com.victorpfranca.mybudget.lancamento.Lancamento;
+import br.com.victorpfranca.mybudget.transaction.Transaction;
 
 @Stateless
 public class CheckingAccountInitialBalanceRemover {
@@ -30,27 +30,27 @@ public class CheckingAccountInitialBalanceRemover {
 	public void execute(Account account) {
 		this.account = account;
 
-		Lancamento lancamento = removerLancamento();
+		Transaction transaction = removerLancamento();
 
-		if (lancamento != null)
-			accountBalanceUpdater.removeSaldos(lancamento);
+		if (transaction != null)
+			accountBalanceUpdater.removeSaldos(transaction);
 	}
 
-	private Lancamento removerLancamento() {
-		List<Lancamento> lancamentosSaldosIniciais = em
-				.createNamedQuery(Lancamento.FIND_LANCAMENTO_CONTA_CORRENTE_QUERY, Lancamento.class)
+	private Transaction removerLancamento() {
+		List<Transaction> lancamentosSaldosIniciais = em
+				.createNamedQuery(Transaction.FIND_LANCAMENTO_CONTA_CORRENTE_QUERY, Transaction.class)
 				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado()).setParameter("account", account)
 				.setParameter("category", null).setParameter("saldoInicial", true).setParameter("ano", null)
 				.setParameter("mes", null).setParameter("cartaoCreditoFatura", null).setParameter("faturaCartao", null)
 				.setParameter("status", null).getResultList();
 
-		Lancamento lancamento = null;
+		Transaction transaction = null;
 		if (!lancamentosSaldosIniciais.isEmpty()) {
-			lancamento = lancamentosSaldosIniciais.get(0);
-			em.remove(lancamento);
+			transaction = lancamentosSaldosIniciais.get(0);
+			em.remove(transaction);
 		}
 
-		return lancamento;
+		return transaction;
 	}
 
 }

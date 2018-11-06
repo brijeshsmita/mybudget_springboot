@@ -21,7 +21,7 @@ import br.com.victorpfranca.mybudget.category.CategoriaService;
 import br.com.victorpfranca.mybudget.orcamento.Orcamento;
 import br.com.victorpfranca.mybudget.orcamento.OrcamentoService;
 import br.com.victorpfranca.mybudget.periodo.PeriodoPlanejamento;
-import br.com.victorpfranca.mybudget.view.AnoMes;
+import br.com.victorpfranca.mybudget.view.MonthYear;
 
 @Named
 @ViewScoped
@@ -41,15 +41,15 @@ public class OrcamentoViewController implements Serializable {
 	@Inject
 	private PeriodoPlanejamento periodoPlanejamento;
 
-	private Map<Category, Map<AnoMes, Orcamento>> orcamentosGridData;
+	private Map<Category, Map<MonthYear, Orcamento>> orcamentosGridData;
 
 	protected List<Category> categories;
 
-	private List<AnoMes> anosMeses;
+	private List<MonthYear> anosMeses;
 
 	private int selectedTab;
 
-	private Integer filtroAno = AnoMes.getCurrent().getAno();
+	private Integer filtroAno = MonthYear.getCurrent().getAno();
 
 	private InOut filtroInOut = InOut.S;
 
@@ -118,15 +118,15 @@ public class OrcamentoViewController implements Serializable {
 	public void onCellEdit(CellEditEvent event) {
 
 		DataTable o = (DataTable) event.getSource();
-		Map.Entry<Category, Map<AnoMes, Orcamento>> categoriaMapEntry = (Map.Entry<Category, Map<AnoMes, Orcamento>>) o
+		Map.Entry<Category, Map<MonthYear, Orcamento>> categoriaMapEntry = (Map.Entry<Category, Map<MonthYear, Orcamento>>) o
 				.getRowData();
-		Map<AnoMes, Orcamento> orcamentoMap = categoriaMapEntry.getValue();
+		Map<MonthYear, Orcamento> orcamentoMap = categoriaMapEntry.getValue();
 
 		String columnKey = event.getColumn().getColumnKey();
 		int index = Integer.valueOf(columnKey.substring(columnKey.length() - 2).replaceAll(":", ""));
-		AnoMes anoMes = (AnoMes) getMeses().toArray()[index];
+		MonthYear monthYear = (MonthYear) getMeses().toArray()[index];
 
-		Orcamento orcamento = orcamentoMap.get(anoMes);
+		Orcamento orcamento = orcamentoMap.get(monthYear);
 		setObjeto((orcamento));
 		salvar();
 	}
@@ -201,16 +201,16 @@ public class OrcamentoViewController implements Serializable {
 		this.filtroInOut = filtroInOut;
 	}
 
-	public Map<Category, Map<AnoMes, Orcamento>> getOrcamentos() {
+	public Map<Category, Map<MonthYear, Orcamento>> getOrcamentos() {
 		return orcamentosGridData;
 	}
 
-	public List<AnoMes> getMeses() {
-		List<AnoMes> returnList = new ArrayList<AnoMes>();
-		for (Iterator<AnoMes> iterator = anosMeses.iterator(); iterator.hasNext();) {
-			AnoMes anoMes = iterator.next();
-			if (anoMes.getAno() == filtroAno.intValue())
-				returnList.add(anoMes);
+	public List<MonthYear> getMeses() {
+		List<MonthYear> returnList = new ArrayList<MonthYear>();
+		for (Iterator<MonthYear> iterator = anosMeses.iterator(); iterator.hasNext();) {
+			MonthYear monthYear = iterator.next();
+			if (monthYear.getAno() == filtroAno.intValue())
+				returnList.add(monthYear);
 		}
 
 		return returnList;
@@ -218,15 +218,15 @@ public class OrcamentoViewController implements Serializable {
 
 	public List<Integer> getAnosList() {
 		List<Integer> anos = new ArrayList<Integer>();
-		for (Iterator<AnoMes> iterator = anosMeses.iterator(); iterator.hasNext();) {
-			AnoMes anoMes = iterator.next();
-			if (!anos.contains(anoMes.getAno()))
-				anos.add(anoMes.getAno());
+		for (Iterator<MonthYear> iterator = anosMeses.iterator(); iterator.hasNext();) {
+			MonthYear monthYear = iterator.next();
+			if (!anos.contains(monthYear.getAno()))
+				anos.add(monthYear.getAno());
 		}
 		return anos;
 	}
 
-	public BigDecimal getTotal(Map<AnoMes, Orcamento> orcamento) {
+	public BigDecimal getTotal(Map<MonthYear, Orcamento> orcamento) {
 		return orcamento.values().stream().map(e -> e.getValor()).reduce(BigDecimal.ZERO, (x, y) -> x.add(y));
 	}
 

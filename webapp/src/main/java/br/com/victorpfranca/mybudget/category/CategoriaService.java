@@ -12,9 +12,9 @@ import javax.persistence.EntityManager;
 
 import br.com.victorpfranca.mybudget.InOut;
 import br.com.victorpfranca.mybudget.accesscontroll.CredentialsStore;
-import br.com.victorpfranca.mybudget.lancamento.Lancamento;
-import br.com.victorpfranca.mybudget.lancamento.rules.RemocaoNaoPermitidaException;
 import br.com.victorpfranca.mybudget.orcamento.Orcamento;
+import br.com.victorpfranca.mybudget.transaction.Transaction;
+import br.com.victorpfranca.mybudget.transaction.rules.RemocaoNaoPermitidaException;
 
 @Stateless
 public class CategoriaService {
@@ -81,7 +81,7 @@ public class CategoriaService {
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	private void validarSemLancamentos(Category category) throws RemocaoNaoPermitidaException {
-		List<Lancamento> lancamentosExistentes = em.createNamedQuery(Lancamento.FIND_LANCAMENTO_QUERY, Lancamento.class)
+		List<Transaction> lancamentosExistentes = em.createNamedQuery(Transaction.FIND_LANCAMENTO_QUERY, Transaction.class)
 				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado())
 				.setParameter("category", category).setParameter("serie", null).getResultList();
 		if (!lancamentosExistentes.isEmpty())

@@ -15,8 +15,8 @@ import br.com.victorpfranca.mybudget.account.Account;
 import br.com.victorpfranca.mybudget.account.AccountBalance;
 import br.com.victorpfranca.mybudget.infra.dao.DAO;
 import br.com.victorpfranca.mybudget.infra.dao.QueryParam;
-import br.com.victorpfranca.mybudget.lancamento.Lancamento;
 import br.com.victorpfranca.mybudget.periodo.PeriodoPlanejamento;
+import br.com.victorpfranca.mybudget.transaction.Transaction;
 
 @Stateless
 public class AccountBalanceUpdater {
@@ -31,75 +31,75 @@ public class AccountBalanceUpdater {
 	private CredentialsStore credentialsStore;
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void addSaldos(Lancamento lancamento) {
-		List<Lancamento> lancamentos = new ArrayList<Lancamento>();
-		lancamentos.add(lancamento);
-		addSaldos(lancamentos);
+	public void addSaldos(Transaction transaction) {
+		List<Transaction> transactions = new ArrayList<Transaction>();
+		transactions.add(transaction);
+		addSaldos(transactions);
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void addSaldos(List<Lancamento> lancamentos) {
-		if (!lancamentos.isEmpty()) {
+	public void addSaldos(List<Transaction> transactions) {
+		if (!transactions.isEmpty()) {
 
-			List<AccountBalance> saldos = carregarSaldos(lancamentos, null);
+			List<AccountBalance> saldos = carregarSaldos(transactions, null);
 
-			for (Iterator<Lancamento> iterator = lancamentos.iterator(); iterator.hasNext();) {
-				Lancamento lancamento = (Lancamento) iterator.next();
-				addSaldosMesesPosteriores(saldos, lancamento);
+			for (Iterator<Transaction> iterator = transactions.iterator(); iterator.hasNext();) {
+				Transaction transaction = (Transaction) iterator.next();
+				addSaldosMesesPosteriores(saldos, transaction);
 			}
 			persistir(saldos);
 		}
 	}
 
-	private void addSaldosMesesPosteriores(List<AccountBalance> saldoContaList, Lancamento lancamento) {
-		Integer anoLancamento = lancamento.getAno();
-		Integer mesLancamento = lancamento.getMes();
+	private void addSaldosMesesPosteriores(List<AccountBalance> saldoContaList, Transaction transaction) {
+		Integer anoLancamento = transaction.getAno();
+		Integer mesLancamento = transaction.getMes();
 
 		Iterator<AccountBalance> iterator = saldoContaList.iterator();
 		while (iterator.hasNext()) {
 			AccountBalance accountBalance = (AccountBalance) iterator.next();
 			if (accountBalance.compareDate(anoLancamento, mesLancamento) >= 0)
-				accountBalance.add(lancamento);
+				accountBalance.add(transaction);
 		}
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void removeSaldos(Lancamento lancamento) {
-		List<Lancamento> lancamentos = new ArrayList<Lancamento>();
-		lancamentos.add(lancamento);
-		removeSaldos(lancamentos, lancamento.getAccount());
+	public void removeSaldos(Transaction transaction) {
+		List<Transaction> transactions = new ArrayList<Transaction>();
+		transactions.add(transaction);
+		removeSaldos(transactions, transaction.getAccount());
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void removeSaldos(List<Lancamento> lancamentos, Account account) {
-		if (!lancamentos.isEmpty()) {
+	public void removeSaldos(List<Transaction> transactions, Account account) {
+		if (!transactions.isEmpty()) {
 
-			List<AccountBalance> saldos = carregarSaldos(lancamentos, account);
+			List<AccountBalance> saldos = carregarSaldos(transactions, account);
 
-			for (Iterator<Lancamento> iterator = lancamentos.iterator(); iterator.hasNext();) {
-				Lancamento lancamento = (Lancamento) iterator.next();
-				removeSaldosMesesPosteriores(saldos, lancamento);
+			for (Iterator<Transaction> iterator = transactions.iterator(); iterator.hasNext();) {
+				Transaction transaction = (Transaction) iterator.next();
+				removeSaldosMesesPosteriores(saldos, transaction);
 			}
 			persistir(saldos);
 		}
 	}
 
-	private void removeSaldosMesesPosteriores(List<AccountBalance> saldoContaList, Lancamento lancamento) {
-		Integer anoLancamento = lancamento.getAno();
-		Integer mesLancamento = lancamento.getMes();
+	private void removeSaldosMesesPosteriores(List<AccountBalance> saldoContaList, Transaction transaction) {
+		Integer anoLancamento = transaction.getAno();
+		Integer mesLancamento = transaction.getMes();
 
 		Iterator<AccountBalance> iterator = saldoContaList.iterator();
 		while (iterator.hasNext()) {
 			AccountBalance accountBalance = (AccountBalance) iterator.next();
 			if (accountBalance.compareDate(anoLancamento, mesLancamento) >= 0)
-				accountBalance.remove(lancamento);
+				accountBalance.remove(transaction);
 		}
 	}
 
-	private List<AccountBalance> carregarSaldos(List<Lancamento> lancamentos, Account account) {
+	private List<AccountBalance> carregarSaldos(List<Transaction> transactions, Account account) {
 		List<AccountBalance> novosSaldos = new ArrayList<AccountBalance>();
 
-		Lancamento primeiroLancamento = lancamentos.get(0);
+		Transaction primeiroLancamento = transactions.get(0);
 		int anoPrimeiroLancamento = primeiroLancamento.getAno();
 		int mesPrimeiroLancamento = primeiroLancamento.getMes();
 
@@ -112,14 +112,14 @@ public class AccountBalanceUpdater {
 				QueryParam.build("account", account), QueryParam.build("ano", anoPrimeiroLancamento),
 				QueryParam.build("mes", mesPrimeiroLancamento));
 
-		for (Iterator<Lancamento> iterator = lancamentos.iterator(); iterator.hasNext();) {
-			Lancamento lancamento = iterator.next();
+		for (Iterator<Transaction> iterator = transactions.iterator(); iterator.hasNext();) {
+			Transaction transaction = iterator.next();
 
-			BigDecimal saldoAteAnoMesLancamento = getSaldoAte(account, lancamento.getAno(), lancamento.getMes());
+			BigDecimal saldoAteAnoMesLancamento = getSaldoAte(account, transaction.getAno(), transaction.getMes());
 
-			AccountBalance saldo = new AccountBalance().withConta(account).withAno(lancamento.getAno())
-					.withMes(lancamento.getMes()).withValor(saldoAteAnoMesLancamento);
-			if (saldosContaLancamento.isEmpty() || !existeSaldoMesLancamento(saldosContaLancamento, lancamento)) {
+			AccountBalance saldo = new AccountBalance().withConta(account).withAno(transaction.getAno())
+					.withMes(transaction.getMes()).withValor(saldoAteAnoMesLancamento);
+			if (saldosContaLancamento.isEmpty() || !existeSaldoMesLancamento(saldosContaLancamento, transaction)) {
 				saldo = saldoContaDao.merge(saldo);
 				novosSaldos.add(saldo);
 			}
@@ -142,11 +142,11 @@ public class AccountBalanceUpdater {
 		return BigDecimal.ZERO;
 	}
 
-	private boolean existeSaldoMesLancamento(List<AccountBalance> saldosContaLancamento, Lancamento lancamento) {
+	private boolean existeSaldoMesLancamento(List<AccountBalance> saldosContaLancamento, Transaction transaction) {
 		for (Iterator<AccountBalance> iteratorSaldo = saldosContaLancamento.iterator(); iteratorSaldo.hasNext();) {
 			AccountBalance accountBalance = iteratorSaldo.next();
 
-			if (accountBalance.compareDate(lancamento.getAno(), lancamento.getMes()) == 0) {
+			if (accountBalance.compareDate(transaction.getAno(), transaction.getMes()) == 0) {
 				return true;
 			}
 		}

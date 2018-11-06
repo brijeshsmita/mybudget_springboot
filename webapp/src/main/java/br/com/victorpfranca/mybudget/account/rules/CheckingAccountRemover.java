@@ -14,8 +14,8 @@ import br.com.victorpfranca.mybudget.account.Account;
 import br.com.victorpfranca.mybudget.account.AccountBalance;
 import br.com.victorpfranca.mybudget.account.CheckingAccount;
 import br.com.victorpfranca.mybudget.account.CreditCardAccount;
-import br.com.victorpfranca.mybudget.lancamento.Lancamento;
-import br.com.victorpfranca.mybudget.lancamento.rules.RemocaoNaoPermitidaException;
+import br.com.victorpfranca.mybudget.transaction.Transaction;
+import br.com.victorpfranca.mybudget.transaction.rules.RemocaoNaoPermitidaException;
 
 @Stateless
 public class CheckingAccountRemover {
@@ -49,7 +49,7 @@ public class CheckingAccountRemover {
 	}
 
 	private void removerLancamentoSaldoInicial(CheckingAccount conta) {
-		em.createNamedQuery(Lancamento.REMOVE_LANCAMENTOS_CONTA_CORRENTE_QUERY).setParameter("account", conta)
+		em.createNamedQuery(Transaction.REMOVE_LANCAMENTOS_CONTA_CORRENTE_QUERY).setParameter("account", conta)
 				.setParameter("saldoInicial", true).executeUpdate();
 	}
 
@@ -65,8 +65,8 @@ public class CheckingAccountRemover {
 	}
 
 	private void validarSemLancamentos(Account account) throws RemocaoNaoPermitidaException {
-		List<Lancamento> lancamentosExistentes = em
-				.createNamedQuery(Lancamento.FIND_LANCAMENTO_CONTA_CORRENTE_QUERY, Lancamento.class)
+		List<Transaction> lancamentosExistentes = em
+				.createNamedQuery(Transaction.FIND_LANCAMENTO_CONTA_CORRENTE_QUERY, Transaction.class)
 				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado()).setParameter("account", account)
 				.setParameter("category", null).setParameter("saldoInicial", false).setParameter("ano", null)
 				.setParameter("mes", null).setParameter("cartaoCreditoFatura", null).setParameter("faturaCartao", null).setParameter("status", null)

@@ -15,7 +15,7 @@ import br.com.victorpfranca.mybudget.categoria.CategoriaResource;
 import br.com.victorpfranca.mybudget.category.Category;
 import br.com.victorpfranca.mybudget.category.CategoriaService;
 import br.com.victorpfranca.mybudget.category.SameNameException;
-import br.com.victorpfranca.mybudget.lancamento.rules.RemocaoNaoPermitidaException;
+import br.com.victorpfranca.mybudget.transaction.rules.RemocaoNaoPermitidaException;
 
 public class CategoryResourceImpl implements CategoriaResource {
 

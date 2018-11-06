@@ -14,22 +14,22 @@ import org.apache.logging.log4j.core.appender.SyslogAppender;
 
 import br.com.victorpfranca.mybudget.category.Category;
 import br.com.victorpfranca.mybudget.orcamento.Orcamento;
-import br.com.victorpfranca.mybudget.view.AnoMes;
+import br.com.victorpfranca.mybudget.view.MonthYear;
 
 @Named
 public class CriadorOrcamentoDataGrid implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Map<Category, Map<AnoMes, Orcamento>> orcamentosGridData;
+	private Map<Category, Map<MonthYear, Orcamento>> orcamentosGridData;
 
 	protected List<Category> categories;
 
-	private List<AnoMes> anosMeses;
+	private List<MonthYear> anosMeses;
 
 	private List<Orcamento> orcamentos;
 
-	public Map<Category, Map<AnoMes, Orcamento>> criar(List<Category> categories, List<AnoMes> anosMeses,
+	public Map<Category, Map<MonthYear, Orcamento>> criar(List<Category> categories, List<MonthYear> anosMeses,
 			List<Orcamento> orcamentos) {
 
 		this.categories = categories;
@@ -47,16 +47,16 @@ public class CriadorOrcamentoDataGrid implements Serializable {
 
 	private void iniciarMesesSemOrcamento() {
 		// Preencher orcamentosGridData com meses zerados
-		for (Map.Entry<Category, Map<AnoMes, Orcamento>> categoriaEntry : orcamentosGridData.entrySet()) {
-			Map<AnoMes, Orcamento> categoriaMap = ((Map<AnoMes, Orcamento>) categoriaEntry.getValue());
-			for (Iterator<AnoMes> iterator = anosMeses.iterator(); iterator.hasNext();) {
-				AnoMes anoMes = iterator.next();
-				if (categoriaMap.get(anoMes) == null) {
+		for (Map.Entry<Category, Map<MonthYear, Orcamento>> categoriaEntry : orcamentosGridData.entrySet()) {
+			Map<MonthYear, Orcamento> categoriaMap = ((Map<MonthYear, Orcamento>) categoriaEntry.getValue());
+			for (Iterator<MonthYear> iterator = anosMeses.iterator(); iterator.hasNext();) {
+				MonthYear monthYear = iterator.next();
+				if (categoriaMap.get(monthYear) == null) {
 					Orcamento orcamento = new Orcamento();
 					orcamento.setCategory(categoriaEntry.getKey());
-					orcamento.setAno(anoMes.getAno());
-					orcamento.setMes(anoMes.getMes());
-					categoriaMap.put(anoMes, orcamento);
+					orcamento.setAno(monthYear.getAno());
+					orcamento.setMes(monthYear.getMes());
+					categoriaMap.put(monthYear, orcamento);
 				}
 			}
 		}
@@ -66,28 +66,28 @@ public class CriadorOrcamentoDataGrid implements Serializable {
 
 		for (Iterator<Orcamento> iterator = orcamentos.iterator(); iterator.hasNext();) {
 			Orcamento orcamento = (Orcamento) iterator.next();
-			Map<AnoMes, Orcamento> orcamentosCategoria = orcamentosGridData.get(orcamento.getCategoria());
+			Map<MonthYear, Orcamento> orcamentosCategoria = orcamentosGridData.get(orcamento.getCategoria());
 
-			AnoMes anoMes = new AnoMes(orcamento.getAno(), orcamento.getMes());
+			MonthYear monthYear = new MonthYear(orcamento.getAno(), orcamento.getMes());
 
-			orcamentosCategoria.put(anoMes, orcamento);
-			if (!anosMeses.contains(anoMes))
-				anosMeses.add(anoMes);
+			orcamentosCategoria.put(monthYear, orcamento);
+			if (!anosMeses.contains(monthYear))
+				anosMeses.add(monthYear);
 		}
 		Collections.sort(anosMeses);
 	}
 
-	private Map<Category, Map<AnoMes, Orcamento>> iniciarMapsCategorias() {
+	private Map<Category, Map<MonthYear, Orcamento>> iniciarMapsCategorias() {
 		// inicia valores lista de categories com mapas vazios
-		Map<Category, Map<AnoMes, Orcamento>> orcamentosGridData = new LinkedHashMap<Category, Map<AnoMes, Orcamento>>();
+		Map<Category, Map<MonthYear, Orcamento>> orcamentosGridData = new LinkedHashMap<Category, Map<MonthYear, Orcamento>>();
 		for (Iterator<Category> iterator = categories.iterator(); iterator.hasNext();) {
 			Category category = (Category) iterator.next();
-			orcamentosGridData.put(category, new LinkedHashMap<AnoMes, Orcamento>());
+			orcamentosGridData.put(category, new LinkedHashMap<MonthYear, Orcamento>());
 		}
 		return orcamentosGridData;
 	}
 
-	public List<AnoMes> getAnosMeses() {
+	public List<MonthYear> getAnosMeses() {
 		return anosMeses;
 	}
 
@@ -95,7 +95,7 @@ public class CriadorOrcamentoDataGrid implements Serializable {
 		return categories;
 	}
 
-	public Map<Category, Map<AnoMes, Orcamento>> getOrcamentosGridData() {
+	public Map<Category, Map<MonthYear, Orcamento>> getOrcamentosGridData() {
 		return orcamentosGridData;
 	}
 
