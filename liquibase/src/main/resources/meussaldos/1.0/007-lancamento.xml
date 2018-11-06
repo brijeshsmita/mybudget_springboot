@@ -1,0 +1,86 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+	<changeSet author="victorfranca" id="1">
+		<createSequence sequenceName="sq_lancamento" />
+	</changeSet>
+
+	<changeSet author="victorfranca" id="2">
+		<createTable tableName="lancamento">
+			<column name="id" type="integer">
+				<constraints primaryKey="true" primaryKeyName="pk_lancamento"
+					nullable="false" />
+			</column>
+			<column name="status" type="char(1)">
+				<constraints nullable="false" />
+			</column>
+			<column name="tipo" type="char(1)">
+				<constraints nullable="false" />
+			</column>
+			<column name="data_lancamento" type="timestamp">
+				<constraints nullable="false" />
+			</column>
+			<column name="ano" type="integer">
+				<constraints nullable="false" />
+			</column>
+			<column name="mes" type="integer">
+				<constraints nullable="false" />
+			</column>
+			<column name="valor" type="numeric(9,2)" defaultValue="0">
+				<constraints nullable="false" />
+			</column>
+			<column name="in_out" type="char(1)">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="comentario" type="varchar(120)" />
+
+			<column name="saldo_inicial" type="boolean" defaultValue="false" />
+
+			<column name="fatura_cartao" type="boolean" defaultValue="false" />
+
+			<column name="conta_id" type="integer">
+				<constraints foreignKeyName="fk_lancamento_conta"
+					referencedTableName="conta" referencedColumnNames="id" />
+			</column>
+
+			<column name="categoria_id" type="integer">
+				<constraints foreignKeyName="fk_lancamento_categoria"
+					referencedTableName="categoria" referencedColumnNames="id" />
+			</column>
+			<column name="cartao_credito_fatura_id" type="integer">
+				<constraints foreignKeyName="FK_lancamento_cartao_credito_fatura"
+					referencedTableName="conta" referencedColumnNames="id" />
+			</column>
+
+			<column name="qtd_parcelas" type="integer" />
+
+		</createTable>
+	</changeSet>
+
+	<changeSet id="3" author="victorfranca">
+		<addColumn tableName="lancamento">
+			<column name="conta_origem_id" type="integer">
+				<constraints foreignKeyName="fk_lancamento_conta_origem"
+					referencedTableName="conta" referencedColumnNames="id" />
+			</column>
+
+			<column name="conta_destino_id" type="integer">
+				<constraints foreignKeyName="fk_lancamento_conta_destino"
+					referencedTableName="conta" referencedColumnNames="id" />
+			</column>
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="4" author="victorfranca">
+		<addColumn tableName="lancamento">
+			<column name="lancamento_serie_id" type="integer">
+				<constraints foreignKeyName="fk_lancamento_serie"
+					referencedTableName="lancamento_serie" referencedColumnNames="id" />
+			</column>
+		</addColumn>
+	</changeSet>
+
+</databaseChangeLog>

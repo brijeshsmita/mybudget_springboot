@@ -1,0 +1,12 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+	<include file="meussaldos/1.0/SAL-105/001-categoria.xml" />
+	<include file="meussaldos/1.0/SAL-105/002-orcamento.xml" />
+	<include file="meussaldos/1.0/SAL-105/003-conta.xml" />
+	<include file="meussaldos/1.0/SAL-105/004-conta_saldo.xml" />
+	<include file="meussaldos/1.0/SAL-105/005-lancamento_serie.xml" />
+	<include file="meussaldos/1.0/SAL-105/006-lancamento.xml" />
+	<include file="meussaldos/1.0/SAL-105/007-migracaoViews.xml" />
+
+</databaseChangeLog>

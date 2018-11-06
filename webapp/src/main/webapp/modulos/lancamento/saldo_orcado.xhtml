@@ -1,0 +1,74 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:cruds="http://java.sun.com/jsf/composite/cruds">
+
+	<p:panelGrid id="pnlSaldo" layout="grid" columns="1"
+		style="text-align: center;" styleClass="ui-panelgrid-blank">
+
+		<p:outputLabel value="#{msg['saldo_orcado.saldo_inicial']}" />
+		<p:panel id="pnlInicial" collapsed="true">
+			<f:facet name="header">
+				<p:outputLabel value="#{lancamentoViewController.saldoInicial}"
+					styleClass="white">
+					<f:convertNumber minFractionDigits="2" maxFractionDigits="2"
+						type="currency" locale="pt_BR" />
+				</p:outputLabel>
+			</f:facet>
+		</p:panel>
+		<p:separator style="padding: 0px" />
+
+		<p:outputLabel value="#{msg['saldo_orcado.saldo_corrente_previsto']}" />
+		<p:panel id="pnlCorrentePrevisto" collapsed="true">
+			<f:facet name="header">
+				<p:outputLabel
+					value="#{lancamentoViewController.saldoCorrentePrevisto}"
+					styleClass="white">
+					<f:convertNumber minFractionDigits="2" maxFractionDigits="2"
+						type="currency" locale="pt_BR" />
+				</p:outputLabel>
+			</f:facet>
+		</p:panel>
+		<p:separator style="padding: 0px" />
+
+		<p:outputLabel value="#{msg['saldo_orcado.saldo_receita_orcada']}" />
+		<p:panel id="pnlSaldoReceitaOrcada" collapsed="true">
+			<f:facet name="header">
+				<p:outputLabel
+					value="#{lancamentoViewController.saldoReceitaOrcada}"
+					styleClass="white">
+					<f:convertNumber minFractionDigits="2" maxFractionDigits="2"
+						type="currency" locale="pt_BR" />
+				</p:outputLabel>
+			</f:facet>
+		</p:panel>
+		<p:separator style="padding: 0px" />
+
+		<p:outputLabel value="#{msg['saldo_orcado.saldo_despesa_orcada']}" />
+		<p:panel id="pnlSaldoDespesaOrcada" collapsed="true">
+			<f:facet name="header">
+				<p:outputLabel
+					value="#{lancamentoViewController.saldoDespesaOrcada}"
+					styleClass="white">
+					<f:convertNumber minFractionDigits="2" maxFractionDigits="2"
+						type="currency" locale="pt_BR" />
+				</p:outputLabel>
+			</f:facet>
+		</p:panel>
+		<p:separator style="padding: 0px" />
+
+		<p:outputLabel
+			value="#{msg['saldo_orcado.saldo_corrente_final_previsto']}" />
+		<p:panel id="pnlSaldoCorrenteFinalPrevisto" collapsed="true">
+			<f:facet name="header">
+				<h:outputText value="#{lancamentoViewController.saldoFinalPrevisto}">
+					<f:convertNumber minFractionDigits="2" maxFractionDigits="2"
+						type="currency" locale="pt_BR" />
+				</h:outputText>
+			</f:facet>
+		</p:panel>
+	</p:panelGrid>
+
+</ui:composition>

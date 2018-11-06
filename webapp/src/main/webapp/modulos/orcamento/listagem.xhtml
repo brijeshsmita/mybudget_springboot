@@ -1,0 +1,87 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:cruds="http://java.sun.com/jsf/composite/cruds">
+
+	<p:panel
+		rendered="#{orcamentoViewController.orcamentos.entrySet().isEmpty()}">
+		<p:outputLabel
+			value="Antes de preencher os valores do seu planejamento, precisamos que você definina suas categorias de receitas e despesas." />
+		<p:outputLabel
+			value="Você pode fazer isto através do menu à esquerda através do caminho CADASTROS->CATEGORIAS ou clicando no botão " />
+
+		<p:commandButton value="CATEGORIAS" action="/modulos/categoria.jsf"
+			onclick="gtag('event', 'Categorias via Orçamento', {'event_category' : 'PROD-Sistema-Menu', 'event_label': '#{controleAcessoViewController.email}'});" />
+	</p:panel>
+
+	<p:panel
+		rendered="#{!orcamentoViewController.orcamentos.entrySet().isEmpty()}">
+		<p:selectOneRadio id="filtroInOut"
+			value="#{orcamentoViewController.filtroInOut}">
+			<f:selectItems value="#{inOutOpcoes}" var="inOut"
+				itemValue="#{inOut}" itemLabel="#{inOut.descricao}" />
+			<p:ajax update="orcamentoDataTable"
+				listener="#{orcamentoViewController.onFilterChangeListener()}" />
+		</p:selectOneRadio>
+
+		<p:selectOneMenu id="filtroAno"
+			value="#{orcamentoViewController.filtroAno}"
+			converter="javax.faces.Integer">
+			<f:selectItems value="#{orcamentoViewController.anosList}" />
+			<p:ajax update="orcamentoDataTable"
+				listener="#{orcamentoViewController.onFilterChangeListener()}" />
+		</p:selectOneMenu>
+
+		<p:dataTable id="orcamentoDataTable" var="orcamento"
+			widgetVar="dataTableOrcamento"
+			value="#{orcamentoViewController.orcamentos.entrySet()}"
+			resizableColumns="true" rows="15" paginator="true" scrollable="true"
+			reflow="true" editable="true" editMode="cell" style="font-size:12px;"
+			emptyMessage="Antes de preencher o orçamento é preciso cadastrar categorias">
+
+			<p:ajax event="rowUnselect" update=":outputPanelGrid" process="@this" />
+			<p:ajax event="rowSelect" update=":outputPanelGrid" process="@this" />
+
+			<p:ajax event="cellEdit"
+				listener="#{orcamentoViewController.onCellEdit}" update=":growl"
+				global="false" />
+
+			<p:column headerText="#{msg['crud.orcamento.categoria']}" width="100">
+				<h:outputText value="#{orcamento.key}" />
+			</p:column>
+
+			<p:columns value="#{orcamentoViewController.meses}" var="anoMes"
+				columnIndexVar="mesIndex" sortBy="ano, mes">
+				<f:facet name="header">
+					<h:outputText value="#{anoMes}" />
+				</f:facet>
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{orcamento.value[anoMes].valor}">
+							<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+						</h:outputText>
+					</f:facet>
+					<f:facet name="input">
+						<p:inputNumber value="#{orcamento.value[anoMes].valor}"
+							minValue="0" maxValue="9999999.99" decimalPlaces="2" size="7">
+							<!-- 
+						<p:ajax
+							update=":formListagem"/> -->
+						</p:inputNumber>
+					</f:facet>
+				</p:cellEditor>
+			</p:columns>
+
+			<!-- 		<p:column id="columnTotal" headerText="#{msg['crud.orcamento.total']}">
+			<p:outputLabel
+				value="#{orcamentoViewController.getTotal(orcamento.value)}" />
+		</p:column>
+ -->
+		</p:dataTable>
+	</p:panel>
+
+
+
+</ui:composition>

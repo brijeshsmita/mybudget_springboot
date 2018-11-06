@@ -1,0 +1,89 @@
+<ui:composition template="/WEB-INF/templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:cruds="http://java.sun.com/jsf/composite/cruds">
+
+	<ui:define name="content">
+		<div class="Container100 PosFixed FontTitilliumSemiBold ShadowGray"
+			id="topbar">
+			<div class="Wid90 OvHidden MarAuto">
+				<a id="menu-button"><i class="fa icon-home"></i></a>
+			</div>
+		</div>
+		<div class="EmptyBox20"></div>
+
+		<p:panel id="outputPanelGrid" style="border: none">
+			<p:outputPanel id="outputPanel"
+				rendered="#{lancamentoViewController.telaGrid}">
+				<h:form id="form">
+					<ui:include src="lancamento/listagem.xhtml" />
+					<p:stack icon="/resources/meussaldos/images/actionButton.png"
+						expanded="false">
+
+						<p:menuitem value="#{msg['crud.lancamento.ajuste.novo']}"
+							actionListener="#{lancamentoViewController.incluirAjuste}"
+							update=":outputPanelGrid" process="@this">
+							<p:resetInput target=":outputPanelGrid" />
+						</p:menuitem>
+						<p:menuitem value="#{msg['crud.lancamento.transferencia.novo']}"
+							actionListener="#{lancamentoViewController.realizarTransferencia}"
+							update=":outputPanelGrid" process="@this">
+							<p:resetInput target=":outputPanelGrid" />
+						</p:menuitem>
+						<p:menuitem value="#{msg['crud.lancamento.receita.novo']}"
+							actionListener="#{lancamentoViewController.incluirReceita}"
+							update=":outputPanelGrid" process="@this">
+							<p:resetInput target=":outputPanelGrid" />
+						</p:menuitem>
+						<p:menuitem value="#{msg['crud.lancamento.despesa.novo']}"
+							actionListener="#{lancamentoViewController.incluirDespesa}"
+							update=":outputPanelGrid" process="@this">
+							<p:resetInput target=":outputPanelGrid" />
+						</p:menuitem>
+
+					</p:stack>
+				</h:form>
+			</p:outputPanel>
+
+			<p:outputPanel rendered="#{not lancamentoViewController.telaGrid}">
+				<p:outputPanel
+					rendered="#{lancamentoViewController.selectedTab eq 0}">
+					<h:form>
+						<p:outputPanel
+							rendered="#{empty lancamentoViewController.lancamentoVO}">
+							<p:outputLabel value="#{msg['crud.registro.selecionado.vazio']}" />
+							<p:commandButton value="#{msg['crud.form.voltar']}"
+								actionListener="#{lancamentoViewController.voltar()}"
+								update=":outputPanelGrid" />
+						</p:outputPanel>
+						<p:outputPanel
+							rendered="#{not empty lancamentoViewController.lancamentoVO}">
+							<ui:include src="lancamento/cadastro.xhtml" />
+							<div>
+								<p:commandButton value="#{msg['crud.form.salvar']}"
+									rendered="#{empty lancamentoViewController.lancamentoVO.id}"
+									actionListener="#{lancamentoViewController.salvar}"
+									update=":growl :outputPanelGrid" />
+								<p:commandButton value="#{msg['crud.form.alterar']}"
+									rendered="#{not empty lancamentoViewController.lancamentoVO.id}"
+									actionListener="#{lancamentoViewController.salvar}"
+									update=":growl :outputPanelGrid" />
+								<p:commandButton value="#{msg['crud.form.fechar']}"
+									actionListener="#{lancamentoViewController.voltar()}"
+									update=":outputPanelGrid" process="@this" />
+							</div>
+						</p:outputPanel>
+					</h:form>
+				</p:outputPanel>
+
+			</p:outputPanel>
+
+		</p:panel>
+
+	</ui:define>
+	<ui:define name="footer">
+	</ui:define>
+</ui:composition>

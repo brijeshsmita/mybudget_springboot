@@ -1,0 +1,70 @@
+<ui:composition template="/WEB-INF/templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:cruds="http://java.sun.com/jsf/composite/cruds">
+
+	<ui:define name="content">
+		<div class="Container100 PosFixed FontTitilliumSemiBold ShadowGray"
+			id="topbar">
+			<div class="Wid90 OvHidden MarAuto">
+				<a id="menu-button"><i class="fa icon-menu"></i></a>
+			</div>
+		</div>
+		<div class="EmptyBox20"></div>
+
+		<p:panel id="outputPanelGrid" style="border: none">
+			<p:outputPanel rendered="#{categoriaViewController.telaGrid}">
+				<h:form>
+					<ui:include src="categoria/listagem.xhtml" />
+					<p:stack icon="/resources/meussaldos/images/actionButton.png"
+						expanded="false">
+						<p:menuitem value="#{msg['crud.categoria.despesa']}"
+							actionListener="#{categoriaViewController.incluirDespesa}"
+							update=":outputPanelGrid" process="@this">
+							<p:resetInput target=":outputPanelGrid" />
+						</p:menuitem>
+						<p:menuitem value="#{msg['crud.categoria.receita']}"
+							actionListener="#{categoriaViewController.incluirReceita}"
+							update=":outputPanelGrid" process="@this">
+							<p:resetInput target=":outputPanelGrid" />
+						</p:menuitem>
+					</p:stack>
+
+				</h:form>
+			</p:outputPanel>
+
+			<p:outputPanel rendered="#{not categoriaViewController.telaGrid}">
+				<p:outputPanel
+					rendered="#{categoriaViewController.selectedTab eq 0}">
+					<h:form>
+						<p:outputPanel
+							rendered="#{not empty categoriaViewController.objeto}">
+							<ui:include src="categoria/cadastro.xhtml" />
+							<div>
+								<p:commandButton value="#{msg['crud.form.salvar']}"
+									rendered="#{empty categoriaViewController.objeto.id}"
+									actionListener="#{categoriaViewController.salvar}"
+									update=":growl :outputPanelGrid" />
+								<p:commandButton value="#{msg['crud.form.alterar']}"
+									rendered="#{not empty categoriaViewController.objeto.id}"
+									actionListener="#{categoriaViewController.salvar}"
+									update=":growl :outputPanelGrid" />
+								<p:commandButton value="#{msg['crud.form.fechar']}"
+									actionListener="#{categoriaViewController.voltar()}"
+									update=":outputPanelGrid" process="@this" />
+							</div>
+						</p:outputPanel>
+					</h:form>
+				</p:outputPanel>
+
+			</p:outputPanel>
+
+		</p:panel>
+
+	</ui:define>
+	<ui:define name="footer">
+	</ui:define>
+</ui:composition>

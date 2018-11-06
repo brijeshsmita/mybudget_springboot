@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:cruds="http://java.sun.com/jsf/composite/cruds">
+
+    <h:form>
+        <p:dataTable id="logErrosDataTable" var="logErros"
+            widgetVar="logErrosDataTableWV" lazy="true"
+            value="#{logErrosViewController.logErrosDataModel}"
+            paginator="true" paginatorAlwaysVisible="false" rows="10"
+            sortBy="dataOcorrencia" sortOrder="descending"
+            emptyMessage="#{msg['crud.logErros.list.empty']}">
+
+            <f:facet name="header">#{msg['crud.logErros.plural']}</f:facet>
+
+            <p:column style="border:0px !important;" field="codigo"
+                headerText="#{msg['crud.logErros.codigo']}">
+                <h:outputText value="#{logErros.codigo}" />
+            </p:column>
+            <p:column style="border:0px !important;" field="dataOcorrencia"
+                headerText="#{msg['crud.logErros.dataOcorrencia']}">
+                <h:outputText value="#{logErros.dataOcorrencia}">
+                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss.SSSZ" />
+                </h:outputText>
+            </p:column>
+            <p:column style="border:0px !important;" field="severidade"
+                headerText="#{msg['crud.logErros.severidade']}">
+                <h:outputText value="#{logErros.severidade}" />
+            </p:column>
+            <p:column style="border:0px !important;" field="categoria"
+                headerText="#{msg['crud.logErros.categoria']}">
+                <h:outputText value="#{logErros.categoria}" />
+            </p:column>
+            <p:column style="border:0px !important;" field="ip"
+                headerText="#{msg['crud.logErros.ip']}">
+                <h:outputText value="#{logErros.ip}" />
+            </p:column>
+            <p:column style="border:0px !important;" field="usuario"
+                headerText="#{msg['crud.logErros.usuario']}">
+                <h:outputText value="#{logErros.usuario}" />
+            </p:column>
+            <p:column style="border:0px !important;" field="cabecalhosHttp"
+                headerText="#{msg['crud.logErros.cabecalhosHttp']}">
+                <p:scrollPanel style="width:250px;max-height:200px" mode="native">
+                    <h:outputText value="#{logErros.cabecalhosHttp}" />
+                </p:scrollPanel>
+            </p:column>
+            <p:column style="border:0px !important;" field="mensagem"
+                headerText="#{msg['crud.logErros.mensagem']}">
+                <p:scrollPanel style="width:250px;max-height:200px" mode="native">
+                    <h:outputText value="#{logErros.mensagem}" />
+                </p:scrollPanel>
+            </p:column>
+            <p:column style="border:0px !important;" field="pilhaExcecao"
+                headerText="#{msg['crud.logErros.pilhaExcecao']}">
+                <p:scrollPanel style="width:250px;max-height:200px" mode="native">
+                    <h:outputText value="#{logErros.pilhaExcecao}" />
+                </p:scrollPanel>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+
+</ui:composition>

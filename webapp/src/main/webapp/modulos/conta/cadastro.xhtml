@@ -1,0 +1,109 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="ContainerIndent ui-fluid">
+
+		<div class="Container">
+			<div class="Container100 Responsive100">
+				<div class="Container100">
+					<p:panelGrid columns="2" layout="grid"
+						style="border:0px !important; background:none;"
+						styleClass="ui-panelgrid-blank">
+
+						<p:panel>
+
+							<p:panel style="border:0px !important;">
+								<p:outputLabel value="#{msg['crud.conta.nome']}" for="nome" />
+								<p:inputText id="nome"
+									value="#{contaViewController.objeto.nome}" />
+							</p:panel>
+
+							<p:panel style="border:0px !important;"
+								rendered="#{!contaViewController.isContaCartao}">
+								<p:outputLabel value="#{msg['crud.conta.saldoInicial']}"
+									for="saldoInicial" />
+								<p:inputNumber id="saldoInicial"
+									value="#{contaViewController.objeto.saldoInicial}"
+									style="width:96%" label="#{msg['crud.conta.saldoInicial']}"
+									maxValue="9999999.99" decimalPlaces="2" />
+							</p:panel>
+
+							<p:panel style="border:0px !important;"
+								rendered="#{!contaViewController.isContaCartao}">
+								<p:outputLabel value="#{msg['crud.conta.dataSaldoInicial']}"
+									for="dataSaldoInicial" />
+								<p:calendar id="dataSaldoInicial"
+									label="#{msg['crud.conta.dataSaldoInicial']}"
+									value="#{contaViewController.objeto.dataSaldoInicial}"
+									pattern="dd/MM/yyyy" />
+							</p:panel>
+
+							<p:panel style="border:0px !important;"
+								rendered="#{contaViewController.isContaCartao}">
+								<p:outputLabel
+									value="#{msg['crud.conta.cartaoContaPagamentoFatura']}"
+									for="cartaoContaPagamentoFatura" />
+								<p:selectOneMenu id="cartaoContaPagamentoFatura"
+									value="#{contaViewController.objeto.contaPagamentoFatura}"
+									converter="jpaEntityConverter" style="vertical-align:middle;">
+									<f:selectItem itemValue="" itemLabel="Selecione..." />
+									<f:selectItems value="#{contaViewController.contasCorrentes}" />
+								</p:selectOneMenu>
+							</p:panel>
+
+							<p:panel style="border:0px !important;"
+								rendered="#{contaViewController.isContaCartao}">
+								<p:outputLabel value="#{msg['crud.conta.cartaoDiaFechamento']}"
+									for="cartaoDiaFechamento" />
+								<p:spinner id="cartaoDiaFechamento"
+									value="#{contaViewController.objeto.cartaoDiaFechamento}"
+									label="#{msg['crud.conta.cartaoDiaFechamento']}" max="30"
+									min="1" />
+							</p:panel>
+
+							<p:panel style="border:0px !important;"
+								rendered="#{contaViewController.isContaCartao}">
+								<p:outputLabel value="#{msg['crud.conta.cartaoDiaPagamento']}"
+									for="cartaoDiaPagamento" />
+								<p:spinner id="cartaoDiaPagamento"
+									value="#{contaViewController.objeto.cartaoDiaPagamento}"
+									label="#{msg['crud.conta.cartaoDiaPagamento']}" max="30"
+									min="1" />
+							</p:panel>
+
+						</p:panel>
+
+						<p:panel id="panel" header="#{msg['crud.conta.faturas.saldos_iniciais']}"
+							rendered="#{contaViewController.isContaCartao}">
+							<p:dataGrid id="dataTable" columns="3" layout="grid"
+								value="#{contaViewController.faturasPreview.entrySet()}"
+								var="fatura" style="border:0px !important; background:none;"
+								rows="12" paginator="true" paginatorPosition="top"
+								paginatorTemplate="{PreviousPageLink} {NextPageLink}">
+
+								<p:panel style="text-align:center">
+									<f:facet name="header">
+										<h:outputFormat value="{0, date, MM/YYYY}">
+											<f:param value="#{fatura.key}" />
+										</h:outputFormat>
+									</f:facet>
+
+									<p:inputNumber id="faturaValor"
+										value="#{contaViewController.faturasPreview[fatura.key]}"
+										label="#{msg['crud.conta.fatura.valor']}"
+										maxValue="9999999.99" decimalPlaces="2" required="false" />
+								</p:panel>
+
+							</p:dataGrid>
+						</p:panel>
+
+					</p:panelGrid>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</ui:composition>

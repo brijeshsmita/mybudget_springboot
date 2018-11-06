@@ -1,0 +1,136 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:cruds="http://java.sun.com/jsf/composite/cruds">
+
+
+	<p:panel id="pnlExtrato"
+		style="border:0px !important; background:none;">
+
+		<p:panelGrid styleClass="ui-panelgrid-blank" columns="3" layout="grid">
+			<p:panel style="border:0px !important; background:none;">
+				<p:commandLink styleClass="icon-left-bold"
+					actionListener="#{extratoCartaoViewController.showPreviousMonth}"
+					update="filtro lancamentoDataTable" />
+				<p:selectOneMenu id="filtro"
+					value="#{extratoCartaoViewController.filtroMes}"
+					converter="anoMesConverter">
+					<f:selectItems value="#{extratoCartaoViewController.filtrosMeses}" />
+					<p:ajax update="pnlExtrato"
+						listener="#{extratoCartaoViewController.carregarDadosTelaListagem()}" />
+				</p:selectOneMenu>
+				<p:commandLink styleClass="icon-right-bold"
+					actionListener="#{extratoCartaoViewController.showNextMonth}"
+					update="filtro lancamentoDataTable" />
+			</p:panel>
+			<p:selectOneMenu id="conta"
+				value="#{extratoCartaoViewController.filtroConta}"
+				converter="jpaEntityConverter" style="vertical-align:middle;">
+				<f:selectItems value="#{extratoCartaoViewController.contas}" />
+				<p:ajax update="pnlExtrato"
+					listener="#{extratoCartaoViewController.carregarDadosTelaListagem()}" />
+			</p:selectOneMenu>
+			<p:selectOneMenu id="categoria"
+				value="#{extratoCartaoViewController.filtroCategoria}"
+				converter="jpaEntityConverter" style="vertical-align:middle;">
+				<f:selectItem itemValue="" itemLabel="Todas as Categorias" />
+				<f:selectItems value="#{extratoCartaoViewController.categorias}" />
+				<p:ajax update="pnlExtrato"
+					listener="#{extratoCartaoViewController.carregarDadosTelaListagem()}" />
+			</p:selectOneMenu>
+
+		</p:panelGrid>
+
+		<p:spacer></p:spacer>
+
+		<p:scrollPanel mode="native" style="height:400px; background:none;">
+			<p:dataGrid id="lancamentoDataTable" var="obj"
+				value="#{extratoCartaoViewController.lancamentos}" columns="1"
+				style="border:0px !important; background:none"
+				emptyMessage="Você ainda não cadastrou lançamentos em cartões de crédito.">
+				<p:panelGrid columns="5" styleClass="ui-panelgrid-blank"
+					columnClasses="ui-grid-col-5, ui-grid-col-1, ui-grid-col-2, ui-grid-col-1, ui-grid-col-1"
+					layout="grid" style="align-items: center">
+					<p:column>
+						<h:outputText value="#{obj.lancamentoCartao.data}">
+							<f:convertDateTime locale="pt_BR" type="date" dateStyle="short" />
+						</h:outputText>
+						<p:spacer width="5" />
+						<h:outputText value="#{obj.conta}" styleClass="FontBold hardblue" />
+
+						<p:spacer width="5" />
+
+						<h:outputText value="Valor inicial"
+							rendered="#{obj.categoria == null and !obj.ajuste}" />
+
+						<h:outputText value="Ajuste" rendered="#{obj.ajuste}" />
+
+						<h:outputText value="#{obj.categoria}"
+							rendered="#{obj.categoria != null}" />
+
+						<p:spacer width="5" />
+
+						<h:outputText value="#{obj.comentario}" style="font-style: italic"
+							rendered="#{obj.comentario != null}" />
+					</p:column>
+					<p:column>
+						<h:outputText value="#{obj.lancamentoCartao.valor}"
+							rendered="#{obj.inOut eq 'E'}" styleClass="softgray">
+							<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+						</h:outputText>
+						<h:outputText value="#{obj.lancamentoCartao.valor * (-1)}"
+							rendered="#{obj.inOut eq 'S'}" styleClass="softred">
+							<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+						</h:outputText>
+					</p:column>
+					<p:column>
+						<h:outputText value="#{obj.valor}" rendered="#{obj.inOut eq 'E'}"
+							styleClass="softgray">
+							<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+						</h:outputText>
+						<h:outputText value="#{obj.valor * (-1)}"
+							rendered="#{obj.inOut eq 'S'}" styleClass="softred">
+							<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+						</h:outputText>
+						<h:outputText
+							value=" (#{obj.indiceParcela} de #{obj.qtdParcelas})"
+							styleClass="#{(obj.inOut eq 'E') ? 'softgray' : 'softred'}" />
+					</p:column>
+					<p:column>
+						<h:outputText value="#{obj.saldo}" styleClass="FontBold gray"
+							rendered="#{obj.saldo ge 0}">
+							<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+						</h:outputText>
+						<h:outputText value="#{obj.saldo}" styleClass="FontBold red"
+							rendered="#{obj.saldo lt 0}">
+							<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+						</h:outputText>
+					</p:column>
+
+					<p:column>
+						<p:menuButton>
+							<p:menuitem value="Excluir"
+								actionListener="#{extratoCartaoViewController.excluir(obj)}"
+								update=":outputPanelGrid" process="@this">
+								<p:confirm header="#{msg['crud.grid.botao.excluir']}"
+									message="#{msg['crud.excluir.confirma']}" icon="ui-icon-alert" />
+							</p:menuitem>
+							<p:menuitem value="Excluir Série"
+								actionListener="#{extratoCartaoViewController.excluirSerie(obj)}"
+								update=":outputPanelGrid" process="@this"
+								rendered="#{obj.serie ne null}">
+								<p:confirm header="#{msg['crud.grid.botao.excluir']}"
+									message="#{msg['crud.lancamento.excluir.serie.confirma']}"
+									icon="ui-icon-alert" />
+							</p:menuitem>
+						</p:menuButton>
+					</p:column>
+				</p:panelGrid>
+				<p:separator style="padding: 0px" />
+			</p:dataGrid>
+		</p:scrollPanel>
+	</p:panel>
+
+</ui:composition>

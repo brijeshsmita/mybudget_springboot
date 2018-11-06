@@ -1,0 +1,28 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+	<include file="meussaldos/1.0/001-usuario.xml" />
+	<include file="meussaldos/1.0/002-usuario-data.xml" />
+	<include file="meussaldos/1.0/003-categoria.xml" />
+	<include file="meussaldos/1.0/004-conta.xml" />
+	<include file="meussaldos/1.0/005-conta_saldo.xml" />
+	<include file="meussaldos/1.0/006-lancamento_serie.xml" />
+	<include file="meussaldos/1.0/007-lancamento.xml" />
+	<include file="meussaldos/1.0/008-orcamento.xml" />
+	<include file="meussaldos/1.0/009-orcado_real.xml" />
+	<include file="meussaldos/1.0/010-saldo_orcado_acumulado.xml" />
+	<include file="meussaldos/1.0/SAL-110.xml" />
+	<include file="meussaldos/1.0/SAL-105/master.xml" />
+	<include file="meussaldos/1.0/SAL-22.xml" />
+	<include file="meussaldos/1.0/SAL-26.xml" />
+	<include file="meussaldos/1.0/SAL-155.xml" />
+	<include file="meussaldos/1.0/SAL-127.xml" />
+	<include file="meussaldos/1.0/SAL-63.xml" />
+	<include file="meussaldos/1.0/SAL-131.xml" />
+	<include file="meussaldos/1.0/SAL-225.xml" />
+	<include file="meussaldos/1.0/SAL-227.xml" />
+	<include file="meussaldos/1.0/SAL-178.xml" />
+	<include file="meussaldos/1.0/SAL-273.xml" />
+	<include file="meussaldos/1.0/SAL-287.xml" />
+
+</databaseChangeLog>

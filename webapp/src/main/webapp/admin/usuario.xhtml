@@ -1,0 +1,21 @@
+<ui:composition template="/WEB-INF/templates/template.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:cruds="http://java.sun.com/jsf/composite/cruds">
+
+    <ui:define name="content">
+        <p:panel id="outputPanelGrid" style="border: none">
+            <p:outputPanel
+                rendered="#{usuarioViewController.telaGrid}">
+                <ui:include src="usuario/listagem.xhtml" />
+            </p:outputPanel>
+
+        </p:panel>
+
+    </ui:define>
+    <ui:define name="footer">
+    </ui:define>
+</ui:composition>

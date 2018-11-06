@@ -1,0 +1,30 @@
+<ui:composition template="/WEB-INF/templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:cruds="http://java.sun.com/jsf/composite/cruds">
+
+	<ui:define name="content">
+		<div class="Container100 PosFixed FontTitilliumSemiBold ShadowGray"
+			id="topbar">
+			<div class="Wid90 OvHidden MarAuto">
+				<a id="menu-button"><i class="fa icon-chart"></i></a>
+			</div>
+		</div>
+		<div class="EmptyBox60"></div>
+
+
+		<p:panel id="outputPanelGrid" style="border: none">
+			<p:outputPanel>
+				<h:form>
+					<ui:include src="meu_futuro/grafico_linhas.xhtml" />
+				</h:form>
+			</p:outputPanel>
+		</p:panel>
+
+	</ui:define>
+	<ui:define name="footer">
+	</ui:define>
+</ui:composition>

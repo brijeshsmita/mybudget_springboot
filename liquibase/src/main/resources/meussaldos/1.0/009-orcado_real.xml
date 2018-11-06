@@ -1,0 +1,50 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+	<changeSet author="victorfranca" id="1">
+		<createView viewName="vw_orcado_real_mes">SELECT
+    orc.mes,
+    saldorealizado.catinout AS in_out,
+    sum(orc.valor) AS orcado,
+    sum(saldorealizado.realizado) AS realizado
+   FROM orcamento orc,
+    ( SELECT cat_1.id AS catid,
+            orc_1.mes,
+            cat_1.in_out AS catinout,
+            sum(lanc.valor) AS realizado
+           FROM categoria cat_1,
+            orcamento orc_1
+             LEFT JOIN lancamento lanc ON orc_1.categoria_id = lanc.categoria_id AND orc_1.mes = lanc.mes
+          WHERE orc_1.categoria_id = cat_1.id
+          and orc_1.valor > 0
+          GROUP BY cat_1.id, cat_1.in_out, orc_1.mes
+          ORDER BY cat_1.in_out, orc_1.mes, (sum(orc_1.valor)) DESC) saldorealizado
+  WHERE orc.mes = saldorealizado.mes AND orc.categoria_id = saldorealizado.catid
+  GROUP BY saldorealizado.catid, orc.mes, saldorealizado.catinout</createView>
+	</changeSet>
+
+	<changeSet author="victorfranca" id="2">
+		<createView viewName="vw_orcado_real_categoria_mes">SELECT saldorealizado.catid AS categoria_id,
+    orc.mes,
+    saldorealizado.catinout AS in_out,
+    sum(orc.valor) AS orcado,
+    sum(saldorealizado.realizado) AS realizado
+   FROM orcamento orc,
+    categoria cat,
+    ( SELECT orc_1.mes,
+            cat_1.id AS catid,
+            cat_1.in_out AS catinout,
+            sum(lanc.valor) AS realizado
+           FROM categoria cat_1,
+            orcamento orc_1
+             LEFT JOIN lancamento lanc ON orc_1.categoria_id = lanc.categoria_id AND orc_1.mes = lanc.mes
+          WHERE orc_1.categoria_id = cat_1.id
+          and orc_1.valor > 0
+          GROUP BY cat_1.id, cat_1.in_out, orc_1.mes
+          ORDER BY cat_1.in_out, orc_1.mes, (sum(orc_1.valor)) DESC) saldorealizado
+  WHERE orc.mes = saldorealizado.mes AND cat.id = orc.categoria_id AND saldorealizado.catinout = cat.in_out
+  GROUP BY saldorealizado.catid, orc.mes, saldorealizado.catinout</createView>
+	</changeSet>
+</databaseChangeLog>

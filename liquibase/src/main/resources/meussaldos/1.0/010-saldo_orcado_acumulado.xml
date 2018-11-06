@@ -1,0 +1,23 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+	<changeSet author="victorfranca" id="1">
+		<createView viewName="vw_saldo_orcado_acumulado_mes">
+            select
+                mes, in_out,
+                sum(orcado) over (order by mes, in_out asc rows between unbounded preceding and current row) as orcado,
+                sum(realizado) over (order by mes, in_out asc rows between unbounded preceding and current row) as realizado
+            from vw_orcado_real_mes
+            where in_out = '1'
+            union all
+            select
+                mes, in_out,
+                sum(orcado) over (order by mes, in_out asc rows between unbounded preceding and current row) as orcado,
+                sum(realizado) over (order by mes, in_out asc rows between unbounded preceding and current row) as realizado
+            from vw_orcado_real_mes
+            where in_out = '0'
+        </createView>
+	</changeSet>
+</databaseChangeLog>
