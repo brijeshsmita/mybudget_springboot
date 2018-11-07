@@ -2,7 +2,6 @@ package br.com.victorpfranca.mybudget.primefaces.renderkit;
 
 import java.io.IOException;
 
-import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -10,7 +9,6 @@ import javax.inject.Inject;
 
 import org.apache.shiro.SecurityUtils;
 
-import br.com.victorpfranca.mybudget.accesscontroll.CredentialsStore;
 import br.com.victorpfranca.mybudget.infra.App;
 
 public class HeadRenderer extends org.primefaces.renderkit.HeadRenderer {

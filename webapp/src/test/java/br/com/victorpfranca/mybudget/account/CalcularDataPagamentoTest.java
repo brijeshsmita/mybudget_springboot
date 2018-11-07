@@ -9,8 +9,6 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import br.com.victorpfranca.mybudget.account.CreditCardAccount;
-
 public class CalcularDataPagamentoTest {
 
 	private LocalDate LOCALDATE_2000_01_01 = LocalDate.of(2000, 1, 1);

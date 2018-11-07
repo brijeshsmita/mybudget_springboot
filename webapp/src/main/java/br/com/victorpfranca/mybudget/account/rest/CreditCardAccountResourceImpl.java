@@ -15,35 +15,34 @@ import br.com.victorpfranca.mybudget.account.Account;
 import br.com.victorpfranca.mybudget.account.AccountType;
 import br.com.victorpfranca.mybudget.account.BankAccount;
 import br.com.victorpfranca.mybudget.account.CreditCardAccount;
+import br.com.victorpfranca.mybudget.account.CreditCardAccountDTO;
+import br.com.victorpfranca.mybudget.account.CreditCardAccountResource;
 import br.com.victorpfranca.mybudget.account.rules.BankAccountService;
 import br.com.victorpfranca.mybudget.account.rules.CantRemoveException;
 import br.com.victorpfranca.mybudget.account.rules.SameNameException;
-import br.com.victorpfranca.mybudget.conta.ContaCartaoDTO;
-import br.com.victorpfranca.mybudget.conta.ContaCartaoResource;
-import br.com.victorpfranca.mybudget.conta.ContaDTO;
 import br.com.victorpfranca.mybudget.transaction.Transaction;
-import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.transaction.rules.RemocaoNaoPermitidaException;
-import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.transaction.rules.AccountTypeException;
+import br.com.victorpfranca.mybudget.transaction.rules.DeletionNotPermittedException;
+import br.com.victorpfranca.mybudget.transaction.rules.IncompatibleCategoriesException;
+import br.com.victorpfranca.mybudget.transaction.rules.InvalidTransactionValueException;
+import br.com.victorpfranca.mybudget.transaction.rules.NullableAccountException;
+import br.com.victorpfranca.mybudget.transaction.rules.TransactionMonthUpdatedException;
 
 @Path("cartoes")
-public class CreditCardAccountResourceImpl implements ContaCartaoResource {
+public class CreditCardAccountResourceImpl implements CreditCardAccountResource {
 
 	@Inject
 	private BankAccountService bankAccountService;
 
 	@Override
-	public List<ContaCartaoDTO> findAll() {
+	public List<CreditCardAccountDTO> findAll() {
 		List<Account> accounts = bankAccountService.findContasCartoes();
 
 		return accounts.parallelStream().map(this::converterDTO).sequential()
-				.sorted(Comparator.comparing(ContaDTO::getNome)).collect(Collectors.toList());
+				.sorted(Comparator.comparing(CreditCardAccountDTO::getNome)).collect(Collectors.toList());
 	}
 
-	public void save(ContaCartaoDTO contaDTO) {
+	public void save(CreditCardAccountDTO contaDTO) {
 		CreditCardAccount conta = new CreditCardAccount();
 
 		conta.setId(contaDTO.getId());
@@ -65,8 +64,8 @@ public class CreditCardAccountResourceImpl implements ContaCartaoResource {
 
 		try {
 			bankAccountService.saveContaCartao(conta, new ArrayList<Transaction>());
-		} catch (SameNameException | ContaNotNullException | MesLancamentoAlteradoException
-				| TipoContaException | CategoriasIncompativeisException | ValorLancamentoInvalidoException e) {
+		} catch (SameNameException | NullableAccountException | TransactionMonthUpdatedException | AccountTypeException
+				| IncompatibleCategoriesException | InvalidTransactionValueException e) {
 			e.printStackTrace();
 		}
 	}
@@ -77,15 +76,15 @@ public class CreditCardAccountResourceImpl implements ContaCartaoResource {
 
 		try {
 			bankAccountService.remove(conta);
-		} catch (RemocaoNaoPermitidaException | CantRemoveException e) {
+		} catch (DeletionNotPermittedException | CantRemoveException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
 
-	private ContaCartaoDTO converterDTO(Account account) {
-		ContaCartaoDTO contaDTO = new ContaCartaoDTO();
+	private CreditCardAccountDTO converterDTO(Account account) {
+		CreditCardAccountDTO contaDTO = new CreditCardAccountDTO();
 		contaDTO.setNome(account.getNome());
 		contaDTO.setId(account.getId());
 		contaDTO.setContaPagamentoId(((CreditCardAccount) account).getAccountPagamentoFatura().getId());

@@ -10,8 +10,8 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 import br.com.victorpfranca.mybudget.InOut;
-import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
+import br.com.victorpfranca.mybudget.transaction.rules.AccountTypeException;
+import br.com.victorpfranca.mybudget.transaction.rules.NullableAccountException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -65,7 +65,7 @@ public class CreditCardTransaction extends Transaction {
 	}
 
 	@Override
-	protected void validarConta() throws ContaNotNullException, TipoContaException {
+	protected void validarConta() throws NullableAccountException, AccountTypeException {
 		super.validarConta();
 		if (!isAjuste() && InOut.E.equals(getInOut())) {
 			throw new InvalidTransactionTypeException("crud.lancamento.cartao.error.tipo");

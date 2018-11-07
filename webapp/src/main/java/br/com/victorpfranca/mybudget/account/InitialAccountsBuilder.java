@@ -15,11 +15,11 @@ import org.apache.commons.lang3.ObjectUtils;
 
 import br.com.victorpfranca.mybudget.account.rules.BankAccountService;
 import br.com.victorpfranca.mybudget.account.rules.SameNameException;
-import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.transaction.rules.AccountTypeException;
+import br.com.victorpfranca.mybudget.transaction.rules.IncompatibleCategoriesException;
+import br.com.victorpfranca.mybudget.transaction.rules.InvalidTransactionValueException;
+import br.com.victorpfranca.mybudget.transaction.rules.NullableAccountException;
+import br.com.victorpfranca.mybudget.transaction.rules.TransactionMonthUpdatedException;
 
 @Stateless
 public class InitialAccountsBuilder {
@@ -28,8 +28,8 @@ public class InitialAccountsBuilder {
 	private BankAccountService bankAccountService;
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void execute() throws SameNameException, ContaNotNullException, MesLancamentoAlteradoException,
-			TipoContaException, CategoriasIncompativeisException, ValorLancamentoInvalidoException {
+	public void execute() throws SameNameException, NullableAccountException, TransactionMonthUpdatedException,
+			AccountTypeException, IncompatibleCategoriesException, InvalidTransactionValueException {
 
 		List<Account> contasBanco = getAccounts("contas_iniciais_bancos", new ConstrutorContaBanco());
 		List<Account> contasDinheiro = getAccounts("contas_iniciais_dinheiro", new ConstrutorContaDinheiro());

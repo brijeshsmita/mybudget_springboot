@@ -8,12 +8,12 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import br.com.victorpfranca.mybudget.account.CheckingAccount;
-import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.transaction.rules.CriadorLancamentoContaCorrente;
-import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.transaction.rules.AccountTypeException;
+import br.com.victorpfranca.mybudget.transaction.rules.CheckingAccountTransactionBuilder;
+import br.com.victorpfranca.mybudget.transaction.rules.IncompatibleCategoriesException;
+import br.com.victorpfranca.mybudget.transaction.rules.InvalidTransactionValueException;
+import br.com.victorpfranca.mybudget.transaction.rules.NullableAccountException;
+import br.com.victorpfranca.mybudget.transaction.rules.TransactionMonthUpdatedException;
 
 @Stateless
 public class CheckingAccountBuilder {
@@ -25,15 +25,15 @@ public class CheckingAccountBuilder {
 	private CheckingAccountInitialBalanceRemover checkingAccountInitialBalanceRemover;
 
 	@EJB
-	private CriadorLancamentoContaCorrente criadorLancamentoContaCorrente;
+	private CheckingAccountTransactionBuilder checkingAccountTransactionBuilder;
 
 	@Inject
 	private EntityManager em;
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public CheckingAccount save(CheckingAccount conta)
-			throws SameNameException, MesLancamentoAlteradoException, ContaNotNullException,
-			TipoContaException, CategoriasIncompativeisException, ValorLancamentoInvalidoException {
+			throws SameNameException, TransactionMonthUpdatedException, NullableAccountException,
+			AccountTypeException, IncompatibleCategoriesException, InvalidTransactionValueException {
 
 		accountDataValidator.validar(conta);
 
@@ -41,7 +41,7 @@ public class CheckingAccountBuilder {
 		
 		checkingAccountInitialBalanceRemover.execute(conta);
 		
-		criadorLancamentoContaCorrente.save(conta, conta.buildLancamentoSaldoInicial());
+		checkingAccountTransactionBuilder.save(conta, conta.buildLancamentoSaldoInicial());
 
 		return conta;
 	}

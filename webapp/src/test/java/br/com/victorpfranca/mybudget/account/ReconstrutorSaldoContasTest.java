@@ -22,9 +22,6 @@ import org.junit.runners.Parameterized.Parameters;
 
 import br.com.victorpfranca.mybudget.InOut;
 import br.com.victorpfranca.mybudget.LocalDateConverter;
-import br.com.victorpfranca.mybudget.account.AccountBalance;
-import br.com.victorpfranca.mybudget.account.BankAccount;
-import br.com.victorpfranca.mybudget.account.CheckingAccount;
 import br.com.victorpfranca.mybudget.account.rules.AccountBalanceFixer;
 import br.com.victorpfranca.mybudget.transaction.CheckingAccountTransaction;
 import br.com.victorpfranca.mybudget.view.MonthYear;

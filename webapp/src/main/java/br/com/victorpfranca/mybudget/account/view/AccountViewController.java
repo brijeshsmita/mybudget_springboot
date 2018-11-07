@@ -25,19 +25,19 @@ import br.com.victorpfranca.mybudget.account.MoneyAccount;
 import br.com.victorpfranca.mybudget.account.rules.BankAccountService;
 import br.com.victorpfranca.mybudget.account.rules.CantRemoveException;
 import br.com.victorpfranca.mybudget.account.rules.SameNameException;
-import br.com.victorpfranca.mybudget.periodo.PeriodoPlanejamento;
+import br.com.victorpfranca.mybudget.period.PlanningPeriod;
 import br.com.victorpfranca.mybudget.transaction.CreditCardTransaction;
 import br.com.victorpfranca.mybudget.transaction.Transaction;
 import br.com.victorpfranca.mybudget.transaction.TransactionStatus;
-import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.transaction.rules.RemocaoNaoPermitidaException;
-import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
-import br.com.victorpfranca.mybudget.view.MonthYear;
+import br.com.victorpfranca.mybudget.transaction.rules.AccountTypeException;
+import br.com.victorpfranca.mybudget.transaction.rules.DeletionNotPermittedException;
+import br.com.victorpfranca.mybudget.transaction.rules.IncompatibleCategoriesException;
+import br.com.victorpfranca.mybudget.transaction.rules.InvalidTransactionValueException;
+import br.com.victorpfranca.mybudget.transaction.rules.NullableAccountException;
+import br.com.victorpfranca.mybudget.transaction.rules.TransactionMonthUpdatedException;
 import br.com.victorpfranca.mybudget.view.FacesMessages;
 import br.com.victorpfranca.mybudget.view.Messages;
+import br.com.victorpfranca.mybudget.view.MonthYear;
 
 @Named
 @ViewScoped
@@ -49,7 +49,7 @@ public class AccountViewController implements Serializable {
 	private BankAccountService bankAccountService;
 
 	@Inject
-	private PeriodoPlanejamento periodoPlanejamento;
+	private PlanningPeriod planningPeriod;
 
 	private int selectedTab;
 	private Account objeto;
@@ -121,8 +121,8 @@ public class AccountViewController implements Serializable {
 	private Map<Date, BigDecimal> carregarFaturasPreview() {
 		Map<Date, BigDecimal> faturasParaView = new LinkedHashMap<Date, BigDecimal>();
 
-		MonthYear anoMesInicio = periodoPlanejamento.getMesInicio();
-		MonthYear anoMesFinal = periodoPlanejamento.getMesFinal();
+		MonthYear anoMesInicio = planningPeriod.getMesInicio();
+		MonthYear anoMesFinal = planningPeriod.getMesFinal();
 
 		while (anoMesInicio.compareTo(anoMesFinal) <= 0) {
 			LocalDate localDate = LocalDate.of(anoMesInicio.getAno(), anoMesInicio.getMes(), 1);
@@ -158,14 +158,14 @@ public class AccountViewController implements Serializable {
 	public void excluir(Account account) {
 		try {
 			bankAccountService.remove(account);
-		} catch (RemocaoNaoPermitidaException e) {
+		} catch (DeletionNotPermittedException e) {
 			FacesMessages.fatal(Messages.msg(e.getMessage()));
 		} catch (CantRemoveException e) {
 			FacesMessages.fatal(Messages.msg(e.getMessage(), e.getAccountCartao()));
 		}
 	}
 
-	public void salvar() throws ContaNotNullException {
+	public void salvar() throws NullableAccountException {
 
 		Account account = getObjeto();
 
@@ -176,8 +176,8 @@ public class AccountViewController implements Serializable {
 			} else {
 				setObjeto(bankAccountService.saveContaCorrente(account));
 			}
-		} catch (SameNameException | MesLancamentoAlteradoException | TipoContaException
-				| CategoriasIncompativeisException | ValorLancamentoInvalidoException e) {
+		} catch (SameNameException | TransactionMonthUpdatedException | AccountTypeException
+				| IncompatibleCategoriesException | InvalidTransactionValueException e) {
 			FacesMessages.fatal(Messages.msg(e.getMessage()));
 			return;
 		}
@@ -185,7 +185,7 @@ public class AccountViewController implements Serializable {
 		voltar();
 	}
 
-	private List<Transaction> criarLancamentosCartao(CreditCardAccount conta) throws ContaNotNullException {
+	private List<Transaction> criarLancamentosCartao(CreditCardAccount conta) throws NullableAccountException {
 		List<Transaction> lancamentosCartao = new ArrayList<Transaction>();
 		for (Iterator<Date> iterator = faturasPreview.keySet().iterator(); iterator.hasNext();) {
 			Date faturaDate = (Date) iterator.next();

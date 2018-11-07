@@ -5,7 +5,7 @@ import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.interceptor.Interceptors;
 
-import br.com.victorpfranca.mybudget.infra.OrquestradorTimers;
+import br.com.victorpfranca.mybudget.infra.TimersOrchestror;
 
 @Singleton
 public class PasswordRecoveryRemover {
@@ -14,7 +14,7 @@ public class PasswordRecoveryRemover {
 	private PasswordRecoveryService passwordRecoveryService;
 
 	@Schedule(minute = "*/1", hour = "*", persistent = false)
-	@Interceptors({ OrquestradorTimers.class })
+	@Interceptors({ TimersOrchestror.class })
 	public void remocaoPeriodicaDeRecuperacaoSenha() {
 		passwordRecoveryService.inativarCodigosExpirados();
 	}

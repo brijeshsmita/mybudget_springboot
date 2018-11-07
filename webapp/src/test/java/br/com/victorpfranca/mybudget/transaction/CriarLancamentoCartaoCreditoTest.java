@@ -26,17 +26,11 @@ import br.com.victorpfranca.mybudget.account.AccountBalance;
 import br.com.victorpfranca.mybudget.account.BankAccount;
 import br.com.victorpfranca.mybudget.account.CreditCardAccount;
 import br.com.victorpfranca.mybudget.category.Category;
-import br.com.victorpfranca.mybudget.transaction.CheckingAccountTransaction;
-import br.com.victorpfranca.mybudget.transaction.CreditCardInvoiceTransactionItem;
-import br.com.victorpfranca.mybudget.transaction.CreditCardTransaction;
-import br.com.victorpfranca.mybudget.transaction.Transaction;
-import br.com.victorpfranca.mybudget.transaction.TransactionBuilder;
-import br.com.victorpfranca.mybudget.transaction.TransactionStatus;
-import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.transaction.rules.AccountTypeException;
+import br.com.victorpfranca.mybudget.transaction.rules.IncompatibleCategoriesException;
+import br.com.victorpfranca.mybudget.transaction.rules.InvalidTransactionValueException;
+import br.com.victorpfranca.mybudget.transaction.rules.NullableAccountException;
+import br.com.victorpfranca.mybudget.transaction.rules.TransactionMonthUpdatedException;
 
 @RunWith(Parameterized.class)
 public class CriarLancamentoCartaoCreditoTest {
@@ -141,8 +135,8 @@ public class CriarLancamentoCartaoCreditoTest {
 		Transaction transaction = newLancamento();
 		try {
 			transaction = lancamentoRulesFacade.saveLancamentoCartaoDeCredito(transaction);
-		} catch (MesLancamentoAlteradoException | ContaNotNullException | TipoContaException
-				| CategoriasIncompativeisException | ValorLancamentoInvalidoException e) {
+		} catch (TransactionMonthUpdatedException | NullableAccountException | AccountTypeException
+				| IncompatibleCategoriesException | InvalidTransactionValueException e) {
 			fail();
 		}
 

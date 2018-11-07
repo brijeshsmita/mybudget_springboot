@@ -21,13 +21,11 @@ import br.com.victorpfranca.mybudget.account.Account;
 import br.com.victorpfranca.mybudget.account.BankAccount;
 import br.com.victorpfranca.mybudget.account.CreditCardAccount;
 import br.com.victorpfranca.mybudget.category.Category;
-import br.com.victorpfranca.mybudget.transaction.CheckingAccountTransaction;
-import br.com.victorpfranca.mybudget.transaction.Transaction;
-import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.transaction.rules.AccountTypeException;
+import br.com.victorpfranca.mybudget.transaction.rules.IncompatibleCategoriesException;
+import br.com.victorpfranca.mybudget.transaction.rules.InvalidTransactionValueException;
+import br.com.victorpfranca.mybudget.transaction.rules.NullableAccountException;
+import br.com.victorpfranca.mybudget.transaction.rules.TransactionMonthUpdatedException;
 
 @RunWith(Parameterized.class)
 
@@ -111,8 +109,8 @@ public class ValidarLancamentoTest {
 			if (failExpected) {
 				fail();
 			}
-		} catch (CategoriasIncompativeisException | MesLancamentoAlteradoException | ContaNotNullException
-				| TipoContaException | ValorLancamentoInvalidoException e) {
+		} catch (IncompatibleCategoriesException | TransactionMonthUpdatedException | NullableAccountException
+				| AccountTypeException | InvalidTransactionValueException e) {
 			if (!failExpected) {
 				fail();
 			}

@@ -24,15 +24,11 @@ import br.com.victorpfranca.mybudget.LocalDateConverter;
 import br.com.victorpfranca.mybudget.accesscontroll.User;
 import br.com.victorpfranca.mybudget.account.Account;
 import br.com.victorpfranca.mybudget.account.AccountBalance;
-import br.com.victorpfranca.mybudget.transaction.CheckingAccountTransaction;
-import br.com.victorpfranca.mybudget.transaction.Transaction;
-import br.com.victorpfranca.mybudget.transaction.TransactionBuilder;
-import br.com.victorpfranca.mybudget.transaction.TransactionStatus;
-import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.transaction.rules.AccountTypeException;
+import br.com.victorpfranca.mybudget.transaction.rules.IncompatibleCategoriesException;
+import br.com.victorpfranca.mybudget.transaction.rules.InvalidTransactionValueException;
+import br.com.victorpfranca.mybudget.transaction.rules.NullableAccountException;
+import br.com.victorpfranca.mybudget.transaction.rules.TransactionMonthUpdatedException;
 
 @RunWith(Parameterized.class)
 public class CriarLancamentoTransferenciaTest {
@@ -88,8 +84,8 @@ public class CriarLancamentoTransferenciaTest {
 
 		try {
 			lancamentoRulesFacade.saveLancamentoTransferencia(lancamentoOrigem);
-		} catch (MesLancamentoAlteradoException | ContaNotNullException | TipoContaException
-				| CategoriasIncompativeisException | ValorLancamentoInvalidoException e) {
+		} catch (TransactionMonthUpdatedException | NullableAccountException | AccountTypeException
+				| IncompatibleCategoriesException | InvalidTransactionValueException e) {
 			fail();
 		}
 

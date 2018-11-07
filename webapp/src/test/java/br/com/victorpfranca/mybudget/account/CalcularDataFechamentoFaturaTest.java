@@ -1,14 +1,13 @@
 package br.com.victorpfranca.mybudget.account;
 
+import static br.com.victorpfranca.mybudget.LocalDateConverter.fromDate;
+import static br.com.victorpfranca.mybudget.LocalDateConverter.toDate;
+import static org.junit.Assert.assertEquals;
+
 import java.time.LocalDate;
 import java.util.Date;
 
 import org.junit.Test;
-
-import br.com.victorpfranca.mybudget.account.CreditCardAccount;
-
-import static br.com.victorpfranca.mybudget.LocalDateConverter.*;
-import static org.junit.Assert.*;
 
 public class CalcularDataFechamentoFaturaTest {
 

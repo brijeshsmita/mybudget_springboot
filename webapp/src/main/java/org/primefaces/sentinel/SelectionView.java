@@ -16,10 +16,12 @@
 package org.primefaces.sentinel;
 
 import java.io.Serializable;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.primefaces.model.TreeNode;
 
 @ManagedBean(name="treeSelectionView")

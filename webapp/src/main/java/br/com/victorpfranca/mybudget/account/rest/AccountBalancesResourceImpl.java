@@ -3,25 +3,25 @@ package br.com.victorpfranca.mybudget.account.rest;
 import javax.inject.Inject;
 import javax.ws.rs.Path;
 
-import br.com.victorpfranca.mybudget.conta.SaldoResource;
-import br.com.victorpfranca.mybudget.conta.SaldosResource;
-import br.com.victorpfranca.mybudget.lancamento.MeuFuturoResource;
-import br.com.victorpfranca.mybudget.transaction.rest.LancamentosMensaisResourceImpl;
+import br.com.victorpfranca.mybudget.account.BalanceResource;
+import br.com.victorpfranca.mybudget.account.BalancesResource;
+import br.com.victorpfranca.mybudget.transaction.MyFutureResource;
+import br.com.victorpfranca.mybudget.transaction.rest.MonthlyTransactionsResourceImpl;
 
 @Path("saldos")
-public class AccountBalancesResourceImpl implements SaldosResource {
+public class AccountBalancesResourceImpl implements BalancesResource {
 	@Inject
 	private AccountBalanceResourceImpl accountBalanceResourceImpl;
 	@Inject
-	private LancamentosMensaisResourceImpl lancamentosMensaisResource;
+	private MonthlyTransactionsResourceImpl lancamentosMensaisResource;
 
 	@Override
-	public MeuFuturoResource meuFuturo() {
+	public MyFutureResource meuFuturo() {
 		return lancamentosMensaisResource;
 	}
 
 	@Override
-	public SaldoResource saldoResource(Integer ano, Integer mes) {
+	public BalanceResource balanceResource(Integer ano, Integer mes) {
 		return accountBalanceResourceImpl.ano(ano).mes(mes);
 	}
 

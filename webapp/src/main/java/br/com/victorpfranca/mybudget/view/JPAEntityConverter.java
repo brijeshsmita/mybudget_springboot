@@ -16,7 +16,6 @@ import javax.persistence.EntityManager;
 import org.apache.logging.log4j.Logger;
 
 import br.com.victorpfranca.mybudget.infra.log.LogProvider;
-import br.com.victorpfranca.mybudget.view.Messages;
 
 @FacesConverter("jpaEntityConverter")
 public class JPAEntityConverter implements Converter {

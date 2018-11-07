@@ -13,7 +13,6 @@ import java.util.TreeSet;
 import org.junit.Test;
 
 import br.com.victorpfranca.mybudget.account.AccountBalance;
-import br.com.victorpfranca.mybudget.transaction.extractors.saldofuturo.AgrupadorSaldosMeses;
 import br.com.victorpfranca.mybudget.view.MonthYear;
 
 public class AgrupadorSaldosMesesTest {
@@ -21,30 +20,30 @@ public class AgrupadorSaldosMesesTest {
     @Test
     public void validaMesesVazios_12Meses() {
         Set<AccountBalance> conjuntoMeses = new TreeSet<>(Comparator.comparing(s->new MonthYear(s.getAno(), s.getMes())));
-        conjuntoMeses.addAll(new AgrupadorSaldosMeses().listaSaldosPorMesComValorZero(18, 1, 18, 12));
+        conjuntoMeses.addAll(new MonthlyAccountBalanceGrouper().listaSaldosPorMesComValorZero(18, 1, 18, 12));
         assertTrue(conjuntoMeses.size()==12);
     }
     @Test
     public void validaMesesVazios_24Meses() {
         Set<AccountBalance> conjuntoMeses = new TreeSet<>(Comparator.comparing(s->new MonthYear(s.getAno(), s.getMes())));
-        conjuntoMeses.addAll(new AgrupadorSaldosMeses().listaSaldosPorMesComValorZero(18, 1, 19, 12));
+        conjuntoMeses.addAll(new MonthlyAccountBalanceGrouper().listaSaldosPorMesComValorZero(18, 1, 19, 12));
         assertTrue(conjuntoMeses.size()==24);
     }
     @Test
     public void validaMesesVazios_36Meses() {
         Set<AccountBalance> conjuntoMeses = new TreeSet<>(Comparator.comparing(s->new MonthYear(s.getAno(), s.getMes())));
-        conjuntoMeses.addAll(new AgrupadorSaldosMeses().listaSaldosPorMesComValorZero(18, 1, 20, 12));
+        conjuntoMeses.addAll(new MonthlyAccountBalanceGrouper().listaSaldosPorMesComValorZero(18, 1, 20, 12));
         assertTrue(conjuntoMeses.size()==36);
     }
     @Test
     public void validaMesesVazios_inicioAnteriorFim() {
         Set<AccountBalance> conjuntoMeses = new TreeSet<>(Comparator.comparing(s->new MonthYear(s.getAno(), s.getMes())));
-        conjuntoMeses.addAll(new AgrupadorSaldosMeses().listaSaldosPorMesComValorZero(18, 1, 17, 1));
+        conjuntoMeses.addAll(new MonthlyAccountBalanceGrouper().listaSaldosPorMesComValorZero(18, 1, 17, 1));
         assertTrue(conjuntoMeses.size()==0);
     }
     @Test
     public void validaMesesVazios_confereValor() {
-        AccountBalance accountBalance = new AgrupadorSaldosMeses().listaSaldosPorMesComValorZero(18, 1, 18, 1).get(0);
+        AccountBalance accountBalance = new MonthlyAccountBalanceGrouper().listaSaldosPorMesComValorZero(18, 1, 18, 1).get(0);
         assertTrue(BigDecimal.ZERO.equals(accountBalance.getValor()));
     }
     
@@ -54,7 +53,7 @@ public class AgrupadorSaldosMesesTest {
         saldosPorContas.add(new AccountBalance(18, 3, BigDecimal.valueOf(50.0)));
         saldosPorContas.add(new AccountBalance(18, 4, BigDecimal.valueOf(50.0)));
         saldosPorContas.add(new AccountBalance(18, 5, BigDecimal.valueOf(50.0)));
-        BigDecimal saldoAcumulado = new AgrupadorSaldosMeses().saldoAcumuladoAte(18, 8, saldosPorContas);
+        BigDecimal saldoAcumulado = new MonthlyAccountBalanceGrouper().saldoAcumuladoAte(18, 8, saldosPorContas);
         assertTrue(BigDecimal.valueOf(150.0).equals(saldoAcumulado));
     }
     @Test
@@ -63,7 +62,7 @@ public class AgrupadorSaldosMesesTest {
         saldosPorContas.add(new AccountBalance(18, 3, BigDecimal.valueOf(50.0)));
         saldosPorContas.add(new AccountBalance(18, 4, BigDecimal.valueOf(50.0)));
         saldosPorContas.add(new AccountBalance(18, 5, BigDecimal.valueOf(-150.0)));
-        BigDecimal saldoAcumulado = new AgrupadorSaldosMeses().saldoAcumuladoAte(18, 8, saldosPorContas);
+        BigDecimal saldoAcumulado = new MonthlyAccountBalanceGrouper().saldoAcumuladoAte(18, 8, saldosPorContas);
         assertTrue(BigDecimal.valueOf(-50.0).equals(saldoAcumulado));
     }
     @Test
@@ -73,18 +72,18 @@ public class AgrupadorSaldosMesesTest {
         saldosPorContas.add(new AccountBalance(18, 4, BigDecimal.valueOf(50.0)));
         saldosPorContas.add(new AccountBalance(18, 5, BigDecimal.valueOf(50.0)));
         saldosPorContas.add(new AccountBalance(18, 8, BigDecimal.valueOf(50.0)));
-        BigDecimal saldoAcumulado = new AgrupadorSaldosMeses().saldoAcumuladoAte(18, 8, saldosPorContas);
+        BigDecimal saldoAcumulado = new MonthlyAccountBalanceGrouper().saldoAcumuladoAte(18, 8, saldosPorContas);
         assertTrue(BigDecimal.valueOf(200.0).equals(saldoAcumulado));
     }
     @Test
     public void saldoAcumuladoAte_semValores() {
         List<AccountBalance> saldosPorContas = new ArrayList<>();
-        BigDecimal saldoAcumulado = new AgrupadorSaldosMeses().saldoAcumuladoAte(18, 8, saldosPorContas);
+        BigDecimal saldoAcumulado = new MonthlyAccountBalanceGrouper().saldoAcumuladoAte(18, 8, saldosPorContas);
         assertTrue(BigDecimal.ZERO.equals(saldoAcumulado));
     }
     @Test
     public void saldoAcumuladoAte_saldosNulo() {
-        BigDecimal saldoAcumulado = new AgrupadorSaldosMeses().saldoAcumuladoAte(18, 8, null);
+        BigDecimal saldoAcumulado = new MonthlyAccountBalanceGrouper().saldoAcumuladoAte(18, 8, null);
         assertTrue(BigDecimal.ZERO.equals(saldoAcumulado));
     }
     
@@ -95,7 +94,7 @@ public class AgrupadorSaldosMesesTest {
         saldosPorContas.add(new AccountBalance(18, 4, BigDecimal.valueOf(50.0)));
         saldosPorContas.add(new AccountBalance(18, 5, BigDecimal.valueOf(50.0)));
         
-        List<AccountBalance> agrupados = new AgrupadorSaldosMeses().agruparSaldosPorMes(18, 8, 18, 10, saldosPorContas);
+        List<AccountBalance> agrupados = new MonthlyAccountBalanceGrouper().agruparSaldosPorMes(18, 8, 18, 10, saldosPorContas);
         assertEqualsSaldoConta(18, 8, BigDecimal.valueOf(150.0), agrupados.get(0));
         assertEqualsSaldoConta(18, 9, BigDecimal.valueOf(150.0), agrupados.get(1));
         assertEqualsSaldoConta(18, 10, BigDecimal.valueOf(150.0), agrupados.get(2));
@@ -107,7 +106,7 @@ public class AgrupadorSaldosMesesTest {
         saldosPorContas.add(new AccountBalance(18, 9, BigDecimal.valueOf(20.0)));
         saldosPorContas.add(new AccountBalance(18, 10, BigDecimal.valueOf(30.0)));
         
-        List<AccountBalance> agrupados = new AgrupadorSaldosMeses().agruparSaldosPorMes(18, 8, 18, 10, saldosPorContas);
+        List<AccountBalance> agrupados = new MonthlyAccountBalanceGrouper().agruparSaldosPorMes(18, 8, 18, 10, saldosPorContas);
         assertEqualsSaldoConta(18, 8, BigDecimal.valueOf(10.0), agrupados.get(0));
         assertEqualsSaldoConta(18, 9, BigDecimal.valueOf(30.0), agrupados.get(1));
         assertEqualsSaldoConta(18, 10, BigDecimal.valueOf(60.0), agrupados.get(2));
@@ -119,7 +118,7 @@ public class AgrupadorSaldosMesesTest {
         saldosPorContas.add(new AccountBalance(18, 12, BigDecimal.valueOf(20.0)));
         saldosPorContas.add(new AccountBalance(19, 1, BigDecimal.valueOf(30.0)));
         
-        List<AccountBalance> agrupados = new AgrupadorSaldosMeses().agruparSaldosPorMes(18, 8, 18, 10, saldosPorContas);
+        List<AccountBalance> agrupados = new MonthlyAccountBalanceGrouper().agruparSaldosPorMes(18, 8, 18, 10, saldosPorContas);
         assertEqualsSaldoConta(18, 8,  BigDecimal.ZERO, agrupados.get(0));
         assertEqualsSaldoConta(18, 9,  BigDecimal.ZERO, agrupados.get(1));
         assertEqualsSaldoConta(18, 10, BigDecimal.ZERO, agrupados.get(2));
@@ -134,7 +133,7 @@ public class AgrupadorSaldosMesesTest {
         saldosPorContas.add(new AccountBalance(18, 9, BigDecimal.valueOf(20.0)));
         saldosPorContas.add(new AccountBalance(18, 10, BigDecimal.valueOf(30.0)));
         
-        List<AccountBalance> agrupados = new AgrupadorSaldosMeses().agruparSaldosPorMes(18, 8, 18, 10, saldosPorContas);
+        List<AccountBalance> agrupados = new MonthlyAccountBalanceGrouper().agruparSaldosPorMes(18, 8, 18, 10, saldosPorContas);
         assertEqualsSaldoConta(18, 8, BigDecimal.valueOf(160.0), agrupados.get(0));
         assertEqualsSaldoConta(18, 9, BigDecimal.valueOf(180.0), agrupados.get(1));
         assertEqualsSaldoConta(18, 10, BigDecimal.valueOf(210.0), agrupados.get(2));
@@ -142,7 +141,7 @@ public class AgrupadorSaldosMesesTest {
     @Test
     public void agruparSaldosPorMes_testaSemValores() {
         List<AccountBalance> saldosPorContas = new ArrayList<>();
-        List<AccountBalance> agrupados = new AgrupadorSaldosMeses().agruparSaldosPorMes(18, 8, 18, 10, saldosPorContas);
+        List<AccountBalance> agrupados = new MonthlyAccountBalanceGrouper().agruparSaldosPorMes(18, 8, 18, 10, saldosPorContas);
         assertTrue(agrupados.stream().allMatch(s->BigDecimal.ZERO.equals(s.getValor())));
     }
     

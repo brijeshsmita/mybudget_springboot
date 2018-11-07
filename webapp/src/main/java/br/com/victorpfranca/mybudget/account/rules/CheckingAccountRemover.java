@@ -15,7 +15,7 @@ import br.com.victorpfranca.mybudget.account.AccountBalance;
 import br.com.victorpfranca.mybudget.account.CheckingAccount;
 import br.com.victorpfranca.mybudget.account.CreditCardAccount;
 import br.com.victorpfranca.mybudget.transaction.Transaction;
-import br.com.victorpfranca.mybudget.transaction.rules.RemocaoNaoPermitidaException;
+import br.com.victorpfranca.mybudget.transaction.rules.DeletionNotPermittedException;
 
 @Stateless
 public class CheckingAccountRemover {
@@ -26,7 +26,7 @@ public class CheckingAccountRemover {
 	private CredentialsStore credentialsStore;
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void remover(CheckingAccount conta) throws RemocaoNaoPermitidaException, CantRemoveException {
+	public void remover(CheckingAccount conta) throws DeletionNotPermittedException, CantRemoveException {
 
 		aprovarRemocao(conta);
 
@@ -38,7 +38,7 @@ public class CheckingAccountRemover {
 
 	}
 
-	private void aprovarRemocao(CheckingAccount conta) throws RemocaoNaoPermitidaException, CantRemoveException {
+	private void aprovarRemocao(CheckingAccount conta) throws DeletionNotPermittedException, CantRemoveException {
 		validarSemLancamentos(conta);
 
 		validarContaCorrenteDeContaCartao(conta);
@@ -64,7 +64,7 @@ public class CheckingAccountRemover {
 
 	}
 
-	private void validarSemLancamentos(Account account) throws RemocaoNaoPermitidaException {
+	private void validarSemLancamentos(Account account) throws DeletionNotPermittedException {
 		List<Transaction> lancamentosExistentes = em
 				.createNamedQuery(Transaction.FIND_LANCAMENTO_CONTA_CORRENTE_QUERY, Transaction.class)
 				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado()).setParameter("account", account)
@@ -72,7 +72,7 @@ public class CheckingAccountRemover {
 				.setParameter("mes", null).setParameter("cartaoCreditoFatura", null).setParameter("faturaCartao", null).setParameter("status", null)
 				.getResultList();
 		if (!lancamentosExistentes.isEmpty())
-			throw new RemocaoNaoPermitidaException("crud.conta.error.lancamentos_nao_podem_ser_removidos");
+			throw new DeletionNotPermittedException("crud.conta.error.lancamentos_nao_podem_ser_removidos");
 	}
 
 }

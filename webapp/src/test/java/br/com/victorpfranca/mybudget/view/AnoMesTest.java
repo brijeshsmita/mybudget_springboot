@@ -4,8 +4,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import br.com.victorpfranca.mybudget.view.MonthYear;
-
 public class AnoMesTest {
 
 	@Test

@@ -32,7 +32,7 @@ import javax.validation.constraints.NotNull;
 import br.com.victorpfranca.mybudget.LocalDateConverter;
 import br.com.victorpfranca.mybudget.accesscontroll.CredentialsStore;
 import br.com.victorpfranca.mybudget.accesscontroll.User;
-import br.com.victorpfranca.mybudget.transaction.rules.DataSerieLancamentoInvalidaException;
+import br.com.victorpfranca.mybudget.transaction.rules.InvalidTransactionSerieDateException;
 
 @Entity
 @Table(name = "lancamento_serie")
@@ -150,9 +150,9 @@ public class TransactionSerie implements Serializable {
 		}
 	}
 
-	public void validarDatas() throws DataSerieLancamentoInvalidaException {
+	public void validarDatas() throws InvalidTransactionSerieDateException {
 		if (dataInicio.compareTo(dataLimite) > 0)
-			throw new DataSerieLancamentoInvalidaException("crud.lancamento.serie.error.datas");
+			throw new InvalidTransactionSerieDateException("crud.lancamento.serie.error.datas");
 	}
 
 }

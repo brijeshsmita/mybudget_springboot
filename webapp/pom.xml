@@ -3,25 +3,25 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>br.com.meussaldos</groupId>
-		<artifactId>meussaldos-parent</artifactId>
+		<groupId>br.com.mybudget</groupId>
+		<artifactId>mybudget-parent</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>meussaldos</artifactId>
+	<artifactId>mybudget</artifactId>
 	<packaging>war</packaging>
 
-	<name>meussaldos</name>
+	<name>mybudget</name>
 
 	<dependencies>
         <dependency>
-            <groupId>br.com.meussaldos</groupId>
-            <artifactId>meussaldos-bootstrap</artifactId>
+            <groupId>br.com.mybudget</groupId>
+            <artifactId>mybudget-bootstrap</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 		<dependency>
-			<groupId>br.com.meussaldos</groupId>
- 			<artifactId>meussaldos-services-api</artifactId>
+			<groupId>br.com.mybudget</groupId>
+ 			<artifactId>mybudget-services-api</artifactId>
   			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -137,7 +137,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>meussaldos-${project.version}</finalName>
+		<finalName>mybudget-${project.version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>pl.project13.maven</groupId>

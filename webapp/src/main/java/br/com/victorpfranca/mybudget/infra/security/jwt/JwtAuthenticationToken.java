@@ -1,7 +1,6 @@
 package br.com.victorpfranca.mybudget.infra.security.jwt;
 
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.subject.SimplePrincipalCollection;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

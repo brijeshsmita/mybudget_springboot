@@ -15,9 +15,9 @@ import javax.persistence.PostLoad;
 import br.com.victorpfranca.mybudget.InOut;
 import br.com.victorpfranca.mybudget.account.Account;
 import br.com.victorpfranca.mybudget.account.CreditCardAccount;
-import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.transaction.rules.AccountTypeException;
+import br.com.victorpfranca.mybudget.transaction.rules.InvalidTransactionValueException;
+import br.com.victorpfranca.mybudget.transaction.rules.NullableAccountException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -52,9 +52,9 @@ public class CheckingAccountTransaction extends Transaction {
 	}
 
 	public static Transaction buildFaturaCartao(CreditCardAccount creditCardAccount, Date data, BigDecimal valorParcela)
-			throws ContaNotNullException {
+			throws NullableAccountException {
 		if (creditCardAccount.getAccountPagamentoFatura() == null) {
-			throw new ContaNotNullException("crud_lancamento_validator_conta");
+			throw new NullableAccountException("crud_lancamento_validator_conta");
 		}
 
 		CheckingAccountTransaction lancamentoFatura = new CheckingAccountTransaction();
@@ -126,7 +126,7 @@ public class CheckingAccountTransaction extends Transaction {
 	}
 
 	@Override
-	protected void validarConta() throws ContaNotNullException, TipoContaException {
+	protected void validarConta() throws NullableAccountException, AccountTypeException {
 		super.validarConta();
 		if (isTransferencia()) {
 			if (isAjuste()) {
@@ -145,12 +145,12 @@ public class CheckingAccountTransaction extends Transaction {
 	}
 
 	@Override
-	protected void validarValor() throws ValorLancamentoInvalidoException {
+	protected void validarValor() throws InvalidTransactionValueException {
 		if (isSaldoInicial())
 			return;
 		if (isFaturaCartao()) {
 			if (getValor().compareTo(BigDecimal.ZERO) < 0)
-				throw new ValorLancamentoInvalidoException("crud_lancamento_validator_valor_lancamento");
+				throw new InvalidTransactionValueException("crud_lancamento_validator_valor_lancamento");
 		} else {
 			super.validarValor();
 		}

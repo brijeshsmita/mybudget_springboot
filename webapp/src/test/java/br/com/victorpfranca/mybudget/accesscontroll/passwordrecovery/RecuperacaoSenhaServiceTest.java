@@ -14,8 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import br.com.victorpfranca.mybudget.accesscontroll.User;
-import br.com.victorpfranca.mybudget.accesscontroll.passwordrecovery.PasswordRecovery;
-import br.com.victorpfranca.mybudget.accesscontroll.passwordrecovery.PasswordRecoveryService;
 
 public class RecuperacaoSenhaServiceTest {
 

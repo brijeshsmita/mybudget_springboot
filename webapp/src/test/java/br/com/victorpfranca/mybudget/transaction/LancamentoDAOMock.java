@@ -10,10 +10,6 @@ import java.util.List;
 import br.com.victorpfranca.mybudget.DAOMock;
 import br.com.victorpfranca.mybudget.account.Account;
 import br.com.victorpfranca.mybudget.infra.dao.QueryParam;
-import br.com.victorpfranca.mybudget.transaction.CheckingAccountTransaction;
-import br.com.victorpfranca.mybudget.transaction.CreditCardInvoiceTransactionItem;
-import br.com.victorpfranca.mybudget.transaction.CreditCardTransaction;
-import br.com.victorpfranca.mybudget.transaction.Transaction;
 
 public class LancamentoDAOMock extends DAOMock<Transaction> {
 

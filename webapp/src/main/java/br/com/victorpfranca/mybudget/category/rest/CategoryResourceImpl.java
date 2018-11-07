@@ -9,15 +9,15 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import br.com.victorpfranca.mybudget.categoria.AtualizacaoCategoriaDTO;
-import br.com.victorpfranca.mybudget.categoria.CategoriaDTO;
-import br.com.victorpfranca.mybudget.categoria.CategoriaResource;
-import br.com.victorpfranca.mybudget.category.Category;
 import br.com.victorpfranca.mybudget.category.CategoriaService;
+import br.com.victorpfranca.mybudget.category.Category;
+import br.com.victorpfranca.mybudget.category.CategoryDTO;
+import br.com.victorpfranca.mybudget.category.CategoryResource;
+import br.com.victorpfranca.mybudget.category.CategoryUpdateDTO;
 import br.com.victorpfranca.mybudget.category.SameNameException;
-import br.com.victorpfranca.mybudget.transaction.rules.RemocaoNaoPermitidaException;
+import br.com.victorpfranca.mybudget.transaction.rules.DeletionNotPermittedException;
 
-public class CategoryResourceImpl implements CategoriaResource {
+public class CategoryResourceImpl implements CategoryResource {
 
 	private Integer id;
 	@Inject
@@ -31,12 +31,12 @@ public class CategoryResourceImpl implements CategoriaResource {
 	}
 
 	@Override
-	public CategoriaDTO recuperar() {
+	public CategoryDTO recuperar() {
 		return nullSafeConvert(categoriaService.find(id), categoryConversor::converter);
 	}
 
 	@Override
-	public void atualizar(AtualizacaoCategoriaDTO atualizacaoCategoriaDTO) {
+	public void atualizar(CategoryUpdateDTO atualizacaoCategoriaDTO) {
 		Optional.ofNullable(atualizacaoCategoriaDTO).ifPresent(dto -> {
 			Category category = categoriaService.find(id);
 			category.setNome(dto.getNome());
@@ -53,7 +53,7 @@ public class CategoryResourceImpl implements CategoriaResource {
 	public void remover() {
 		try {
 			categoriaService.remove(id);
-		} catch (RemocaoNaoPermitidaException e) {
+		} catch (DeletionNotPermittedException e) {
 			throw new WebApplicationException(e.getMessage(), e,
 					Response.status(422).type(MediaType.TEXT_PLAIN).entity(e.getMessage()).build());
 		}

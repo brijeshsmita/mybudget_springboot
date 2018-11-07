@@ -18,17 +18,17 @@ import br.com.victorpfranca.mybudget.account.Account;
 import br.com.victorpfranca.mybudget.account.AccountBalance;
 import br.com.victorpfranca.mybudget.account.CheckingAccount;
 import br.com.victorpfranca.mybudget.account.CreditCardAccount;
-import br.com.victorpfranca.mybudget.periodo.PeriodoPlanejamento;
+import br.com.victorpfranca.mybudget.period.PlanningPeriod;
 import br.com.victorpfranca.mybudget.transaction.CheckingAccountTransaction;
 import br.com.victorpfranca.mybudget.transaction.CreditCardTransaction;
 import br.com.victorpfranca.mybudget.transaction.Transaction;
-import br.com.victorpfranca.mybudget.transaction.extractors.saldofuturo.GeradorSaldoFuturo;
-import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.transaction.rules.RemocaoNaoPermitidaException;
-import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.transaction.extractors.saldofuturo.FutureAccountBalanceGenerator;
+import br.com.victorpfranca.mybudget.transaction.rules.AccountTypeException;
+import br.com.victorpfranca.mybudget.transaction.rules.DeletionNotPermittedException;
+import br.com.victorpfranca.mybudget.transaction.rules.IncompatibleCategoriesException;
+import br.com.victorpfranca.mybudget.transaction.rules.InvalidTransactionValueException;
+import br.com.victorpfranca.mybudget.transaction.rules.NullableAccountException;
+import br.com.victorpfranca.mybudget.transaction.rules.TransactionMonthUpdatedException;
 import br.com.victorpfranca.mybudget.view.MonthYear;
 
 @Stateless
@@ -51,10 +51,10 @@ public class BankAccountService {
 	private AccountBalanceFixer accountBalanceFixer;
 
 	@EJB
-	private PeriodoPlanejamento periodoPlanejamento;
+	private PlanningPeriod planningPeriod;
 
 	@EJB
-	protected GeradorSaldoFuturo geradorSaldoFuturo;
+	protected FutureAccountBalanceGenerator futureAccountBalanceGenerator;
 
 	@Inject
 	private EntityManager em;
@@ -138,8 +138,8 @@ public class BankAccountService {
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public List<Account> saveContasCorrente(List<Account> accounts)
-			throws SameNameException, ContaNotNullException, MesLancamentoAlteradoException,
-			TipoContaException, CategoriasIncompativeisException, ValorLancamentoInvalidoException {
+			throws SameNameException, NullableAccountException, TransactionMonthUpdatedException,
+			AccountTypeException, IncompatibleCategoriesException, InvalidTransactionValueException {
 		List<Account> contasGravadas = new ArrayList<Account>();
 		for (Iterator<Account> iterator = accounts.iterator(); iterator.hasNext();) {
 			Account account = iterator.next();
@@ -150,8 +150,8 @@ public class BankAccountService {
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Account saveContaCorrente(Account account)
-			throws SameNameException, ContaNotNullException, MesLancamentoAlteradoException,
-			TipoContaException, CategoriasIncompativeisException, ValorLancamentoInvalidoException {
+			throws SameNameException, NullableAccountException, TransactionMonthUpdatedException,
+			AccountTypeException, IncompatibleCategoriesException, InvalidTransactionValueException {
 
 		account = checkingAccountBuilder.save((CheckingAccount) account);
 
@@ -160,8 +160,8 @@ public class BankAccountService {
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void saveContasCartoes(List<Account> accounts)
-			throws SameNameException, ContaNotNullException, MesLancamentoAlteradoException,
-			TipoContaException, CategoriasIncompativeisException, ValorLancamentoInvalidoException {
+			throws SameNameException, NullableAccountException, TransactionMonthUpdatedException,
+			AccountTypeException, IncompatibleCategoriesException, InvalidTransactionValueException {
 		for (Iterator<Account> iterator = accounts.iterator(); iterator.hasNext();) {
 			Account account = iterator.next();
 			saveContaCartao(account, new ArrayList<Transaction>());
@@ -170,8 +170,8 @@ public class BankAccountService {
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Account saveContaCartao(Account account, List<Transaction> transactions)
-			throws SameNameException, ContaNotNullException, MesLancamentoAlteradoException,
-			TipoContaException, CategoriasIncompativeisException, ValorLancamentoInvalidoException {
+			throws SameNameException, NullableAccountException, TransactionMonthUpdatedException,
+			AccountTypeException, IncompatibleCategoriesException, InvalidTransactionValueException {
 
 		if (account instanceof CheckingAccount) {
 			account = checkingAccountBuilder.save((CheckingAccount) account);
@@ -183,7 +183,7 @@ public class BankAccountService {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void remove(Account account) throws RemocaoNaoPermitidaException, CantRemoveException {
+	public void remove(Account account) throws DeletionNotPermittedException, CantRemoveException {
 
 		if (account instanceof CheckingAccount) {
 			checkingAccountRemover.remover((CheckingAccount) account);
@@ -198,14 +198,14 @@ public class BankAccountService {
 	}
 
 	public List<AccountBalance> carregarSaldoFuturoPrevisto() {
-		MonthYear anoMesAtual = periodoPlanejamento.getMesAtual();
-		MonthYear anoMesFinal = periodoPlanejamento.getMesFinal();
+		MonthYear anoMesAtual = planningPeriod.getMesAtual();
+		MonthYear anoMesFinal = planningPeriod.getMesFinal();
 
 		return carregarSaldoFuturoPrevisto(anoMesAtual, anoMesFinal);
 	}
 
 	public List<AccountBalance> carregarSaldoFuturoPrevisto(MonthYear anoMesAtual, MonthYear anoMesFinal) {
-		return geradorSaldoFuturo.execute(anoMesAtual.getAno(), anoMesAtual.getMes(), anoMesFinal.getAno(),
+		return futureAccountBalanceGenerator.execute(anoMesAtual.getAno(), anoMesAtual.getMes(), anoMesFinal.getAno(),
 				anoMesFinal.getMes());
 	}
 

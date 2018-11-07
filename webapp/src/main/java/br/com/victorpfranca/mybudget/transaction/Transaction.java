@@ -48,11 +48,11 @@ import br.com.victorpfranca.mybudget.accesscontroll.CredentialsStore;
 import br.com.victorpfranca.mybudget.accesscontroll.User;
 import br.com.victorpfranca.mybudget.account.Account;
 import br.com.victorpfranca.mybudget.category.Category;
-import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.transaction.rules.AccountTypeException;
+import br.com.victorpfranca.mybudget.transaction.rules.IncompatibleCategoriesException;
+import br.com.victorpfranca.mybudget.transaction.rules.InvalidTransactionValueException;
+import br.com.victorpfranca.mybudget.transaction.rules.NullableAccountException;
+import br.com.victorpfranca.mybudget.transaction.rules.TransactionMonthUpdatedException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -270,8 +270,8 @@ public class Transaction implements Serializable, Cloneable {
 		return getContaAnterior() != null && !getAccount().equals(getContaAnterior());
 	}
 
-	public void validar() throws MesLancamentoAlteradoException, ContaNotNullException, TipoContaException,
-			CategoriasIncompativeisException, ValorLancamentoInvalidoException {
+	public void validar() throws TransactionMonthUpdatedException, NullableAccountException, AccountTypeException,
+			IncompatibleCategoriesException, InvalidTransactionValueException {
 		validarData();
 		validarConta();
 		validarInOut();
@@ -283,39 +283,39 @@ public class Transaction implements Serializable, Cloneable {
 		return isAjuste() || isSaldoInicial();
 	}
 
-	protected void validarCategoriaNaoNula() throws CategoriasIncompativeisException {
+	protected void validarCategoriaNaoNula() throws IncompatibleCategoriesException {
 		if (!isPermiteCategoriaNula() && getCategory() == null) {
-			throw new CategoriasIncompativeisException("crud.lancamento.error.categoria.null");
+			throw new IncompatibleCategoriesException("crud.lancamento.error.categoria.null");
 		}
 	}
 
-	protected void validarValor() throws ValorLancamentoInvalidoException {
+	protected void validarValor() throws InvalidTransactionValueException {
 		if (getValor().compareTo(BigDecimal.ZERO) <= 0)
-			throw new ValorLancamentoInvalidoException("crud_lancamento_validator_valor_lancamento");
+			throw new InvalidTransactionValueException("crud_lancamento_validator_valor_lancamento");
 	}
 
-	protected void validarData() throws MesLancamentoAlteradoException {
+	protected void validarData() throws TransactionMonthUpdatedException {
 		if (getDataAnterior() != null) {
 			int mesAnterior = LocalDateConverter.fromDate(getDataAnterior()).getMonthValue();
 			int mesAtual = LocalDateConverter.fromDate(getData()).getMonthValue();
 			if (mesAnterior != mesAtual) {
-				throw new MesLancamentoAlteradoException("crud_lancamento_validator_mes_lancamento");
+				throw new TransactionMonthUpdatedException("crud_lancamento_validator_mes_lancamento");
 			}
 		}
 	}
 
-	protected void validarConta() throws ContaNotNullException, TipoContaException {
+	protected void validarConta() throws NullableAccountException, AccountTypeException {
 		if (getAccount() == null) {
-			throw new ContaNotNullException("crud_lancamento_validator_conta");
+			throw new NullableAccountException("crud_lancamento_validator_conta");
 		}
 		if (getContaAnterior() != null && !getAccount().getClass().equals(getContaAnterior().getClass())) {
-			throw new TipoContaException("crud_lancamento_validator_tipo_conta");
+			throw new AccountTypeException("crud_lancamento_validator_tipo_conta");
 		}
 	}
 
-	protected void validarInOut() throws CategoriasIncompativeisException {
+	protected void validarInOut() throws IncompatibleCategoriesException {
 		if (getCategory() != null && !getCategory().getInOut().equals(getInOut())) {
-			throw new CategoriasIncompativeisException("crud.lancamento.error.tipo.categoria");
+			throw new IncompatibleCategoriesException("crud.lancamento.error.tipo.categoria");
 		}
 	}
 

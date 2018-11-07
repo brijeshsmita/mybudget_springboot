@@ -19,8 +19,7 @@ import javax.persistence.criteria.Root;
 import br.com.victorpfranca.mybudget.account.Account;
 import br.com.victorpfranca.mybudget.account.BalanceQuery;
 import br.com.victorpfranca.mybudget.category.Category;
-import br.com.victorpfranca.mybudget.lancamento.Lancamento_;
-import br.com.victorpfranca.mybudget.transaction.rules.LancamentoService;
+import br.com.victorpfranca.mybudget.transaction.rules.TransactionService;
 import br.com.victorpfranca.mybudget.view.MonthYear;
 
 @RequestScoped
@@ -29,7 +28,7 @@ public class TransactionQuery implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private LancamentoService lancamentoService;
+	private TransactionService transactionService;
 	@Inject
 	private BalanceQuery contas;
 	@Inject
@@ -39,7 +38,7 @@ public class TransactionQuery implements Serializable {
 	public List<Transaction> transactions(TransactionsFilter transactionsFilter) {
 		return cache.computeIfAbsent(transactionsFilter, filtros -> {
 			BigDecimal saldoInicial = contas.recuperarSaldoInicial(filtros);
-			List<Transaction> transactions = lancamentoService.carregarExtratoCorrenteMensal(filtros.getAnoMes().getAno(),
+			List<Transaction> transactions = transactionService.carregarExtratoCorrenteMensal(filtros.getAnoMes().getAno(),
 					filtros.getAnoMes().getMes(),
 					Optional.ofNullable(filtros.getAccount()).map(id -> em.find(Account.class, id)).orElse(null),
 					Optional.ofNullable(filtros.getCategoria()).map(id -> em.find(Category.class, id)).orElse(null),
@@ -50,7 +49,7 @@ public class TransactionQuery implements Serializable {
 
 	public List<Transaction> extratoCartao(TransactionsFilter transactionsFilter) {
 		return cache.computeIfAbsent(transactionsFilter, filtros -> {
-			List<Transaction> transactions = lancamentoService.carregarExtratoCartaoMensal(filtros.getAnoMes().getAno(),
+			List<Transaction> transactions = transactionService.carregarExtratoCartaoMensal(filtros.getAnoMes().getAno(),
 					filtros.getAnoMes().getMes(),
 					Optional.ofNullable(filtros.getAccount()).map(id -> em.find(Account.class, id)).orElse(null),
 					Optional.ofNullable(filtros.getCategoria()).map(id -> em.find(Category.class, id)).orElse(null),
@@ -63,10 +62,10 @@ public class TransactionQuery implements Serializable {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Transaction> criteriaQuery = cb.createQuery(Transaction.class);
 		Root<Transaction> transaction = criteriaQuery.from(Transaction.class);
-		Predicate predicate = cb.equal(transaction.get(Lancamento_.id), id);
+		Predicate predicate = cb.equal(transaction.get(Transaction_.id), id);
 		if (monthYear != null) {
-			predicate = cb.and(predicate, cb.equal(transaction.get(Lancamento_.ano), monthYear.getAno()),
-					cb.equal(transaction.get(Lancamento_.mes), monthYear.getMes()));
+			predicate = cb.and(predicate, cb.equal(transaction.get(Transaction_.ano), monthYear.getAno()),
+					cb.equal(transaction.get(Transaction_.mes), monthYear.getMes()));
 		}
 		criteriaQuery.select(transaction).where(predicate);
 		try {

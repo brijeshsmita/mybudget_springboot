@@ -18,10 +18,6 @@ import br.com.victorpfranca.mybudget.InOut;
 import br.com.victorpfranca.mybudget.LocalDateConverter;
 import br.com.victorpfranca.mybudget.account.BankAccount;
 import br.com.victorpfranca.mybudget.category.Category;
-import br.com.victorpfranca.mybudget.transaction.CheckingAccountTransaction;
-import br.com.victorpfranca.mybudget.transaction.Transaction;
-import br.com.victorpfranca.mybudget.transaction.TransactionFrequence;
-import br.com.victorpfranca.mybudget.transaction.TransactionSerie;
 
 public class CalcularDatasSerieLancamentosTest {
 

@@ -9,7 +9,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import br.com.victorpfranca.mybudget.account.rules.BankAccountService;
-import br.com.victorpfranca.mybudget.orcamento.OrcamentoService;
+import br.com.victorpfranca.mybudget.budget.BudgetService;
 import br.com.victorpfranca.mybudget.transaction.TransactionsFilter;
 import br.com.victorpfranca.mybudget.view.MonthYear;
 
@@ -19,7 +19,7 @@ public class BalanceQuery implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Inject
-    private OrcamentoService orcamentoService;
+    private BudgetService budgetService;
     @Inject
     private BankAccountService bankAccountService;
     
@@ -52,22 +52,22 @@ public class BalanceQuery implements Serializable {
 
     public BigDecimal recuperarSaldoDespesaOrcada(MonthYear filtroAnoMes) {
         return cacheSaldoDespesaOrcada.computeIfAbsent(filtroAnoMes, 
-                anoMes->orcamentoService.getSaldoDespesaOrcada(anoMes.getAno(), anoMes.getMes()));
+                anoMes->budgetService.getSaldoDespesaOrcada(anoMes.getAno(), anoMes.getMes()));
     }
 
     public BigDecimal recuperarSaldoReceitaOrcada(MonthYear filtroAnoMes) {
         return cacheSaldoReceitaOrcada.computeIfAbsent(filtroAnoMes, 
-                anoMes->orcamentoService.getSaldoReceitaOrcada(anoMes.getAno(), anoMes.getMes()));
+                anoMes->budgetService.getSaldoReceitaOrcada(anoMes.getAno(), anoMes.getMes()));
     }
 
     public BigDecimal recuperarSaldoDespesaOrcadaAcumulado(MonthYear filtroAnoMes) {
         return cacheSaldoDespesaOrcadaAcumulado.computeIfAbsent(filtroAnoMes, 
-                anoMes->orcamentoService.getSaldoDespesaOrcadaAcumulado(anoMes.getAno(), anoMes.getMes()));
+                anoMes->budgetService.getSaldoDespesaOrcadaAcumulado(anoMes.getAno(), anoMes.getMes()));
     }
 
     public BigDecimal recuperarSaldoReceitaOrcadaAcumulado(MonthYear filtroAnoMes) {
         return cacheSaldoReceitaOrcadaAcumulado.computeIfAbsent(filtroAnoMes, 
-                anoMes->orcamentoService.getSaldoReceitaOrcadaAcumulado(anoMes.getAno(), anoMes.getMes()));
+                anoMes->budgetService.getSaldoReceitaOrcadaAcumulado(anoMes.getAno(), anoMes.getMes()));
     }
 
     public BigDecimal recuperarSaldo(MonthYear filtroAnoMes) {

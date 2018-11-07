@@ -20,11 +20,11 @@ import br.com.victorpfranca.mybudget.accesscontroll.CredentialsStore;
 import br.com.victorpfranca.mybudget.accesscontroll.User;
 import br.com.victorpfranca.mybudget.accesscontroll.UserService;
 import br.com.victorpfranca.mybudget.category.SameNameException;
-import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.transaction.rules.AccountTypeException;
+import br.com.victorpfranca.mybudget.transaction.rules.IncompatibleCategoriesException;
+import br.com.victorpfranca.mybudget.transaction.rules.InvalidTransactionValueException;
+import br.com.victorpfranca.mybudget.transaction.rules.NullableAccountException;
+import br.com.victorpfranca.mybudget.transaction.rules.TransactionMonthUpdatedException;
 import br.com.victorpfranca.mybudget.view.FacesMessages;
 import br.com.victorpfranca.mybudget.view.Messages;
 import br.com.victorpfranca.mybudget.view.validation.Email;
@@ -131,8 +131,8 @@ public class SignUpViewController implements Serializable {
 		try {
 			userService.completarCadastro(idUsuario, firstName);
 		} catch (SameNameException | br.com.victorpfranca.mybudget.account.rules.SameNameException
-				| ContaNotNullException | MesLancamentoAlteradoException | TipoContaException
-				| CategoriasIncompativeisException | ValorLancamentoInvalidoException e) {
+				| NullableAccountException | TransactionMonthUpdatedException | AccountTypeException
+				| IncompatibleCategoriesException | InvalidTransactionValueException e) {
 			FacesMessages.fatal(Messages.msg(e.getMessage()));
 			return;
 		}

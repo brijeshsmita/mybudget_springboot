@@ -8,8 +8,8 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
 import br.com.victorpfranca.mybudget.accesscontroll.CredentialsStore;
+import br.com.victorpfranca.mybudget.budget.Budget;
 import br.com.victorpfranca.mybudget.infra.dao.DAO;
-import br.com.victorpfranca.mybudget.orcamento.Orcamento;
 
 @Stateless
 public class CategoryBuilder {
@@ -18,7 +18,7 @@ public class CategoryBuilder {
 	DAO<Category> categoriaDao;
 
 	@EJB
-	DAO<Orcamento> orcamentoDao;
+	DAO<Budget> orcamentoDao;
 
 	@EJB
 	private CredentialsStore credentialsStore;

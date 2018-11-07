@@ -17,7 +17,7 @@ import javax.inject.Inject;
 
 import br.com.victorpfranca.mybudget.account.AccountBalance;
 import br.com.victorpfranca.mybudget.account.rules.BankAccountService;
-import br.com.victorpfranca.mybudget.periodo.PeriodoPlanejamento;
+import br.com.victorpfranca.mybudget.period.PlanningPeriod;
 import br.com.victorpfranca.mybudget.view.MonthYear;
 
 @RequestScoped
@@ -29,7 +29,7 @@ public class MonthlyTransactions implements Serializable {
     private BankAccountService lancamentoService;
 
     @Inject
-    private PeriodoPlanejamento periodoPlanejamento;
+    private PlanningPeriod planningPeriod;
 
     private List<AccountBalance> saldos;
 
@@ -51,11 +51,11 @@ public class MonthlyTransactions implements Serializable {
     }
     
     public void inicializar(MonthYear inicio, MonthYear fim) {
-        this.inicio=Arrays.asList(inicio, periodoPlanejamento.getMesAtual()).stream()
+        this.inicio=Arrays.asList(inicio, planningPeriod.getMesAtual()).stream()
                 .filter(obj-> obj != null)
                 .max(Comparator.comparing(Function.identity()))
                 .orElse(null);
-        this.fim=Arrays.asList(fim, periodoPlanejamento.getMesFinal()).stream()
+        this.fim=Arrays.asList(fim, planningPeriod.getMesFinal()).stream()
                 .filter(obj-> obj != null)
                 .min(Comparator.comparing(Function.identity()))
                 .orElse(null);

@@ -15,7 +15,7 @@ import br.com.victorpfranca.mybudget.account.Account;
 import br.com.victorpfranca.mybudget.account.AccountBalance;
 import br.com.victorpfranca.mybudget.infra.dao.DAO;
 import br.com.victorpfranca.mybudget.infra.dao.QueryParam;
-import br.com.victorpfranca.mybudget.periodo.PeriodoPlanejamento;
+import br.com.victorpfranca.mybudget.period.PlanningPeriod;
 import br.com.victorpfranca.mybudget.transaction.Transaction;
 
 @Stateless
@@ -25,7 +25,7 @@ public class AccountBalanceUpdater {
 	DAO<AccountBalance> saldoContaDao;
 
 	@EJB
-	private PeriodoPlanejamento periodoPlanejamento;
+	private PlanningPeriod planningPeriod;
 
 	@EJB
 	private CredentialsStore credentialsStore;

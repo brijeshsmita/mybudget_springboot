@@ -14,14 +14,14 @@ import br.com.victorpfranca.mybudget.accesscontroll.CredentialsStore;
 import br.com.victorpfranca.mybudget.account.CreditCardAccount;
 import br.com.victorpfranca.mybudget.transaction.CreditCardTransaction;
 import br.com.victorpfranca.mybudget.transaction.Transaction;
-import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.transaction.rules.CriadorLancamentoCartaoCredito;
-import br.com.victorpfranca.mybudget.transaction.rules.CriadorLancamentosIniciaisCartaoCredito;
-import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.transaction.rules.RemovedorLancamentoCartao;
-import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.transaction.rules.AccountTypeException;
+import br.com.victorpfranca.mybudget.transaction.rules.CreditCardAccountTransactionRemover;
+import br.com.victorpfranca.mybudget.transaction.rules.CreditCardInitialTransactionsBuilder;
+import br.com.victorpfranca.mybudget.transaction.rules.CreditCardTransactionBuilder;
+import br.com.victorpfranca.mybudget.transaction.rules.IncompatibleCategoriesException;
+import br.com.victorpfranca.mybudget.transaction.rules.InvalidTransactionValueException;
+import br.com.victorpfranca.mybudget.transaction.rules.NullableAccountException;
+import br.com.victorpfranca.mybudget.transaction.rules.TransactionMonthUpdatedException;
 
 @Stateless
 public class CreditCardAccountBuilder {
@@ -33,13 +33,13 @@ public class CreditCardAccountBuilder {
 	private CreditCardInitialTransactionsRemover creditCardInitialTransactionsRemover;
 
 	@EJB
-	private RemovedorLancamentoCartao removedorLancamentoCartao;
+	private CreditCardAccountTransactionRemover creditCardAccountTransactionRemover;
 
 	@EJB
-	private CriadorLancamentoCartaoCredito criadorLancamentoCartao;
+	private CreditCardTransactionBuilder criadorLancamentoCartao;
 
 	@EJB
-	private CriadorLancamentosIniciaisCartaoCredito criadorLancamentosIniciaisCartaoCredito;
+	private CreditCardInitialTransactionsBuilder creditCardInitialTransactionsBuilder;
 
 	@EJB
 	private CredentialsStore credentialsStore;
@@ -49,8 +49,8 @@ public class CreditCardAccountBuilder {
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public CreditCardAccount save(CreditCardAccount conta, List<Transaction> transactions)
-			throws SameNameException, ContaNotNullException, MesLancamentoAlteradoException,
-			TipoContaException, CategoriasIncompativeisException, ValorLancamentoInvalidoException {
+			throws SameNameException, NullableAccountException, TransactionMonthUpdatedException,
+			AccountTypeException, IncompatibleCategoriesException, InvalidTransactionValueException {
 
 		int cartaoDiaFechmentoAnterior = conta.getCartaoDiaFechamentoAnterior() != null
 				? conta.getCartaoDiaFechamentoAnterior().intValue()
@@ -65,7 +65,7 @@ public class CreditCardAccountBuilder {
 
 		creditCardInitialTransactionsRemover.execute(conta);
 
-		criadorLancamentosIniciaisCartaoCredito.save(conta, transactions);
+		creditCardInitialTransactionsBuilder.save(conta, transactions);
 
 		if (!((cartaoDiaFechmentoAnterior == conta.getCartaoDiaFechamento().intValue())
 				&& (cartaoDiaPagamentoAnterior == conta.getCartaoDiaPagamento().intValue()))) {
@@ -76,8 +76,8 @@ public class CreditCardAccountBuilder {
 	}
 
 	private void atualizarLancamentosAnteriores(CreditCardAccount conta)
-			throws ContaNotNullException, MesLancamentoAlteradoException, TipoContaException,
-			CategoriasIncompativeisException, ValorLancamentoInvalidoException {
+			throws NullableAccountException, TransactionMonthUpdatedException, AccountTypeException,
+			IncompatibleCategoriesException, InvalidTransactionValueException {
 
 		List<CreditCardTransaction> lancamentosAnteriores = em
 				.createNamedQuery(Transaction.FIND_LANCAMENTO_CARTAO_QUERY, CreditCardTransaction.class)
@@ -86,7 +86,7 @@ public class CreditCardAccountBuilder {
 
 		for (Iterator<CreditCardTransaction> iterator = lancamentosAnteriores.iterator(); iterator.hasNext();) {
 			CreditCardTransaction creditCardTransaction = iterator.next();
-			removedorLancamentoCartao.remover(creditCardTransaction, false);
+			creditCardAccountTransactionRemover.remover(creditCardTransaction, false);
 			CreditCardTransaction lancamento = (CreditCardTransaction) creditCardTransaction.clone();
 			lancamento.setId(null);
 			lancamento.setAccount(conta);

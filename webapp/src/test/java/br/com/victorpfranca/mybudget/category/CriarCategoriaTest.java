@@ -15,9 +15,6 @@ import org.junit.runners.Parameterized.Parameters;
 
 import br.com.victorpfranca.mybudget.DAOMock;
 import br.com.victorpfranca.mybudget.InOut;
-import br.com.victorpfranca.mybudget.category.Category;
-import br.com.victorpfranca.mybudget.category.CategoryBuilder;
-import br.com.victorpfranca.mybudget.category.SameNameException;
 import br.com.victorpfranca.mybudget.infra.dao.DAO;
 
 @RunWith(Parameterized.class)

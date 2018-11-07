@@ -7,14 +7,14 @@ import java.util.function.Function;
 import javax.inject.Inject;
 
 import br.com.victorpfranca.mybudget.account.AccountBalanceFilter;
+import br.com.victorpfranca.mybudget.account.BalanceDTO;
 import br.com.victorpfranca.mybudget.account.BalanceQuery;
-import br.com.victorpfranca.mybudget.conta.SaldoDTO;
-import br.com.victorpfranca.mybudget.conta.SaldoResource;
+import br.com.victorpfranca.mybudget.account.BalanceResource;
 import br.com.victorpfranca.mybudget.infra.date.DateUtils;
 import br.com.victorpfranca.mybudget.transaction.TransactionsFilter;
 import br.com.victorpfranca.mybudget.view.MonthYear;
 
-public class AccountBalanceResourceImpl implements SaldoResource {
+public class AccountBalanceResourceImpl implements BalanceResource {
 
 	@Inject
 	private BalanceQuery balanceQuery;
@@ -32,16 +32,16 @@ public class AccountBalanceResourceImpl implements SaldoResource {
 	}
 
 	@Override
-	public SaldoDTO recuperarSaldoCorrente(Integer conta) {
+	public BalanceDTO recuperarSaldoCorrente(Integer conta) {
 		MonthYear monthYear = new MonthYear(ano, mes);
 		String date = toIso8601(monthYear);
 		AccountBalanceFilter accountBalanceFilter = new AccountBalanceFilter(monthYear, conta);
-		return Optional.ofNullable(balanceQuery.recuperarSaldoCorrentePrevisto(accountBalanceFilter)).map(saldoDTO(date))
-				.orElse(null);
+		return Optional.ofNullable(balanceQuery.recuperarSaldoCorrentePrevisto(accountBalanceFilter))
+				.map(saldoDTO(date)).orElse(null);
 	}
 
 	@Override
-	public SaldoDTO recuperarSaldoInicial(Integer conta) {
+	public BalanceDTO recuperarSaldoInicial(Integer conta) {
 		MonthYear monthYear = new MonthYear(ano, mes);
 		String date = toIso8601(monthYear);
 		AccountBalanceFilter accountBalanceFilter = new AccountBalanceFilter(monthYear, conta);
@@ -50,21 +50,23 @@ public class AccountBalanceResourceImpl implements SaldoResource {
 	}
 
 	@Override
-	public SaldoDTO recuperarSaldoReceitaOrcada() {
+	public BalanceDTO recuperarSaldoReceitaOrcada() {
 		MonthYear monthYear = new MonthYear(ano, mes);
 		String date = toIso8601(monthYear);
-		return Optional.ofNullable(balanceQuery.recuperarSaldoReceitaOrcada(monthYear)).map(saldoDTO(date)).orElse(null);
+		return Optional.ofNullable(balanceQuery.recuperarSaldoReceitaOrcada(monthYear)).map(saldoDTO(date))
+				.orElse(null);
 	}
 
 	@Override
-	public SaldoDTO recuperarSaldoDespesaOrcada() {
+	public BalanceDTO recuperarSaldoDespesaOrcada() {
 		MonthYear monthYear = new MonthYear(ano, mes);
 		String date = toIso8601(monthYear);
-		return Optional.ofNullable(balanceQuery.recuperarSaldoDespesaOrcada(monthYear)).map(saldoDTO(date)).orElse(null);
+		return Optional.ofNullable(balanceQuery.recuperarSaldoDespesaOrcada(monthYear)).map(saldoDTO(date))
+				.orElse(null);
 	}
 
 	@Override
-	public SaldoDTO recuperarSaldoFinalPrevisto(Integer categoria, Integer conta) {
+	public BalanceDTO recuperarSaldoFinalPrevisto(Integer categoria, Integer conta) {
 		MonthYear monthYear = new MonthYear(ano, mes);
 		String date = toIso8601(monthYear);
 		TransactionsFilter transactionsFilter = new TransactionsFilter(monthYear, categoria, conta);
@@ -76,8 +78,8 @@ public class AccountBalanceResourceImpl implements SaldoResource {
 		return DateUtils.iso8601(DateUtils.localDateToDate(monthYear.getDate()));
 	}
 
-	private Function<BigDecimal, SaldoDTO> saldoDTO(String date) {
-		return saldo -> new SaldoDTO(date, saldo);
+	private Function<BigDecimal, BalanceDTO> saldoDTO(String date) {
+		return saldo -> new BalanceDTO(date, saldo);
 	}
 
 }

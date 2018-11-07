@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import br.com.victorpfranca.mybudget.account.CreditCardAccount;
-import br.com.victorpfranca.mybudget.transaction.rules.RemocaoNaoPermitidaException;
+import br.com.victorpfranca.mybudget.transaction.rules.DeletionNotPermittedException;
 
 @Stateless
 public class CreditCardAccountRemover {
@@ -21,7 +21,7 @@ public class CreditCardAccountRemover {
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void remover(CreditCardAccount conta)
-			throws RemocaoNaoPermitidaException, CantRemoveException {
+			throws DeletionNotPermittedException, CantRemoveException {
 
 		removedorLancamentos.execute(conta);
 

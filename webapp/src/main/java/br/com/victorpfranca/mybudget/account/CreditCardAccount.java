@@ -26,7 +26,7 @@ import br.com.victorpfranca.mybudget.LocalDateConverter;
 import br.com.victorpfranca.mybudget.transaction.CheckingAccountTransaction;
 import br.com.victorpfranca.mybudget.transaction.CreditCardTransaction;
 import br.com.victorpfranca.mybudget.transaction.Transaction;
-import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
+import br.com.victorpfranca.mybudget.transaction.rules.NullableAccountException;
 
 @Entity
 @DiscriminatorValue("1")
@@ -102,14 +102,14 @@ public class CreditCardAccount extends Account implements Serializable {
 	}
 
 	public List<Transaction> carregarFaturas(CreditCardTransaction lancamento, List<Transaction> faturasExistentes)
-			throws ContaNotNullException {
+			throws NullableAccountException {
 
 		return carregarFaturasAPartirDe(lancamento, faturasExistentes,
 				LocalDateConverter.toDate(getDataPagamentoProximo(lancamento.getData())));
 	}
 
 	public List<Transaction> carregarFaturasAPartirDe(CreditCardTransaction lancamento,
-			List<Transaction> faturasExistentes, Date dateProximoPagamento) throws ContaNotNullException {
+			List<Transaction> faturasExistentes, Date dateProximoPagamento) throws NullableAccountException {
 		LocalDate localDateProximoPagamento = LocalDateConverter.fromDate(dateProximoPagamento);
 
 		int qtdParcelas = lancamento.getQtdParcelas();

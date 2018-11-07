@@ -23,19 +23,18 @@ import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 
 import br.com.victorpfranca.mybudget.account.InitialAccountsBuilder;
+import br.com.victorpfranca.mybudget.budget.InitialBudgetsCreator;
 import br.com.victorpfranca.mybudget.category.InitialCategoriesBuilder;
 import br.com.victorpfranca.mybudget.category.SameNameException;
-import br.com.victorpfranca.mybudget.controleacesso.Usuario_;
 import br.com.victorpfranca.mybudget.infra.date.api.CurrentDateSupplier;
 import br.com.victorpfranca.mybudget.infra.exception.SystemException;
 import br.com.victorpfranca.mybudget.infra.mail.MailSender;
 import br.com.victorpfranca.mybudget.infra.security.CryptoPasswordService;
-import br.com.victorpfranca.mybudget.orcamento.CriadorOrcamentosIniciais;
-import br.com.victorpfranca.mybudget.transaction.rules.CategoriasIncompativeisException;
-import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
-import br.com.victorpfranca.mybudget.transaction.rules.MesLancamentoAlteradoException;
-import br.com.victorpfranca.mybudget.transaction.rules.TipoContaException;
-import br.com.victorpfranca.mybudget.transaction.rules.ValorLancamentoInvalidoException;
+import br.com.victorpfranca.mybudget.transaction.rules.AccountTypeException;
+import br.com.victorpfranca.mybudget.transaction.rules.IncompatibleCategoriesException;
+import br.com.victorpfranca.mybudget.transaction.rules.InvalidTransactionValueException;
+import br.com.victorpfranca.mybudget.transaction.rules.NullableAccountException;
+import br.com.victorpfranca.mybudget.transaction.rules.TransactionMonthUpdatedException;
 import br.com.victorpfranca.mybudget.view.Messages;
 import br.com.victorpfranca.mybudget.view.validation.PasswordConstraintValidator;
 
@@ -60,14 +59,14 @@ public class UserService {
 	private InitialAccountsBuilder initialAccountsBuilder;
 	
 	@EJB
-	private CriadorOrcamentosIniciais criadorOrcamentosIniciais;
+	private InitialBudgetsCreator initialBudgetsCreator;
 
 	public boolean existeUsuarioComEmail(String email) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
 		Root<User> user = cq.from(User.class);
-		Expression<Long> countDistinct = cb.countDistinct(user.get(Usuario_.id));
-		cq = cq.select(countDistinct).where(cb.equal(user.get(Usuario_.email), StringUtils.lowerCase(email)));
+		Expression<Long> countDistinct = cb.countDistinct(user.get(User_.id));
+		cq = cq.select(countDistinct).where(cb.equal(user.get(User_.email), StringUtils.lowerCase(email)));
 
 		return entityManager.createQuery(cq).getSingleResult() > 0;
 	}
@@ -91,7 +90,7 @@ public class UserService {
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void completarCadastro(Integer id, String firstName) throws SameNameException,
-			br.com.victorpfranca.mybudget.account.rules.SameNameException, ContaNotNullException, MesLancamentoAlteradoException, TipoContaException, CategoriasIncompativeisException, ValorLancamentoInvalidoException {
+			br.com.victorpfranca.mybudget.account.rules.SameNameException, NullableAccountException, TransactionMonthUpdatedException, AccountTypeException, IncompatibleCategoriesException, InvalidTransactionValueException {
 		User user = entityManager.find(User.class, id);
 		user.setFirstName(firstName);
 		user.setPreCadastro(false);
@@ -102,12 +101,12 @@ public class UserService {
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void preencherCadastrosIniciais() throws SameNameException,
-			br.com.victorpfranca.mybudget.account.rules.SameNameException, ContaNotNullException,
-			MesLancamentoAlteradoException, TipoContaException, CategoriasIncompativeisException,
-			ValorLancamentoInvalidoException {
+			br.com.victorpfranca.mybudget.account.rules.SameNameException, NullableAccountException,
+			TransactionMonthUpdatedException, AccountTypeException, IncompatibleCategoriesException,
+			InvalidTransactionValueException {
 		initialCategoriesBuilder.execute();
 		initialAccountsBuilder.execute();
-		criadorOrcamentosIniciais.execute();
+		initialBudgetsCreator.execute();
 	}
 
 	private String processarComMustache(String text, Object context) {
@@ -131,7 +130,7 @@ public class UserService {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
 		Root<User> user = cq.from(User.class);
-		Expression<Long> countDistinct = cb.countDistinct(user.get(Usuario_.id));
+		Expression<Long> countDistinct = cb.countDistinct(user.get(User_.id));
 		cq = cq.select(countDistinct);
 		return entityManager.createQuery(cq).getSingleResult();
 	}
@@ -141,7 +140,7 @@ public class UserService {
 		CriteriaQuery<User> cq = cb.createQuery(User.class);
 		Root<User> _user = cq.from(User.class);
 
-		cq = cq.select(_user).where(cb.equal(_user.get(Usuario_.email), StringUtils.lowerCase(email)));
+		cq = cq.select(_user).where(cb.equal(_user.get(User_.email), StringUtils.lowerCase(email)));
 		return entityManager.createQuery(cq).getSingleResult();
 	}
 

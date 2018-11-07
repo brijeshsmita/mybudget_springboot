@@ -9,10 +9,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.victorpfranca.mybudget.InOut;
-import br.com.victorpfranca.mybudget.category.Category;
 import br.com.victorpfranca.mybudget.category.CategoriaService;
+import br.com.victorpfranca.mybudget.category.Category;
 import br.com.victorpfranca.mybudget.category.SameNameException;
-import br.com.victorpfranca.mybudget.transaction.rules.RemocaoNaoPermitidaException;
+import br.com.victorpfranca.mybudget.transaction.rules.DeletionNotPermittedException;
 import br.com.victorpfranca.mybudget.view.FacesMessages;
 import br.com.victorpfranca.mybudget.view.Messages;
 
@@ -91,7 +91,7 @@ public class CategoryViewController implements Serializable {
 		try {
 			categoriaService.remove(category);
 			initCategorias();
-		} catch (RemocaoNaoPermitidaException e) {
+		} catch (DeletionNotPermittedException e) {
 			FacesMessages.fatal(Messages.msg(e.getMessage()));
 		}
 	}

@@ -13,13 +13,10 @@ import org.junit.Test;
 
 import br.com.victorpfranca.mybudget.InOut;
 import br.com.victorpfranca.mybudget.LocalDateConverter;
-import br.com.victorpfranca.mybudget.account.BankAccount;
-import br.com.victorpfranca.mybudget.account.CheckingAccount;
-import br.com.victorpfranca.mybudget.account.CreditCardAccount;
 import br.com.victorpfranca.mybudget.transaction.CreditCardTransaction;
 import br.com.victorpfranca.mybudget.transaction.Transaction;
 import br.com.victorpfranca.mybudget.transaction.TransactionStatus;
-import br.com.victorpfranca.mybudget.transaction.rules.ContaNotNullException;
+import br.com.victorpfranca.mybudget.transaction.rules.NullableAccountException;
 
 public class AtualizarFaturasTest {
 
@@ -59,7 +56,7 @@ public class AtualizarFaturasTest {
 			List<Transaction> faturas = creditCardAccount.carregarFaturas(lancamento, faturasExistentes);
 			assertTrue(1 == faturas.size());
 			assertTrue(faturas.get(0).getValor().compareTo(VALOR_100) == 0);
-		} catch (ContaNotNullException e) {
+		} catch (NullableAccountException e) {
 			fail();
 		}
 	}

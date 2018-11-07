@@ -16,9 +16,9 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 import br.com.victorpfranca.mybudget.InOut;
+import br.com.victorpfranca.mybudget.budget.Budget;
+import br.com.victorpfranca.mybudget.budget.view.BudgetCreatorDataGrid;
 import br.com.victorpfranca.mybudget.category.Category;
-import br.com.victorpfranca.mybudget.orcamento.Orcamento;
-import br.com.victorpfranca.mybudget.orcamento.view.CriadorOrcamentoDataGrid;
 import br.com.victorpfranca.mybudget.view.MonthYear;
 
 @RunWith(Parameterized.class)
@@ -31,7 +31,7 @@ public class CriadorOrcamentoDataGridTest {
 	public List<MonthYear> anosMesesInput;
 
 	@Parameter(2)
-	public List<Orcamento> orcamentosInput;
+	public List<Budget> orcamentosInput;
 
 	@Parameters
 	public static Collection<Object[]> data() {
@@ -48,22 +48,22 @@ public class CriadorOrcamentoDataGridTest {
 			anosMeses.add(new MonthYear(2018, i));
 		}
 
-		List<Orcamento> orcamentos = new ArrayList<Orcamento>();
+		List<Budget> budgets = new ArrayList<Budget>();
 
-		preencherOrcamentos(categories.get(0), orcamentos, 2018, 1, 6, BigDecimal.ONE);
+		preencherOrcamentos(categories.get(0), budgets, 2018, 1, 6, BigDecimal.ONE);
 
-		Object[][] data = new Object[][] { { categories, anosMeses, orcamentos } };
+		Object[][] data = new Object[][] { { categories, anosMeses, budgets } };
 
 		return Arrays.asList(data);
 	}
 
 	@Test
 	public void shouldInitOrcamentosGrid() {
-		CriadorOrcamentoDataGrid criadorOrcamentoDataGrid = new CriadorOrcamentoDataGrid();
+		BudgetCreatorDataGrid budgetCreatorDataGrid = new BudgetCreatorDataGrid();
 
-		criadorOrcamentoDataGrid.criar(categoriasInput, anosMesesInput, orcamentosInput);
+		budgetCreatorDataGrid.criar(categoriasInput, anosMesesInput, orcamentosInput);
 
-		List<MonthYear> meses = criadorOrcamentoDataGrid.getAnosMeses();
+		List<MonthYear> meses = budgetCreatorDataGrid.getAnosMeses();
 		Object[] mesesArray = meses.toArray();
 		assertEquals("Numero meses", meses.size(), anosMesesInput.size());
 		for (int i = 0; i < mesesArray.length; i++) {
@@ -71,45 +71,45 @@ public class CriadorOrcamentoDataGridTest {
 			assertEquals("Mês", ((MonthYear) mesesArray[i]).getMes(), i + 1);
 		}
 
-		Map<Category, Map<MonthYear, Orcamento>> orcamentosGridData = criadorOrcamentoDataGrid.getOrcamentosGridData();
+		Map<Category, Map<MonthYear, Budget>> orcamentosGridData = budgetCreatorDataGrid.getOrcamentosGridData();
 
-		for (Map.Entry<Category, Map<MonthYear, Orcamento>> categoriaEntry : orcamentosGridData.entrySet()) {
+		for (Map.Entry<Category, Map<MonthYear, Budget>> categoriaEntry : orcamentosGridData.entrySet()) {
 
-			Map<MonthYear, Orcamento> categoriaMap = ((Map<MonthYear, Orcamento>) categoriaEntry.getValue());
+			Map<MonthYear, Budget> categoriaMap = ((Map<MonthYear, Budget>) categoriaEntry.getValue());
 
 			assertEquals("Category", categoriasInput.get(0), categoriaEntry.getKey());
 
-			assertEquals("Valor Orcamento 1", orcamentosInput.get(0).getValor(),
+			assertEquals("Valor Budget 1", orcamentosInput.get(0).getValor(),
 					categoriaMap.get(new MonthYear(2018, 1)).getValor());
-			assertEquals("Valor Orcamento 2", orcamentosInput.get(1).getValor(),
+			assertEquals("Valor Budget 2", orcamentosInput.get(1).getValor(),
 					categoriaMap.get(new MonthYear(2018, 2)).getValor());
-			assertEquals("Valor Orcamento 3", orcamentosInput.get(2).getValor(),
+			assertEquals("Valor Budget 3", orcamentosInput.get(2).getValor(),
 					categoriaMap.get(new MonthYear(2018, 3)).getValor());
-			assertEquals("Valor Orcamento 4", orcamentosInput.get(3).getValor(),
+			assertEquals("Valor Budget 4", orcamentosInput.get(3).getValor(),
 					categoriaMap.get(new MonthYear(2018, 4)).getValor());
-			assertEquals("Valor Orcamento 5", orcamentosInput.get(4).getValor(),
+			assertEquals("Valor Budget 5", orcamentosInput.get(4).getValor(),
 					categoriaMap.get(new MonthYear(2018, 5)).getValor());
-			assertEquals("Valor Orcamento 6", orcamentosInput.get(5).getValor(),
+			assertEquals("Valor Budget 6", orcamentosInput.get(5).getValor(),
 					categoriaMap.get(new MonthYear(2018, 6)).getValor());
-			assertEquals("Valor Orcamento 7", BigDecimal.ZERO, categoriaMap.get(new MonthYear(2018, 7)).getValor());
-			assertEquals("Valor Orcamento 8", BigDecimal.ZERO, categoriaMap.get(new MonthYear(2018, 8)).getValor());
-			assertEquals("Valor Orcamento 9", BigDecimal.ZERO, categoriaMap.get(new MonthYear(2018, 9)).getValor());
-			assertEquals("Valor Orcamento 10", BigDecimal.ZERO, categoriaMap.get(new MonthYear(2018, 10)).getValor());
-			assertEquals("Valor Orcamento 11", BigDecimal.ZERO, categoriaMap.get(new MonthYear(2018, 11)).getValor());
-			assertEquals("Valor Orcamento 12", BigDecimal.ZERO, categoriaMap.get(new MonthYear(2018, 12)).getValor());
+			assertEquals("Valor Budget 7", BigDecimal.ZERO, categoriaMap.get(new MonthYear(2018, 7)).getValor());
+			assertEquals("Valor Budget 8", BigDecimal.ZERO, categoriaMap.get(new MonthYear(2018, 8)).getValor());
+			assertEquals("Valor Budget 9", BigDecimal.ZERO, categoriaMap.get(new MonthYear(2018, 9)).getValor());
+			assertEquals("Valor Budget 10", BigDecimal.ZERO, categoriaMap.get(new MonthYear(2018, 10)).getValor());
+			assertEquals("Valor Budget 11", BigDecimal.ZERO, categoriaMap.get(new MonthYear(2018, 11)).getValor());
+			assertEquals("Valor Budget 12", BigDecimal.ZERO, categoriaMap.get(new MonthYear(2018, 12)).getValor());
 
 		}
 	}
 
-	private static void preencherOrcamentos(Category category, List<Orcamento> orcamentos, int ano, int mesIni,
+	private static void preencherOrcamentos(Category category, List<Budget> budgets, int ano, int mesIni,
 			int mesFim, BigDecimal valor) {
 		for (int i = mesIni; i <= mesFim; i++) {
-			Orcamento orcamento = new Orcamento();
-			orcamento.setAno(ano);
-			orcamento.setMes(i);
-			orcamento.setCategory(category);
-			orcamento.setValor(valor);
-			orcamentos.add(orcamento);
+			Budget budget = new Budget();
+			budget.setAno(ano);
+			budget.setMes(i);
+			budget.setCategory(category);
+			budget.setValor(valor);
+			budgets.add(budget);
 		}
 	}
 

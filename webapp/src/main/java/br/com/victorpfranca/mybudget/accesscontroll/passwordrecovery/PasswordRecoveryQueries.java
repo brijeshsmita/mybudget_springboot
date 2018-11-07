@@ -23,8 +23,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import br.com.victorpfranca.mybudget.accesscontroll.User;
-import br.com.victorpfranca.mybudget.controleacesso.Usuario_;
-import br.com.victorpfranca.mybudget.controleacesso.recuperasenha.RecuperacaoSenha_;
+import br.com.victorpfranca.mybudget.accesscontroll.User_;
 import br.com.victorpfranca.mybudget.infra.date.DateUtils;
 import br.com.victorpfranca.mybudget.infra.date.api.CurrentDateSupplier;
 
@@ -32,104 +31,104 @@ import br.com.victorpfranca.mybudget.infra.date.api.CurrentDateSupplier;
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class PasswordRecoveryQueries {
 
-    @Inject
-    private EntityManager entityManager;
-    
-    @EJB
-    private CurrentDateSupplier dateUtils;
+	@Inject
+	private EntityManager entityManager;
 
-    public boolean confirmaValidadeDoCodigo(String email, String codigo) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> critQuery = cb.createQuery(Long.class);
+	@EJB
+	private CurrentDateSupplier dateUtils;
 
-        Root<PasswordRecovery> recSenha = critQuery.from(PasswordRecovery.class);
-        Join<?, User> user = recSenha.join(RecuperacaoSenha_.alvo, JoinType.INNER);
+	public boolean confirmaValidadeDoCodigo(String email, String codigo) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Long> critQuery = cb.createQuery(Long.class);
 
-        Predicate usuarioIgual = cb.equal(user.get(Usuario_.email), StringUtils.lowerCase(email));
-        Predicate codigoIgual = cb.equal(recSenha.get(RecuperacaoSenha_.codigo), codigo);
-        Predicate recuperacaoAtiva = cb.isTrue(recSenha.get(RecuperacaoSenha_.ativo));
-        Predicate dataSolicitacaoValida = filtroDeDataValida(cb, recSenha, periodoValidoParaRecuperacaoDeSenha());
+		Root<PasswordRecovery> recSenha = critQuery.from(PasswordRecovery.class);
+		Join<?, User> user = recSenha.join(PasswordRecovery_.alvo, JoinType.INNER);
 
-        critQuery.select(cb.count(recSenha.get(RecuperacaoSenha_.id))).where(usuarioIgual, codigoIgual, recuperacaoAtiva,
-                dataSolicitacaoValida);
+		Predicate usuarioIgual = cb.equal(user.get(User_.email), StringUtils.lowerCase(email));
+		Predicate codigoIgual = cb.equal(recSenha.get(PasswordRecovery_.codigo), codigo);
+		Predicate recuperacaoAtiva = cb.isTrue(recSenha.get(PasswordRecovery_.ativo));
+		Predicate dataSolicitacaoValida = filtroDeDataValida(cb, recSenha, periodoValidoParaRecuperacaoDeSenha());
 
-        return entityManager.createQuery(critQuery).getSingleResult() > 0;
-    }
+		critQuery.select(cb.count(recSenha.get(PasswordRecovery_.id))).where(usuarioIgual, codigoIgual,
+				recuperacaoAtiva, dataSolicitacaoValida);
 
-    public Pair<Date, Date> periodoValidoParaRecuperacaoDeSenha() {
-        LocalDateTime dataFim = dateUtils.currentLocalDateTime();
-        Date inicioPeriodoValidoSolicitacao = DateUtils.localDateTimeToDate(dataFim.minusMinutes(45));
-        Date fimPeriodoValidoSolicitacao = DateUtils.localDateTimeToDate(dataFim);
-        return new ImmutablePair<>(inicioPeriodoValidoSolicitacao, fimPeriodoValidoSolicitacao);
-    }
+		return entityManager.createQuery(critQuery).getSingleResult() > 0;
+	}
 
-    public PasswordRecovery ultimaRecuperacaoValidaPara(User user) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<PasswordRecovery> critQuery = cb.createQuery(PasswordRecovery.class);
+	public Pair<Date, Date> periodoValidoParaRecuperacaoDeSenha() {
+		LocalDateTime dataFim = dateUtils.currentLocalDateTime();
+		Date inicioPeriodoValidoSolicitacao = DateUtils.localDateTimeToDate(dataFim.minusMinutes(45));
+		Date fimPeriodoValidoSolicitacao = DateUtils.localDateTimeToDate(dataFim);
+		return new ImmutablePair<>(inicioPeriodoValidoSolicitacao, fimPeriodoValidoSolicitacao);
+	}
 
-        Root<PasswordRecovery> recSenha = critQuery.from(PasswordRecovery.class);
+	public PasswordRecovery ultimaRecuperacaoValidaPara(User user) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<PasswordRecovery> critQuery = cb.createQuery(PasswordRecovery.class);
 
-        Predicate usuarioIgual = cb.equal(recSenha.get(RecuperacaoSenha_.alvo), user);
-        Predicate recuperacaoAtiva = cb.isTrue(recSenha.get(RecuperacaoSenha_.ativo));
-        Predicate dataSolicitacaoValida = filtroDeDataValida(cb, recSenha, periodoValidoParaRecuperacaoDeSenha());
+		Root<PasswordRecovery> recSenha = critQuery.from(PasswordRecovery.class);
 
-        critQuery.select(recSenha).where(usuarioIgual, recuperacaoAtiva, dataSolicitacaoValida);
+		Predicate usuarioIgual = cb.equal(recSenha.get(PasswordRecovery_.alvo), user);
+		Predicate recuperacaoAtiva = cb.isTrue(recSenha.get(PasswordRecovery_.ativo));
+		Predicate dataSolicitacaoValida = filtroDeDataValida(cb, recSenha, periodoValidoParaRecuperacaoDeSenha());
 
-        return entityManager.createQuery(critQuery).getSingleResult();
-    }
+		critQuery.select(recSenha).where(usuarioIgual, recuperacaoAtiva, dataSolicitacaoValida);
 
-    public PasswordRecovery ultimaRecuperacaoValidaPara(String email, String codigo) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<PasswordRecovery> critQuery = cb.createQuery(PasswordRecovery.class);
+		return entityManager.createQuery(critQuery).getSingleResult();
+	}
 
-        Root<PasswordRecovery> recSenha = critQuery.from(PasswordRecovery.class);
-        Join<?, User> user = recSenha.join(RecuperacaoSenha_.alvo, JoinType.INNER);
+	public PasswordRecovery ultimaRecuperacaoValidaPara(String email, String codigo) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<PasswordRecovery> critQuery = cb.createQuery(PasswordRecovery.class);
 
-        Predicate usuarioIgual = cb.equal(user.get(Usuario_.email), StringUtils.lowerCase(email));
-        Predicate codigoIgual = cb.equal(recSenha.get(RecuperacaoSenha_.codigo), codigo);
-        Predicate recuperacaoAtiva = cb.isTrue(recSenha.get(RecuperacaoSenha_.ativo));
-        Predicate dataSolicitacaoValida = filtroDeDataValida(cb, recSenha, periodoValidoParaRecuperacaoDeSenha());
+		Root<PasswordRecovery> recSenha = critQuery.from(PasswordRecovery.class);
+		Join<?, User> user = recSenha.join(PasswordRecovery_.alvo, JoinType.INNER);
 
-        critQuery.select(recSenha).where(usuarioIgual, codigoIgual, recuperacaoAtiva, dataSolicitacaoValida);
-        try {
-            return entityManager.createQuery(critQuery).getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
+		Predicate usuarioIgual = cb.equal(user.get(User_.email), StringUtils.lowerCase(email));
+		Predicate codigoIgual = cb.equal(recSenha.get(PasswordRecovery_.codigo), codigo);
+		Predicate recuperacaoAtiva = cb.isTrue(recSenha.get(PasswordRecovery_.ativo));
+		Predicate dataSolicitacaoValida = filtroDeDataValida(cb, recSenha, periodoValidoParaRecuperacaoDeSenha());
 
-    public List<PasswordRecovery> listarAtivasComDataExpirada() {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<PasswordRecovery> critQuery = cb.createQuery(PasswordRecovery.class);
+		critQuery.select(recSenha).where(usuarioIgual, codigoIgual, recuperacaoAtiva, dataSolicitacaoValida);
+		try {
+			return entityManager.createQuery(critQuery).getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
 
-        Root<PasswordRecovery> recSenha = critQuery.from(PasswordRecovery.class);
-        Predicate recuperacaoAtiva = cb.isTrue(recSenha.get(RecuperacaoSenha_.ativo));
+	public List<PasswordRecovery> listarAtivasComDataExpirada() {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<PasswordRecovery> critQuery = cb.createQuery(PasswordRecovery.class);
 
-        Predicate dataSolicitacaoInvalida = cb
-                .not(filtroDeDataValida(cb, recSenha, periodoValidoParaRecuperacaoDeSenha()));
-        critQuery.select(recSenha).where(recuperacaoAtiva, dataSolicitacaoInvalida);
+		Root<PasswordRecovery> recSenha = critQuery.from(PasswordRecovery.class);
+		Predicate recuperacaoAtiva = cb.isTrue(recSenha.get(PasswordRecovery_.ativo));
 
-        return entityManager.createQuery(critQuery).getResultList();
-    }
+		Predicate dataSolicitacaoInvalida = cb
+				.not(filtroDeDataValida(cb, recSenha, periodoValidoParaRecuperacaoDeSenha()));
+		critQuery.select(recSenha).where(recuperacaoAtiva, dataSolicitacaoInvalida);
 
-    public List<PasswordRecovery> listarAtivasDeUsuario(User user) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<PasswordRecovery> critQuery = cb.createQuery(PasswordRecovery.class);
+		return entityManager.createQuery(critQuery).getResultList();
+	}
 
-        Root<PasswordRecovery> recSenha = critQuery.from(PasswordRecovery.class);
+	public List<PasswordRecovery> listarAtivasDeUsuario(User user) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<PasswordRecovery> critQuery = cb.createQuery(PasswordRecovery.class);
 
-        Predicate usuarioIgual = cb.equal(recSenha.get(RecuperacaoSenha_.alvo), user);
-        Predicate recuperacaoAtiva = cb.isTrue(recSenha.get(RecuperacaoSenha_.ativo));
-        Predicate dataSolicitacaoValida = filtroDeDataValida(cb, recSenha, periodoValidoParaRecuperacaoDeSenha());
-        critQuery.select(recSenha).where(usuarioIgual, recuperacaoAtiva, dataSolicitacaoValida);
-        return entityManager.createQuery(critQuery).getResultList();
-    }
+		Root<PasswordRecovery> recSenha = critQuery.from(PasswordRecovery.class);
 
-    private Predicate filtroDeDataValida(CriteriaBuilder cb, Root<PasswordRecovery> recSenha,
-            Pair<Date, Date> periodoValido) {
-        Predicate dataSolicitacaoValida = cb.between(recSenha.get(RecuperacaoSenha_.dataSolicitacao),
-                periodoValido.getLeft(), periodoValido.getRight());
-        return dataSolicitacaoValida;
-    }
+		Predicate usuarioIgual = cb.equal(recSenha.get(PasswordRecovery_.alvo), user);
+		Predicate recuperacaoAtiva = cb.isTrue(recSenha.get(PasswordRecovery_.ativo));
+		Predicate dataSolicitacaoValida = filtroDeDataValida(cb, recSenha, periodoValidoParaRecuperacaoDeSenha());
+		critQuery.select(recSenha).where(usuarioIgual, recuperacaoAtiva, dataSolicitacaoValida);
+		return entityManager.createQuery(critQuery).getResultList();
+	}
+
+	private Predicate filtroDeDataValida(CriteriaBuilder cb, Root<PasswordRecovery> recSenha,
+			Pair<Date, Date> periodoValido) {
+		Predicate dataSolicitacaoValida = cb.between(recSenha.get(PasswordRecovery_.dataSolicitacao),
+				periodoValido.getLeft(), periodoValido.getRight());
+		return dataSolicitacaoValida;
+	}
 
 }

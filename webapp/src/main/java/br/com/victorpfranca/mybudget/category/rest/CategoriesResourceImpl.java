@@ -3,7 +3,6 @@ package br.com.victorpfranca.mybudget.category.rest;
 import static br.com.victorpfranca.mybudget.infra.LambdaUtils.nullSafeConvert;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,17 +15,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import br.com.victorpfranca.mybudget.InOut;
-import br.com.victorpfranca.mybudget.categoria.CadastroCategoriaDTO;
-import br.com.victorpfranca.mybudget.categoria.CategoriaDTO;
-import br.com.victorpfranca.mybudget.categoria.CategoriaResource;
-import br.com.victorpfranca.mybudget.categoria.CategoriasResource;
-import br.com.victorpfranca.mybudget.category.Category;
 import br.com.victorpfranca.mybudget.category.CategoriaService;
+import br.com.victorpfranca.mybudget.category.CategoriesResource;
+import br.com.victorpfranca.mybudget.category.Category;
+import br.com.victorpfranca.mybudget.category.CategoryDTO;
+import br.com.victorpfranca.mybudget.category.CategoryRegistryDTO;
+import br.com.victorpfranca.mybudget.category.CategoryResource;
 import br.com.victorpfranca.mybudget.category.SameNameException;
 
 @Path("categories")
-public class CategoriesResourceImpl implements CategoriasResource {
+public class CategoriesResourceImpl implements CategoriesResource {
 
 	@Inject
 	private CategoryResourceImpl categoryResourceImpl;
@@ -40,22 +38,22 @@ public class CategoriesResourceImpl implements CategoriasResource {
 	private UriInfo uriInfo;
 
 	@Override
-	public List<CategoriaDTO> listar() {
+	public List<CategoryDTO> listar() {
 		return categoriaService.findAll().stream().map(categoryConversor::converter).collect(Collectors.toList());
 	}
 
 	@Override
-	public List<CategoriaDTO> listarReceitas() {
+	public List<CategoryDTO> listarReceitas() {
 		return categoriaService.findReceitas().stream().map(categoryConversor::converter).collect(Collectors.toList());
 	}
 
 	@Override
-	public List<CategoriaDTO> listarDespesas() {
+	public List<CategoryDTO> listarDespesas() {
 		return categoriaService.findDespesas().stream().map(categoryConversor::converter).collect(Collectors.toList());
 	}
 
 	@Override
-	public Response inserir(CadastroCategoriaDTO categoria) {
+	public Response inserir(CategoryRegistryDTO categoria) {
 		try {
 			Category created = categoriaService.save(nullSafeConvert(categoria, categoryConversor::converter));
 			URI createdUri = uriInfo.getRequestUriBuilder().path(created.getId().toString()).build();
@@ -67,7 +65,7 @@ public class CategoriesResourceImpl implements CategoriasResource {
 	}
 
 	@Override
-	public CategoriaResource categoriaResource(Integer id) {
+	public CategoryResource categoryResource(Integer id) {
 		return categoryResourceImpl.id(id);
 	}
 

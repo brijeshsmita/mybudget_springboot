@@ -10,22 +10,17 @@ import br.com.victorpfranca.mybudget.accesscontroll.CredentialsStore;
 import br.com.victorpfranca.mybudget.account.Account;
 import br.com.victorpfranca.mybudget.account.AccountBalance;
 import br.com.victorpfranca.mybudget.account.AtualizadorSaldoContaMock;
-import br.com.victorpfranca.mybudget.account.ContaServiceMock;
 import br.com.victorpfranca.mybudget.account.rules.AccountBalanceUpdater;
 import br.com.victorpfranca.mybudget.infra.dao.DAO;
-import br.com.victorpfranca.mybudget.transaction.CheckingAccountTransaction;
-import br.com.victorpfranca.mybudget.transaction.CreditCardInvoiceTransactionItem;
-import br.com.victorpfranca.mybudget.transaction.CreditCardTransaction;
-import br.com.victorpfranca.mybudget.transaction.Transaction;
-import br.com.victorpfranca.mybudget.transaction.rules.AtualizadorFaturasCartao;
-import br.com.victorpfranca.mybudget.transaction.rules.CriadorLancamentoCartaoCredito;
-import br.com.victorpfranca.mybudget.transaction.rules.CriadorLancamentoContaCorrente;
-import br.com.victorpfranca.mybudget.transaction.rules.LancamentoRulesFacade;
-import br.com.victorpfranca.mybudget.transaction.rules.RemovedorLancamentoCartao;
-import br.com.victorpfranca.mybudget.transaction.rules.RemovedorLancamentoContaCorrente;
-import br.com.victorpfranca.mybudget.transaction.rules.RemovedorLancamentoFaturaItem;
+import br.com.victorpfranca.mybudget.transaction.rules.CheckingAccountTransactionBuilder;
+import br.com.victorpfranca.mybudget.transaction.rules.CheckingAccountTransactionRemover;
+import br.com.victorpfranca.mybudget.transaction.rules.CreditCardAccountInvoiceItemRemover;
+import br.com.victorpfranca.mybudget.transaction.rules.CreditCardAccountTransactionRemover;
+import br.com.victorpfranca.mybudget.transaction.rules.CreditCardInvoiceUpdater;
+import br.com.victorpfranca.mybudget.transaction.rules.CreditCardTransactionBuilder;
+import br.com.victorpfranca.mybudget.transaction.rules.TransactionRulesFacade;
 
-public class LancamentoRulesFacadeMock extends LancamentoRulesFacade {
+public class LancamentoRulesFacadeMock extends TransactionRulesFacade {
 
 	private DAO<Account> contaDAO;
 	private DAO<Transaction> lancamentoDAO;
@@ -53,35 +48,35 @@ public class LancamentoRulesFacadeMock extends LancamentoRulesFacade {
 	}
 
 	private void initCriadores(AccountBalanceUpdater accountBalanceUpdater) {
-		criadorLancamentoContaCorrente = new CriadorLancamentoContaCorrente();
-		criadorLancamentoContaCorrente.setAtualizadorSaldoConta(accountBalanceUpdater);
-		criadorLancamentoContaCorrente.setLancamentoDao(lancamentoDAO);
-		criadorLancamentoContaCorrente.setRemovedorLancamento(removedorLancamento);
-		criadorLancamentoContaCorrente.setContaDao(contaDAO);
+		checkingAccountTransactionBuilder = new CheckingAccountTransactionBuilder();
+		checkingAccountTransactionBuilder.setAtualizadorSaldoConta(accountBalanceUpdater);
+		checkingAccountTransactionBuilder.setLancamentoDao(lancamentoDAO);
+		checkingAccountTransactionBuilder.setRemovedorLancamento(removedorLancamento);
+		checkingAccountTransactionBuilder.setContaDao(contaDAO);
 
-		criadorLancamentoCartaoCredito = new CriadorLancamentoCartaoCredito();
-		criadorLancamentoCartaoCredito.setAtualizadorSaldoConta(accountBalanceUpdater);
-		criadorLancamentoCartaoCredito.setLancamentoDAO(lancamentoDAO);
+		creditCardTransactionBuilder = new CreditCardTransactionBuilder();
+		creditCardTransactionBuilder.setAtualizadorSaldoConta(accountBalanceUpdater);
+		creditCardTransactionBuilder.setLancamentoDAO(lancamentoDAO);
 	}
 
 	private void configurarRemovedor(AccountBalanceUpdater accountBalanceUpdater) {
-		removedorLancamento = new RemovedorLancamentoContaCorrente();
+		removedorLancamento = new CheckingAccountTransactionRemover();
 		removedorLancamento.setAtualizadorSaldoConta(accountBalanceUpdater);
 		removedorLancamento.setLancamentoDAO(lancamentoDAO);
 
-		removedorLancamentoCartao = new RemovedorLancamentoCartao();
-		removedorLancamentoCartao.setAtualizadorSaldoConta(accountBalanceUpdater);
-		removedorLancamentoCartao.setLancamentoDAO(lancamentoDAO);
+		creditCardAccountTransactionRemover = new CreditCardAccountTransactionRemover();
+		creditCardAccountTransactionRemover.setAtualizadorSaldoConta(accountBalanceUpdater);
+		creditCardAccountTransactionRemover.setLancamentoDAO(lancamentoDAO);
 
-		AtualizadorFaturasCartao atualizadorFaturasCartao = new AtualizadorFaturasCartao();
-		atualizadorFaturasCartao.setLancamentoDAO(lancamentoDAO);
-		atualizadorFaturasCartao.setCredentialsStore(credentialsStore);
-		removedorLancamentoCartao.setAtualizadorFaturasCartao(atualizadorFaturasCartao);
+		CreditCardInvoiceUpdater creditCardInvoiceUpdater = new CreditCardInvoiceUpdater();
+		creditCardInvoiceUpdater.setLancamentoDAO(lancamentoDAO);
+		creditCardInvoiceUpdater.setCredentialsStore(credentialsStore);
+		creditCardAccountTransactionRemover.setAtualizadorFaturasCartao(creditCardInvoiceUpdater);
 
-		RemovedorLancamentoFaturaItem removedorLancamentoFaturaItem = new RemovedorLancamentoFaturaItem();
-		removedorLancamentoFaturaItem.setLancamentoDAO(lancamentoDAO);
-		removedorLancamentoFaturaItem.setCredentialsStore(credentialsStore);
-		removedorLancamentoCartao.setRemovedorLancamentoFaturaItem(removedorLancamentoFaturaItem);
+		CreditCardAccountInvoiceItemRemover creditCardAccountInvoiceItemRemover = new CreditCardAccountInvoiceItemRemover();
+		creditCardAccountInvoiceItemRemover.setLancamentoDAO(lancamentoDAO);
+		creditCardAccountInvoiceItemRemover.setCredentialsStore(credentialsStore);
+		creditCardAccountTransactionRemover.setRemovedorLancamentoFaturaItem(creditCardAccountInvoiceItemRemover);
 	}
 
 	static LancamentoRulesFacadeMock build() {

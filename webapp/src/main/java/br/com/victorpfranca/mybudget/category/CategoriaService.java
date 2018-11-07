@@ -12,9 +12,9 @@ import javax.persistence.EntityManager;
 
 import br.com.victorpfranca.mybudget.InOut;
 import br.com.victorpfranca.mybudget.accesscontroll.CredentialsStore;
-import br.com.victorpfranca.mybudget.orcamento.Orcamento;
+import br.com.victorpfranca.mybudget.budget.Budget;
 import br.com.victorpfranca.mybudget.transaction.Transaction;
-import br.com.victorpfranca.mybudget.transaction.rules.RemocaoNaoPermitidaException;
+import br.com.victorpfranca.mybudget.transaction.rules.DeletionNotPermittedException;
 
 @Stateless
 public class CategoriaService {
@@ -68,24 +68,24 @@ public class CategoriaService {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void remove(Category category) throws RemocaoNaoPermitidaException {
+	public void remove(Category category) throws DeletionNotPermittedException {
 		validarSemLancamentos(category);
-		em.createNamedQuery(Orcamento.REMOVE_BY_CATEGORIA_QUERY).setParameter("category", category).executeUpdate();
+		em.createNamedQuery(Budget.REMOVE_BY_CATEGORIA_QUERY).setParameter("category", category).executeUpdate();
 		em.remove(em.contains(category) ? category : em.merge(category));
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void remove(Integer id) throws RemocaoNaoPermitidaException {
+	public void remove(Integer id) throws DeletionNotPermittedException {
 		remove(find(id));
 	}
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	private void validarSemLancamentos(Category category) throws RemocaoNaoPermitidaException {
+	private void validarSemLancamentos(Category category) throws DeletionNotPermittedException {
 		List<Transaction> lancamentosExistentes = em.createNamedQuery(Transaction.FIND_LANCAMENTO_QUERY, Transaction.class)
 				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado())
 				.setParameter("category", category).setParameter("serie", null).getResultList();
 		if (!lancamentosExistentes.isEmpty())
-			throw new RemocaoNaoPermitidaException("crud.categoria.error.lancamentos_nao_podem_ser_removidos");
+			throw new DeletionNotPermittedException("crud.categoria.error.lancamentos_nao_podem_ser_removidos");
 	}
 
 }

@@ -4,13 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>br.com.meussaldos</groupId>
-        <artifactId>meussaldos-parent</artifactId>
+        <groupId>br.com.mybudget</groupId>
+        <artifactId>mybudget-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>meussaldos-services-api</artifactId>
+    <artifactId>mybudget-services-api</artifactId>
     <packaging>jar</packaging>
-    <name>meussaldos-services-api</name>
+    <name>mybudget-services-api</name>
 
     <dependencies>
         <!-- Lombok -->
