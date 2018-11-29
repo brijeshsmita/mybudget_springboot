@@ -1,0 +1,40 @@
+postgres:
+    image: victorhugofranca/mybudget-postgres
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+        - LC_ALL=C.UTF-8
+        - POSTGRES_DB=meussaldos
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+        - POSTGRES_PORT=5432
+    volumes:
+        - $PWD/output_files/postgres_data:/var/lib/postgresql/data
+    cpu_shares: 100
+    mem_limit: 131072000
+wildfly:
+    image: victorhugofranca/mybudget-wildfly
+    container_name: wildfly
+    ports:
+        - "8080:8080"
+        - "9990:9990"
+    environment:
+        - DB_HOST=postgres
+        - DB_PORT=5432
+        - DB_NAME=meussaldos
+        - DB_USER=postgres
+        - DB_PASS=postgres
+        - DS_NAME=meussaldos
+        - JNDI_NAME=java:jboss/datasources/meussaldos
+        - DS_LOG_NAME=LogErrosDS
+        - JNDI_LOG_NAME=java:jboss/datasources/LogErrosDS
+        - MAIL_SESSION_NAME=meussaldos
+        - MAIL_SESSION_JNDI_NAME=meussaldos
+        - MAIL_FROM=victorhugof@gmail.com
+        - MAIL_SESSION_HOST=aspmx.l.google.com
+        - MAIL_SESSION_PORT=25
+    links:
+        - postgres
+    cpu_shares: 100
+    mem_limit: 655360000

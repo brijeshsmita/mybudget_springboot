@@ -27,9 +27,9 @@ import br.com.victorpfranca.mybudget.accesscontroll.User;
 @Entity
 @Table(name = "vw_saldo_orcado_acumulado_mes")
 @NamedQueries({
-		@NamedQuery(name = FIND_ALL, query = "SELECT o FROM MonthAccumulatedBudgetedBalance o WHERE o.usuario.id = :user"),
-		@NamedQuery(name = FIND_BY_DESPESA_UNTIL_MONTH, query = "SELECT o FROM MonthAccumulatedBudgetedBalance o where o.usuario.id = :user AND CONCAT(to_char(ano, 'FM9999'),to_char(mes, 'FM09')) <= CONCAT(to_char(:ano, 'FM9999'),to_char(:mes, 'FM09')) and inOut = '1' ORDER BY ano DESC, mes DESC"),
-		@NamedQuery(name = FIND_BY_RECEITA_UNTIL_MONTH, query = "SELECT o FROM MonthAccumulatedBudgetedBalance o where o.usuario.id = :user AND CONCAT(to_char(ano, 'FM9999'),to_char(mes, 'FM09')) <= CONCAT(to_char(:ano, 'FM9999'),to_char(:mes, 'FM09')) and inOut = '0' ORDER BY ano DESC, mes DESC") })
+		@NamedQuery(name = FIND_ALL, query = "SELECT o FROM MonthAccumulatedBudgetedBalance o WHERE o.user.id = :user"),
+		@NamedQuery(name = FIND_BY_DESPESA_UNTIL_MONTH, query = "SELECT o FROM MonthAccumulatedBudgetedBalance o where o.user.id = :user AND CONCAT(to_char(ano, 'FM9999'),to_char(mes, 'FM09')) <= CONCAT(to_char(:ano, 'FM9999'),to_char(:mes, 'FM09')) and inOut = '1' ORDER BY ano DESC, mes DESC"),
+		@NamedQuery(name = FIND_BY_RECEITA_UNTIL_MONTH, query = "SELECT o FROM MonthAccumulatedBudgetedBalance o where o.user.id = :user AND CONCAT(to_char(ano, 'FM9999'),to_char(mes, 'FM09')) <= CONCAT(to_char(:ano, 'FM9999'),to_char(:mes, 'FM09')) and inOut = '0' ORDER BY ano DESC, mes DESC") })
 public class MonthAccumulatedBudgetedBalance implements Serializable {
 	private static final long serialVersionUID = 1L;
 

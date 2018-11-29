@@ -8,7 +8,7 @@
     <h:form>
         <p:dataTable id="logErrosDataTable" var="logErros"
             widgetVar="logErrosDataTableWV" lazy="true"
-            value="#{logErrosViewController.logErrosDataModel}"
+            value="#{errorsLogViewController.logErrosDataModel}"
             paginator="true" paginatorAlwaysVisible="false" rows="10"
             sortBy="dataOcorrencia" sortOrder="descending"
             emptyMessage="#{msg['crud.logErros.list.empty']}">

@@ -6,7 +6,7 @@ import java.nio.file.Paths
 
 class ExecutorTest {
 
-    @Test
+//    @Test
     fun futureRollbackSQL(){
         val configFile = Paths.get(ExecutorTest::class.java.getResource("/applicationConfig.yml").toURI()).toFile()
         println(configFile.parent)
@@ -16,7 +16,7 @@ class ExecutorTest {
             File("databasechangelog.csv").delete()
         }
     }
-    @Test
+//    @Test
     fun updateSQL(){
         val configFile = Paths.get(ExecutorTest::class.java.getResource("/applicationConfig.yml").toURI()).toFile()
         println(configFile.parent)

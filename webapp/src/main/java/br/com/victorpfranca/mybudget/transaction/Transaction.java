@@ -64,16 +64,16 @@ import lombok.Setter;
 @Table(name = "lancamento")
 @NamedQueries({
 
-		@NamedQuery(name = FIND_LANCAMENTO_QUERY, query = "SELECT l FROM Transaction l WHERE l.usuario.id=:user AND (:serie is null OR serie = :serie) AND (:category is null OR category = :category) ORDER BY data, id"),
+		@NamedQuery(name = FIND_LANCAMENTO_QUERY, query = "SELECT l FROM Transaction l WHERE l.user.id=:user AND (:serie is null OR serie = :serie) AND (:category is null OR category = :category) ORDER BY data, id"),
 		@NamedQuery(name = FIND_LANCAMENTO_FATURA_QUERY, query = "SELECT l FROM Transaction l WHERE cartaoCreditoFatura = :cartaoCreditoFatura AND data >= :data ORDER BY data ASC"),
 
-		@NamedQuery(name = FIND_LANCAMENTO_CONTA_CORRENTE_QUERY, query = "SELECT l FROM CheckingAccountTransaction l WHERE l.usuario.id=:user AND (:ano is null OR ano = :ano) AND (:mes is null OR mes = :mes) AND (:account is null OR account = :account) AND (:category is null OR category = :category) AND (:saldoInicial is null OR saldoInicial = :saldoInicial) AND (:cartaoCreditoFatura is null OR cartaoCreditoFatura = :cartaoCreditoFatura) AND (:faturaCartao is null OR faturaCartao = :faturaCartao) AND (:status is null OR status= :status) ORDER BY data, id"),
+		@NamedQuery(name = FIND_LANCAMENTO_CONTA_CORRENTE_QUERY, query = "SELECT l FROM CheckingAccountTransaction l WHERE l.user.id=:user AND (:ano is null OR ano = :ano) AND (:mes is null OR mes = :mes) AND (:account is null OR account = :account) AND (:category is null OR category = :category) AND (:saldoInicial is null OR saldoInicial = :saldoInicial) AND (:cartaoCreditoFatura is null OR cartaoCreditoFatura = :cartaoCreditoFatura) AND (:faturaCartao is null OR faturaCartao = :faturaCartao) AND (:status is null OR status= :status) ORDER BY data, id"),
 
-		@NamedQuery(name = FIND_LANCAMENTO_CARTAO_QUERY, query = "SELECT l FROM CreditCardTransaction l WHERE l.usuario.id=:user AND (:serie is null OR serie = :serie) AND (:account is null OR account = :account) AND (:saldoInicial is null OR saldoInicial = :saldoInicial) ORDER BY data, id ASC"),
+		@NamedQuery(name = FIND_LANCAMENTO_CARTAO_QUERY, query = "SELECT l FROM CreditCardTransaction l WHERE l.user.id=:user AND (:serie is null OR serie = :serie) AND (:account is null OR account = :account) AND (:saldoInicial is null OR saldoInicial = :saldoInicial) ORDER BY data, id ASC"),
 
-		@NamedQuery(name = FIND_LANCAMENTO_FATURA_CARTAO_ITEM_QUERY, query = "SELECT l FROM CreditCardInvoiceTransactionItem l WHERE l.usuario.id=:user AND (:lancamentoCartao is null OR lancamentoCartao = :lancamentoCartao) AND (:ano is null OR ano = :ano) AND (:mes is null OR mes = :mes) AND (:account is null OR account = :account) AND (:category is null OR category = :category) ORDER BY data, lancamentoCartao.data, id"),
+		@NamedQuery(name = FIND_LANCAMENTO_FATURA_CARTAO_ITEM_QUERY, query = "SELECT l FROM CreditCardInvoiceTransactionItem l WHERE l.user.id=:user AND (:lancamentoCartao is null OR lancamentoCartao = :lancamentoCartao) AND (:ano is null OR ano = :ano) AND (:mes is null OR mes = :mes) AND (:account is null OR account = :account) AND (:category is null OR category = :category) ORDER BY data, lancamentoCartao.data, id"),
 
-		@NamedQuery(name = FIND_LANCAMENTO_INICIAL_CARTAO_QUERY, query = "SELECT l FROM CreditCardTransaction l WHERE l.usuario.id=:user AND (:account is null OR account = :account) AND saldoInicial = true ORDER BY data, id ASC"),
+		@NamedQuery(name = FIND_LANCAMENTO_INICIAL_CARTAO_QUERY, query = "SELECT l FROM CreditCardTransaction l WHERE l.user.id=:user AND (:account is null OR account = :account) AND saldoInicial = true ORDER BY data, id ASC"),
 
 		@NamedQuery(name = REMOVE_BY_SERIE_QUERY, query = "DELETE FROM Transaction l WHERE serie = :serie"),
 		@NamedQuery(name = REMOVE_LANCAMENTOS_CONTA_CORRENTE_QUERY, query = "DELETE FROM CheckingAccountTransaction l WHERE (:account is null OR account = :account) AND (:saldoInicial is null OR saldoInicial = :saldoInicial)"),

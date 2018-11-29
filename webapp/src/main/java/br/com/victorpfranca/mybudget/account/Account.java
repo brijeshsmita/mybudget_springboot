@@ -34,13 +34,13 @@ import br.com.victorpfranca.mybudget.accesscontroll.User;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo")
-@Table(name = "account")
+@Table(name = "conta")
 @NamedQueries({
-		@NamedQuery(name = FIND_ALL_QUERY, query = "SELECT c FROM Account c WHERE c.usuario.id = :user ORDER BY nome"),
-		@NamedQuery(name = FIND_BY_NAME_QUERY, query = "SELECT c FROM Account c where c.usuario.id = :user AND c.nome = :nome"),
-		@NamedQuery(name = FIND_ALL_CONTA_BANCO_QUERY, query = "SELECT c FROM BankAccount c WHERE c.usuario.id = :user ORDER BY nome"),
-		@NamedQuery(name = FIND_ALL_CONTA_DINHEIRO_QUERY, query = "SELECT c FROM MoneyAccount c WHERE c.usuario.id = :user ORDER BY nome"),
-		@NamedQuery(name = FIND_ALL_CONTA_CARTOES_QUERY, query = "SELECT c FROM CreditCardAccount c WHERE c.usuario.id = :user ORDER BY nome") })
+		@NamedQuery(name = FIND_ALL_QUERY, query = "SELECT c FROM Account c WHERE c.user.id = :user ORDER BY nome"),
+		@NamedQuery(name = FIND_BY_NAME_QUERY, query = "SELECT c FROM Account c where c.user.id = :user AND c.nome = :nome"),
+		@NamedQuery(name = FIND_ALL_CONTA_BANCO_QUERY, query = "SELECT c FROM BankAccount c WHERE c.user.id = :user ORDER BY nome"),
+		@NamedQuery(name = FIND_ALL_CONTA_DINHEIRO_QUERY, query = "SELECT c FROM MoneyAccount c WHERE c.user.id = :user ORDER BY nome"),
+		@NamedQuery(name = FIND_ALL_CONTA_CARTOES_QUERY, query = "SELECT c FROM CreditCardAccount c WHERE c.user.id = :user ORDER BY nome") })
 
 public class Account implements Serializable {
 	private static final long serialVersionUID = 1L;

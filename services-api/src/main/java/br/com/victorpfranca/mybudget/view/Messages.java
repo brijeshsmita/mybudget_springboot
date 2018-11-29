@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 
 public class Messages {
 
-	private static final String MESSAGE_FILE = "br.com.gestao.financeira.pessoal.messages";
+	private static final String MESSAGE_FILE = "br.com.victorpfranca.mybudget.messages";
 
 	public static String msg(Locale locale, String msg, Object... args) {
 		return MessageFormat.format(msg(locale, msg), args);

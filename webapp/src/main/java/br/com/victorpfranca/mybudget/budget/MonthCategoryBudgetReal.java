@@ -29,9 +29,9 @@ import br.com.victorpfranca.mybudget.category.Category;
 @Entity
 @Table(name = "vw_orcado_real_categoria_mes")
 @NamedQueries({
-		@NamedQuery(name = FIND_ALL, query = "SELECT o FROM MonthCategoryBudgetReal o WHERE o.usuario.id = :user"),
-		@NamedQuery(name = FIND_BY_DESPESA_MONTH, query = "SELECT o FROM MonthCategoryBudgetReal o where o.usuario.id = :user and ano = :ano and mes = :mes and inOut = '1' order by orcado-realizado asc"),
-		@NamedQuery(name = FIND_BY_RECEITA_MONTH, query = "SELECT o FROM MonthCategoryBudgetReal o where o.usuario.id = :user and ano = :ano and mes = :mes and inOut = '0' order by orcado-realizado asc") })
+		@NamedQuery(name = FIND_ALL, query = "SELECT o FROM MonthCategoryBudgetReal o WHERE o.user.id = :user"),
+		@NamedQuery(name = FIND_BY_DESPESA_MONTH, query = "SELECT o FROM MonthCategoryBudgetReal o where o.user.id = :user and ano = :ano and mes = :mes and inOut = '1' order by orcado-realizado asc"),
+		@NamedQuery(name = FIND_BY_RECEITA_MONTH, query = "SELECT o FROM MonthCategoryBudgetReal o where o.user.id = :user and ano = :ano and mes = :mes and inOut = '0' order by orcado-realizado asc") })
 public class MonthCategoryBudgetReal implements Serializable {
 	private static final long serialVersionUID = 1L;
 

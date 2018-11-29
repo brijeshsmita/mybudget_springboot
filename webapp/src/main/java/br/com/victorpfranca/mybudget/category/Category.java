@@ -28,9 +28,9 @@ import br.com.victorpfranca.mybudget.accesscontroll.CredentialsStore;
 import br.com.victorpfranca.mybudget.accesscontroll.User;
 
 @Entity
-@Table(name = "category")
+@Table(name = "categoria")
 @NamedQueries({
-		@NamedQuery(name = FIND_ALL_QUERY, query = "SELECT c FROM Category c where c.usuario.id = :user AND (:nome is null OR c.nome = :nome) AND (:inOut is null OR inOut = :inOut) ORDER BY nome") })
+		@NamedQuery(name = FIND_ALL_QUERY, query = "SELECT c FROM Category c where c.user.id = :user AND (:nome is null OR c.nome = :nome) AND (:inOut is null OR inOut = :inOut) ORDER BY nome") })
 
 public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;

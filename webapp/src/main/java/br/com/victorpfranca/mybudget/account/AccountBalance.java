@@ -39,7 +39,7 @@ import br.com.victorpfranca.mybudget.transaction.Transaction;
 
 @Entity
 @Table(name = "conta_saldo")
-@NamedQueries({ @NamedQuery(name = FIND_ALL_QUERY, query = "SELECT s FROM AccountBalance s WHERE s.usuario.id = :user"),
+@NamedQueries({ @NamedQuery(name = FIND_ALL_QUERY, query = "SELECT s FROM AccountBalance s WHERE s.user.id = :user"),
 
 		@NamedQuery(name = FIND_UNTIL_ANO_MES_GROUPED_QUERY, query = "SELECT new br.com.victorpfranca.mybudget.account.AccountBalance(s.ano, s.mes, SUM(valor)) FROM AccountBalance s where (:user is null OR user = :user) and (:account is null OR account = :account) and CONCAT(to_char(ano, 'FM9999'),to_char(mes, 'FM09')) <= CONCAT(to_char(:ano, 'FM9999'),to_char(:mes, 'FM09')) group by ano, mes order by ano DESC, mes DESC"),
 		@NamedQuery(name = FIND_FROM_ANO_MES_GROUPED_QUERY, query = "SELECT new br.com.victorpfranca.mybudget.account.AccountBalance(s.ano, s.mes, SUM(valor)) FROM AccountBalance s where (:user is null OR user = :user) and (:account is null OR account = :account) and CONCAT(to_char(ano, 'FM9999'),to_char(mes, 'FM09')) >= CONCAT(to_char(:ano, 'FM9999'),to_char(:mes, 'FM09')) group by ano, mes order by ano ASC, mes ASC"),

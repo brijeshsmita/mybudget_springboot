@@ -19,8 +19,8 @@
 			<h:form style="display:flex;">
 				<div style="flex: 1;"></div>
 				<div style="flex: 1;">
-					<p:selectOneButton value="#{orcamentoViewController.selectedTab}"
-						rendered="#{not orcamentoViewController.telaGrid}"
+					<p:selectOneButton value="#{budgetViewController.selectedTab}"
+						rendered="#{not budgetViewController.telaGrid}"
 						converter="javax.faces.Integer">
 						<p:ajax event="change" update=":outputPanelGrid" process="@this" />
 						<f:selectItem itemLabel="#{msg['crud.orcamento.dadosGerais']}"
@@ -34,30 +34,30 @@
 				</h:form>
 			</p:outputPanel>
 
-			<p:outputPanel rendered="#{not orcamentoViewController.telaGrid}">
+			<p:outputPanel rendered="#{not budgetViewController.telaGrid}">
 				<p:outputPanel
-					rendered="#{orcamentoViewController.selectedTab eq 0}">
+					rendered="#{budgetViewController.selectedTab eq 0}">
 					<h:form>
-						<p:outputPanel rendered="#{empty orcamentoViewController.objeto}">
+						<p:outputPanel rendered="#{empty budgetViewController.objeto}">
 							<p:outputLabel value="#{msg['crud.registro.selecionado.vazio']}" />
 							<p:commandButton value="#{msg['crud.form.voltar']}"
-								actionListener="#{orcamentoViewController.voltar()}"
+								actionListener="#{budgetViewController.voltar()}"
 								update=":outputPanelGrid" />
 						</p:outputPanel>
 						<p:outputPanel
-							rendered="#{not empty orcamentoViewController.objeto}">
+							rendered="#{not empty budgetViewController.objeto}">
 							<!-- <ui:include src="orcamento/cadastro.xhtml" />  -->
 							<div>
 								<p:commandButton value="#{msg['crud.form.salvar']}"
-									rendered="#{empty orcamentoViewController.objeto.id}"
-									actionListener="#{orcamentoViewController.salvar}"
+									rendered="#{empty budgetViewController.objeto.id}"
+									actionListener="#{budgetViewController.salvar}"
 									update=":growl :outputPanelGrid" />
 								<p:commandButton value="#{msg['crud.form.alterar']}"
-									rendered="#{not empty orcamentoViewController.objeto.id}"
-									actionListener="#{orcamentoViewController.salvar}"
+									rendered="#{not empty budgetViewController.objeto.id}"
+									actionListener="#{budgetViewController.salvar}"
 									update=":growl :outputPanelGrid" />
 								<p:commandButton value="#{msg['crud.form.fechar']}"
-									actionListener="#{orcamentoViewController.voltar()}"
+									actionListener="#{budgetViewController.voltar()}"
 									update=":outputPanelGrid" process="@this" />
 							</div>
 						</p:outputPanel>

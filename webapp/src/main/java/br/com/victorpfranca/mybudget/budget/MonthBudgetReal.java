@@ -28,12 +28,12 @@ import br.com.victorpfranca.mybudget.accesscontroll.User;
 
 @Entity
 @Table(name = "vw_orcado_real_mes")
-@NamedQueries({ @NamedQuery(name = FIND_ALL, query = "SELECT o FROM MonthBudgetReal o WHERE o.usuario.id = :user"),
-		@NamedQuery(name = FIND_BY_DESPESA_MONTH, query = "SELECT o FROM MonthBudgetReal o where o.usuario.id = :user and ano = :ano and mes = :mes and inOut = '1'"),
-		@NamedQuery(name = FIND_BY_RECEITA_MONTH, query = "SELECT o FROM MonthBudgetReal o where o.usuario.id = :user and ano = :ano and mes = :mes and inOut = '0'"),
+@NamedQueries({ @NamedQuery(name = FIND_ALL, query = "SELECT o FROM MonthBudgetReal o WHERE o.user.id = :user"),
+		@NamedQuery(name = FIND_BY_DESPESA_MONTH, query = "SELECT o FROM MonthBudgetReal o where o.user.id = :user and ano = :ano and mes = :mes and inOut = '1'"),
+		@NamedQuery(name = FIND_BY_RECEITA_MONTH, query = "SELECT o FROM MonthBudgetReal o where o.user.id = :user and ano = :ano and mes = :mes and inOut = '0'"),
 
-		@NamedQuery(name = FIND_BY_DESPESA_UNTIL_MONTH, query = "SELECT o FROM MonthBudgetReal o where o.usuario.id = :user AND CONCAT(to_char(ano, 'FM9999'),to_char(mes, 'FM09')) <= CONCAT(to_char(:ano, 'FM9999'),to_char(:mes, 'FM09')) and inOut = '1' ORDER BY ano DESC, mes DESC"),
-		@NamedQuery(name = FIND_BY_RECEITA_UNTIL_MONTH, query = "SELECT o FROM MonthBudgetReal o where o.usuario.id = :user AND CONCAT(to_char(ano, 'FM9999'),to_char(mes, 'FM09')) <= CONCAT(to_char(:ano, 'FM9999'),to_char(:mes, 'FM09')) and inOut = '0' ORDER BY ano DESC, mes DESC") })
+		@NamedQuery(name = FIND_BY_DESPESA_UNTIL_MONTH, query = "SELECT o FROM MonthBudgetReal o where o.user.id = :user AND CONCAT(to_char(ano, 'FM9999'),to_char(mes, 'FM09')) <= CONCAT(to_char(:ano, 'FM9999'),to_char(:mes, 'FM09')) and inOut = '1' ORDER BY ano DESC, mes DESC"),
+		@NamedQuery(name = FIND_BY_RECEITA_UNTIL_MONTH, query = "SELECT o FROM MonthBudgetReal o where o.user.id = :user AND CONCAT(to_char(ano, 'FM9999'),to_char(mes, 'FM09')) <= CONCAT(to_char(:ano, 'FM9999'),to_char(:mes, 'FM09')) and inOut = '0' ORDER BY ano DESC, mes DESC") })
 
 public class MonthBudgetReal implements Serializable {
 	private static final long serialVersionUID = 1L;

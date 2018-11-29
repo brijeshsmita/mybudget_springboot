@@ -37,7 +37,7 @@ import br.com.victorpfranca.mybudget.transaction.rules.InvalidTransactionSerieDa
 @Entity
 @Table(name = "lancamento_serie")
 @NamedQueries({
-		@NamedQuery(name = FIND_ALL_QUERY, query = "SELECT l FROM TransactionSerie l WHERE l.usuario.id=:user") })
+		@NamedQuery(name = FIND_ALL_QUERY, query = "SELECT l FROM TransactionSerie l WHERE l.user.id=:user") })
 public class TransactionSerie implements Serializable {
 	private static final long serialVersionUID = 1L;
 

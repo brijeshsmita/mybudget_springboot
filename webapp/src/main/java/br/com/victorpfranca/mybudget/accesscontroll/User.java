@@ -14,6 +14,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -28,6 +29,7 @@ import br.com.victorpfranca.mybudget.LocalDateConverter;
  * 
  */
 @Entity
+@Table(name = "usuario")
 @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -70,19 +72,20 @@ public class User implements Serializable {
 
 	@Column(name = "quantidade_acessos", nullable = false, unique = false)
 	private BigDecimal quantidadeAcessos;
-	
+
 	@Column(name = "pre_cadastro")
 	private Boolean preCadastro;
 
 	@PrePersist
 	void beforePersist() {
-	    setEmail(StringUtils.lowerCase(getEmail()));
+		setEmail(StringUtils.lowerCase(getEmail()));
 	}
+
 	@PreUpdate
 	void beforeUpdate() {
-	    setEmail(StringUtils.lowerCase(getEmail()));
+		setEmail(StringUtils.lowerCase(getEmail()));
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -134,11 +137,11 @@ public class User implements Serializable {
 	public Date getDataCadastro() {
 		return dataCadastro;
 	}
-	
+
 	public Boolean getPreCadastro() {
 		return preCadastro;
 	}
-	
+
 	public void setPreCadastro(Boolean preCadastro) {
 		this.preCadastro = preCadastro;
 	}
