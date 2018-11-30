@@ -7,7 +7,7 @@
 
 	<div id="layout-header" class="Unselectable fontRegular">
 		<h:link
-			outcome="#{!controleAcessoViewController.preCadastro ? '/modulos/home.jsf' : 'index'}"
+			outcome="#{!accessControlViewController.preCadastro ? '/modulos/home.jsf' : 'index'}"
 			id="layout-logo">
 			<!-- 			<h:graphicImage name="images/LOGO.svg" styleClass="Fleft"
 				library="sentinel-layout" />
@@ -18,11 +18,11 @@
 				value="#{app.projectStage}" styleClass="softred" />
 		</h:link>
 
-		<p:panel rendered="#{!controleAcessoViewController.preCadastro}"
+		<p:panel rendered="#{!accessControlViewController.preCadastro}"
 			style="border:0px !important; background:none;">
 			<ul id="sm-topmenu" class="layout-header-widgets white Fs14">
 				<span class="Fs18 Fleft"><span class="softblue"><h:outputText
-							value="#{controleAcessoViewController.firstName}" /></span></span>
+							value="#{accessControlViewController.firstName}" /></span></span>
 
 
 				<li class="Fleft BordRadHalf TexAlCenter"><i
@@ -32,11 +32,11 @@
 						<li class="Animated05"><a class="white Unselectable"><i
 								class="icon-user-male Fs26 OvHidden"></i><span class="Fs18">
 									<p:outputLabel
-										value="#{controleAcessoViewController.firstName}" /> <br />
+										value="#{accessControlViewController.firstName}" /> <br />
 									<!-- <span class="Fs10">Last Login - 18.08.2014</span> -->
 							</span></a></li>
 						<li class="Animated05"><a class="white Unselectable"><span
-								class="Fs12">#{controleAcessoViewController.email}<br />
+								class="Fs12">#{accessControlViewController.email}<br />
 									<!-- <span class="Fs10">Last Login - 18.08.2014</span> -->
 							</span></a></li>
 						<!-- 
@@ -51,7 +51,7 @@
 
 				<li
 					class="Fleft BordRadHalf TexAlCenter"><a href="help"
-					onclick="gtag('event', 'Ajuda', {'event_category' : 'PROD-Sistema-Menu', 'event_label': '#{controleAcessoViewController.email}'});"><i class="icon-help"></i></a></li>
+					onclick="gtag('event', 'Ajuda', {'event_category' : 'PROD-Sistema-Menu', 'event_label': '#{accessControlViewController.email}'});"><i class="icon-help"></i></a></li>
 
 				<!--
 			<li class="Fleft BordRadHalf TexAlCenter"><i class="icon-mail"></i><span

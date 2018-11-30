@@ -14,8 +14,8 @@
 							<div class="Container20 Responsive100">
 
 								<p:selectOneRadio id="ajusteInOut"
-									value="#{lancamentoViewController.lancamentoVO.inOut}"
-									rendered="#{lancamentoViewController.lancamentoVO.ajuste}">
+									value="#{transactionViewController.lancamentoVO.inOut}"
+									rendered="#{transactionViewController.lancamentoVO.ajuste}">
 									<f:selectItems value="#{inOutOpcoes}" var="inOut"
 										itemValue="#{inOut}" itemLabel="#{inOut.descricao}" />
 								</p:selectOneRadio>
@@ -27,24 +27,24 @@
 							<div class="Container20 Responsive100">
 								<p:panel id="pnlSerie">
 									<p:selectBooleanCheckbox id="repete"
-										value="#{lancamentoViewController.lancamentoVO.repeteLancamento}"
-										rendered="#{lancamentoViewController.tratarEmSerie and !lancamentoViewController.lancamentoVO.ajuste}"
-										disabled="#{lancamentoViewController.lancamentoVO.id != null}">
+										value="#{transactionViewController.lancamentoVO.repeteLancamento}"
+										rendered="#{transactionViewController.tratarEmSerie and !transactionViewController.lancamentoVO.ajuste}"
+										disabled="#{transactionViewController.lancamentoVO.id != null}">
 										<p:ajax update="pnlSerie" />
 									</p:selectBooleanCheckbox>
 									<p:outputLabel value="#{msg['crud.lancamento.repete']}"
 										for="repete"
-										rendered="#{lancamentoViewController.tratarEmSerie and !lancamentoViewController.lancamentoVO.ajuste}" />
+										rendered="#{transactionViewController.tratarEmSerie and !transactionViewController.lancamentoVO.ajuste}" />
 
 									<p:panel style="border: 0px"
-										rendered="#{lancamentoViewController.lancamentoVO.repeteLancamento}">
+										rendered="#{transactionViewController.lancamentoVO.repeteLancamento}">
 										<p:outputLabel value="#{msg['crud.lancamento.frequencia']}"
 											id="lblFrequencia" for="fldFrequencia" />
 										<p:selectOneMenu id="fldFrequencia"
-											value="#{lancamentoViewController.lancamentoVO.frequencia}"
+											value="#{transactionViewController.lancamentoVO.frequencia}"
 											style="width:96%"
 											label="#{msg['crud.lancamento.frequencia']}" required="true"
-											disabled="#{lancamentoViewController.lancamentoVO.id != null}">
+											disabled="#{transactionViewController.lancamentoVO.id != null}">
 											<f:selectItems value="#{lancamentoFrequenciaOpcoes}" />
 										</p:selectOneMenu>
 
@@ -53,30 +53,30 @@
 											for="dataInicio" />
 										<p:calendar id="dataInicio"
 											label="#{msg['crud.lancamento.serie.data_inicio']}"
-											value="#{lancamentoViewController.lancamentoVO.dataInicio}"
+											value="#{transactionViewController.lancamentoVO.dataInicio}"
 											pattern="dd/MM/yyyy" required="true"
 											requiredMessage="#{msg['crud.lancamento.valida.serie.data_inicio']}"
-											disabled="#{lancamentoViewController.lancamentoVO.id != null}" />
+											disabled="#{transactionViewController.lancamentoVO.id != null}" />
 
 										<p:outputLabel
 											value="#{msg['crud.lancamento.serie.data_limite']}"
 											for="dataLimite" />
 										<p:calendar id="dataLimite"
 											label="#{msg['crud.lancamento.serie.data_limite']}"
-											value="#{lancamentoViewController.lancamentoVO.dataLimite}"
+											value="#{transactionViewController.lancamentoVO.dataLimite}"
 											pattern="dd/MM/yyyy" required="true"
 											requiredMessage="#{msg['crud.lancamento.valida.serie.data_limite']}"
-											disabled="#{lancamentoViewController.lancamentoVO.id != null}" />
+											disabled="#{transactionViewController.lancamentoVO.id != null}" />
 									</p:panel>
 
 									<p:panel style="border: 0px"
-										rendered="#{!lancamentoViewController.lancamentoVO.repeteLancamento}">
+										rendered="#{!transactionViewController.lancamentoVO.repeteLancamento}">
 										<p:outputLabel value="#{msg['crud.lancamento.data']}"
 											for="data" />
 										<p:calendar id="data" label="#{msg['crud.lancamento.data']}"
-											value="#{lancamentoViewController.lancamentoVO.data}"
+											value="#{transactionViewController.lancamentoVO.data}"
 											pattern="dd/MM/yyyy"
-											pagedate="#{lancamentoViewController.mesCorrente}" />
+											pagedate="#{transactionViewController.mesCorrente}" />
 									</p:panel>
 
 								</p:panel>
@@ -88,28 +88,28 @@
 								<p:outputLabel value="#{msg['crud.lancamento.categoria']}"
 									for="categoriaReceita"
 									style="margin-right:5px;vertical-align:middle;"
-									rendered="#{lancamentoViewController.apresentaCategoriasReceitas()}" />
+									rendered="#{transactionViewController.apresentaCategoriasReceitas()}" />
 								<p:outputLabel value="#{msg['crud.lancamento.categoria']}"
 									for="categoriaDespesa"
 									style="margin-right:5px;vertical-align:middle;"
-									rendered="#{lancamentoViewController.apresentaCategoriasDespesas()}" />
+									rendered="#{transactionViewController.apresentaCategoriasDespesas()}" />
 								<p:selectOneMenu id="categoriaReceita"
-									value="#{lancamentoViewController.lancamentoVO.categoria}"
+									value="#{transactionViewController.lancamentoVO.categoria}"
 									converter="jpaEntityConverter" style="vertical-align:middle;"
 									required="true"
-									rendered="#{lancamentoViewController.apresentaCategoriasReceitas()}">
+									rendered="#{transactionViewController.apresentaCategoriasReceitas()}">
 									<f:selectItem itemValue="" itemLabel="Selecione..." />
 									<f:selectItems
-										value="#{lancamentoViewController.categoriasReceitas}" />
+										value="#{transactionViewController.categoriasReceitas}" />
 								</p:selectOneMenu>
 								<p:selectOneMenu id="categoriaDespesa"
-									value="#{lancamentoViewController.lancamentoVO.categoria}"
+									value="#{transactionViewController.lancamentoVO.categoria}"
 									converter="jpaEntityConverter" style="vertical-align:middle;"
 									required="true"
-									rendered="#{lancamentoViewController.apresentaCategoriasDespesas()}">
+									rendered="#{transactionViewController.apresentaCategoriasDespesas()}">
 									<f:selectItem itemValue="" itemLabel="Selecione..." />
 									<f:selectItems
-										value="#{lancamentoViewController.categoriasDespesas}" />
+										value="#{transactionViewController.categoriasDespesas}" />
 								</p:selectOneMenu>
 							</div>
 						</div>
@@ -119,12 +119,12 @@
 								<p:outputLabel value="#{msg['crud.lancamento.conta']}"
 									for="conta" style="margin-right:5px;vertical-align:middle;" />
 								<p:selectOneMenu id="conta"
-									value="#{lancamentoViewController.lancamentoVO.conta}"
+									value="#{transactionViewController.lancamentoVO.conta}"
 									converter="jpaEntityConverter" style="vertical-align:middle;"
 									required="true"
 									requiredMessage="#{msg.crud_lancamento_validator_conta}">
 									<f:selectItem itemValue="" itemLabel="Selecione..." />
-									<f:selectItems value="#{lancamentoViewController.contas}" />
+									<f:selectItems value="#{transactionViewController.contas}" />
 									<p:ajax update="pnlParcelas" />
 								</p:selectOneMenu>
 							</div>
@@ -134,15 +134,15 @@
 							<div class="Container20 Responsive100">
 								<p:outputLabel value="#{msg['crud.lancamento.conta_destino']}"
 									for="conta" style="margin-right:5px;vertical-align:middle;"
-									rendered="#{lancamentoViewController.lancamentoVO.transferencia}" />
+									rendered="#{transactionViewController.lancamentoVO.transferencia}" />
 								<p:selectOneMenu id="contaDestino"
-									value="#{lancamentoViewController.lancamentoVO.contaDestino}"
+									value="#{transactionViewController.lancamentoVO.contaDestino}"
 									converter="jpaEntityConverter" style="vertical-align:middle;"
 									required="true"
-									rendered="#{lancamentoViewController.lancamentoVO.transferencia}"
+									rendered="#{transactionViewController.lancamentoVO.transferencia}"
 									requiredMessage="#{msg.crud_lancamento_validator_conta}">
 									<f:selectItem itemValue="" itemLabel="Selecione..." />
-									<f:selectItems value="#{lancamentoViewController.contas}" />
+									<f:selectItems value="#{transactionViewController.contas}" />
 									<p:ajax update="pnlParcelas" />
 								</p:selectOneMenu>
 							</div>
@@ -153,7 +153,7 @@
 								<p:outputLabel value="#{msg['crud.lancamento.valor']}"
 									for="valor" />
 								<p:inputNumber id="valor"
-									value="#{lancamentoViewController.lancamentoVO.valor}"
+									value="#{transactionViewController.lancamentoVO.valor}"
 									style="width:96%" label="#{msg['crud.lancamento.valor']}"
 									maxValue="9999999.99" decimalPlaces="2" />
 							</div>
@@ -163,14 +163,14 @@
 						<div class="Container100">
 							<div class="Container20 Responsive100">
 								<p:panel id="pnlParcelas" style="border: 0px; padding:0px"
-									visible="#{lancamentoViewController.isLancamentoCartao}">
+									visible="#{transactionViewController.isLancamentoCartao}">
 									<p:outputLabel value="#{msg['crud.lancamento.qtdParcelas']}"
 										id="lblParcelas" for="fldParcelas" />
 									<p:spinner id="fldParcelas"
-										value="#{lancamentoViewController.lancamentoVO.qtdParcelas}"
+										value="#{transactionViewController.lancamentoVO.qtdParcelas}"
 										style="width:96%"
 										label="#{msg['crud.lancamento.qtdParcelas']}" min="1"
-										required="#{lancamentoViewController.isLancamentoCartao}"
+										required="#{transactionViewController.isLancamentoCartao}"
 										requiredMessage="#{msg['crud_lancamento_validator_parcelas']}" />
 								</p:panel>
 							</div>
@@ -181,7 +181,7 @@
 								<p:outputLabel value="#{msg['crud.lancamento.comentario']}"
 									for="comentario" />
 								<p:inputText id="comentario"
-									value="#{lancamentoViewController.lancamentoVO.comentario}"
+									value="#{transactionViewController.lancamentoVO.comentario}"
 									style="width:96%" label="#{msg['crud.lancamento.comentario']}" />
 							</div>
 						</div>
@@ -190,7 +190,7 @@
 						<div class="Container100">
 							<div class="Container20 Responsive100">
 								<p:inputSwitch id="status"
-									value="#{lancamentoViewController.lancamentoVO.confirmado}"
+									value="#{transactionViewController.lancamentoVO.confirmado}"
 									offLabel="#{msg['crud.lancamento.status.agendado']}"
 									onLabel="#{msg['crud.lancamento.status.confirmado']}" />
 							</div>

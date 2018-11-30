@@ -82,14 +82,14 @@ public class CreditCardAccountBuilder {
 		List<CreditCardTransaction> lancamentosAnteriores = em
 				.createNamedQuery(Transaction.FIND_LANCAMENTO_CARTAO_QUERY, CreditCardTransaction.class)
 				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado()).setParameter("serie", null)
-				.setParameter("saldoInicial", false).setParameter("account", conta).getResultList();
+				.setParameter("saldoInicial", false).setParameter("conta", conta).getResultList();
 
 		for (Iterator<CreditCardTransaction> iterator = lancamentosAnteriores.iterator(); iterator.hasNext();) {
 			CreditCardTransaction creditCardTransaction = iterator.next();
 			creditCardAccountTransactionRemover.remover(creditCardTransaction, false);
 			CreditCardTransaction lancamento = (CreditCardTransaction) creditCardTransaction.clone();
 			lancamento.setId(null);
-			lancamento.setAccount(conta);
+			lancamento.setConta(conta);
 			lancamento.setSaldoInicial(false);
 			criadorLancamentoCartao.save(lancamento);
 		}

@@ -32,24 +32,24 @@
 				</p:submenu>
 				<p:menuitem id="sm_lancamento" value="#{msg['menu.lancamento']}"
 					icon="icon-home" outcome="/modulos/home.jsf"
-					onclick="gtag('event', 'Extrato Conta', {'event_category' : 'PROD-Sistema-Menu', 'event_label': '#{controleAcessoViewController.email}'});" />
+					onclick="gtag('event', 'Extrato Conta', {'event_category' : 'PROD-Sistema-Menu', 'event_label': '#{accessControlViewController.email}'});" />
 				<p:menuitem id="sm_orcamento" value="#{msg['menu.orcamento']}"
-					icon="icon-target" outcome="/modulos/orcamento.jsf" onclick="gtag('event', 'Orçamento', {'event_category' : 'PROD-Sistema-Menu', 'event_label': '#{controleAcessoViewController.email}'});"/>
+					icon="icon-target" outcome="/modulos/orcamento.jsf" onclick="gtag('event', 'Orçamento', {'event_category' : 'PROD-Sistema-Menu', 'event_label': '#{accessControlViewController.email}'});"/>
 				<p:menuitem id="sm_extrato_cartao"
 					value="#{msg['menu.extrato_cartao']}" icon="icon-credit-card"
 					outcome="/modulos/cartao.jsf" 
-					onclick="gtag('event', 'Extrato Cartão', {'event_category' : 'PROD-Sistema-Menu', 'event_label': '#{controleAcessoViewController.email}'});"/>
+					onclick="gtag('event', 'Extrato Cartão', {'event_category' : 'PROD-Sistema-Menu', 'event_label': '#{accessControlViewController.email}'});"/>
 				<p:menuitem id="sm_meu_futuro_grafico_linhas" value="#{msg['menu.meu_futuro']}"
 					icon="icon-chart" outcome="/modulos/meu_futuro.jsf" 
-					onclick="gtag('event', 'Meu Futuro', {'event_category' : 'PROD-Sistema-Menu', 'event_label': '#{controleAcessoViewController.email}'});"/>
+					onclick="gtag('event', 'Meu Futuro', {'event_category' : 'PROD-Sistema-Menu', 'event_label': '#{accessControlViewController.email}'});"/>
 				<p:submenu id="sm_cadastros" icon="icon-th"
 					label="#{msg['menu.cadastros']}">
 					<p:menuitem id="sm_conta" value="#{msg['menu.conta']}"
 						icon="icon-bank" outcome="/modulos/conta.jsf" 
-						onclick="gtag('event', 'Contas', {'event_category' : 'PROD-Sistema-Menu', 'event_label': '#{controleAcessoViewController.email}'});"/>
+						onclick="gtag('event', 'Contas', {'event_category' : 'PROD-Sistema-Menu', 'event_label': '#{accessControlViewController.email}'});"/>
 					<p:menuitem id="sm_categoria" value="#{msg['menu.categoria']}"
 						icon="icon-menu" outcome="/modulos/categoria.jsf" 
-						onclick="gtag('event', 'Categorias', {'event_category' : 'PROD-Sistema-Menu', 'event_label': '#{controleAcessoViewController.email}'});"/>
+						onclick="gtag('event', 'Categorias', {'event_category' : 'PROD-Sistema-Menu', 'event_label': '#{accessControlViewController.email}'});"/>
 				</p:submenu>
 
 			</ps:menu>

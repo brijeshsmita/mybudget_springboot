@@ -80,17 +80,17 @@ public class FutureAccountBalanceGenerator {
 			Account account = iterator.next();
 
 			List<AccountBalance> saldosConta = em.createNamedQuery(AccountBalance.FIND_FROM_ANO_MES_QUERY, AccountBalance.class)
-					.setParameter("user", credentialsStore.recuperarUsuarioLogado()).setParameter("account", account)
+					.setParameter("user", credentialsStore.recuperarUsuarioLogado()).setParameter("conta", account)
 					.setParameter("ano", anoFrom).setParameter("mes", mesFrom).getResultList();
 
 			if (saldosConta.isEmpty()) {
 				saldosConta = em.createNamedQuery(AccountBalance.FIND_UNTIL_ANO_MES_QUERY, AccountBalance.class)
-						.setParameter("user", credentialsStore.recuperarUsuarioLogado()).setParameter("account", account)
+						.setParameter("user", credentialsStore.recuperarUsuarioLogado()).setParameter("conta", account)
 						.setParameter("ano", anoFrom).setParameter("mes", mesFrom).setMaxResults(1).getResultList();
 			}
 
 			saldosPorContas.addAll(saldosConta);
-			saldosPorContas.forEach(s -> s.setAccount(account));
+			saldosPorContas.forEach(s -> s.setConta(account));
 		}
 		return saldosPorContas;
 	}

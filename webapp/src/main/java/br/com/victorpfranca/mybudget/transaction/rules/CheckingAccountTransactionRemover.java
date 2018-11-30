@@ -53,7 +53,7 @@ public class CheckingAccountTransactionRemover {
 	public void removerSerie(TransactionSerie serie) {
 		List<Transaction> lancamentosSerie = lancamentoDAO.createNamedQuery(Transaction.FIND_LANCAMENTO_QUERY)
 				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado()).setParameter("serie", serie)
-				.setParameter("category", null).getResultList();
+				.setParameter("categoria", null).getResultList();
 
 		for (Iterator<Transaction> iterator = lancamentosSerie.iterator(); iterator.hasNext();) {
 			Transaction serieLancamento = (Transaction) iterator.next();
@@ -67,9 +67,9 @@ public class CheckingAccountTransactionRemover {
 	public void remover(Transaction transaction) {
 
 		if (((CheckingAccountTransaction) transaction).isSaldoInicial()) {
-			checkingAccountInitialBalanceRemover.execute(transaction.getAccount());
-			((CheckingAccount)transaction.getAccount()).setSaldoInicial(BigDecimal.ZERO);
-			em.merge(transaction.getAccount());
+			checkingAccountInitialBalanceRemover.execute(transaction.getConta());
+			((CheckingAccount)transaction.getConta()).setSaldoInicial(BigDecimal.ZERO);
+			em.merge(transaction.getConta());
 		} else {
 			accountBalanceUpdater.removeSaldos(transaction);
 			lancamentoDAO.remove(lancamentoDAO.contains(transaction) ? transaction : lancamentoDAO.merge(transaction));

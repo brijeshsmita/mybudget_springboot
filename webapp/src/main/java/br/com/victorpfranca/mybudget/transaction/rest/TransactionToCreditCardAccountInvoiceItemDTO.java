@@ -35,11 +35,11 @@ public class TransactionToCreditCardAccountInvoiceItemDTO {
 	}
 
 	private String nomeConta(Transaction transaction) {
-		return Optional.ofNullable(transaction).map(Transaction::getAccount).map(c -> c.getNome()).orElse(null);
+		return Optional.ofNullable(transaction).map(Transaction::getConta).map(c -> c.getNome()).orElse(null);
 	}
 
 	private String nomeCategoria(Transaction transaction) {
-		return Optional.ofNullable(transaction).map(Transaction::getCategory).map(c -> c.getNome()).orElse(null);
+		return Optional.ofNullable(transaction).map(Transaction::getCategoria).map(c -> c.getNome()).orElse(null);
 	}
 
 }

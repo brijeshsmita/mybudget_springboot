@@ -33,7 +33,7 @@ public abstract class CheckingAccount extends Account implements Serializable {
 	public CheckingAccountTransaction buildLancamentoSaldoInicial() {
 		CheckingAccountTransaction lancamento = new CheckingAccountTransaction(InOut.E, TransactionStatus.CONFIRMADO);
 
-		lancamento.setAccount(this);
+		lancamento.setConta(this);
 		lancamento.setValor(getSaldoInicial());
 		lancamento.setSaldo(BigDecimal.ZERO);
 		lancamento.setSaldoInicial(true);

@@ -35,7 +35,7 @@ public class TransactionVO implements Serializable {
 	@NotNull(message = "Qual é o valor deste lançamento?")
 	private BigDecimal valor;
 
-	private Account account;
+	private Account conta;
 
 	private Account contaAnterior;
 	private boolean ajuste;
@@ -106,12 +106,12 @@ public class TransactionVO implements Serializable {
 		this.dataAnterior = dataAnterior;
 	}
 
-	public Account getAccount() {
-		return account;
+	public Account getConta() {
+		return conta;
 	}
 
-	public void setAccount(Account account) {
-		this.account = account;
+	public void setConta(Account account) {
+		this.conta = account;
 	}
 
 	public Account getContaAnterior() {
@@ -142,7 +142,7 @@ public class TransactionVO implements Serializable {
 		return category;
 	}
 
-	public void setCategory(Category category) {
+	public void setCategoria(Category category) {
 		this.category = category;
 	}
 
@@ -285,7 +285,7 @@ public class TransactionVO implements Serializable {
 	public Transaction getLancamento() {
 		Transaction transaction = null;
 
-		if (account instanceof CheckingAccount) {
+		if (conta instanceof CheckingAccount) {
 			transaction = new CheckingAccountTransaction();
 			((CheckingAccountTransaction) transaction).setSaldoInicial(isSaldoInicial());
 			((CheckingAccountTransaction) transaction).setFaturaCartao(isFaturaCartao());
@@ -293,14 +293,14 @@ public class TransactionVO implements Serializable {
 			((CheckingAccountTransaction) transaction).setContaOrigem(getContaOrigem());
 			((CheckingAccountTransaction) transaction).setContaDestino(getContaDestino());
 
-		} else if (account instanceof CreditCardAccount) {
+		} else if (conta instanceof CreditCardAccount) {
 			transaction = new CreditCardTransaction();
 			((CreditCardTransaction) transaction).setQtdParcelas(getQtdParcelas());
 		}
 
-		transaction.setCategory(getCategoria());
+		transaction.setCategoria(getCategoria());
 		transaction.setComentario(getComentario());
-		transaction.setAccount(getAccount());
+		transaction.setConta(getConta());
 		transaction.setContaAnterior(getContaAnterior());
 		transaction.setData(getData());
 		transaction.setDataAnterior(getDataAnterior());

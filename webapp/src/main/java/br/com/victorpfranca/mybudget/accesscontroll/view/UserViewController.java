@@ -16,7 +16,7 @@ import br.com.victorpfranca.mybudget.infra.dao.Generic;
 
 @Named
 @ViewScoped
-public class UsuarioViewController implements Serializable {
+public class UserViewController implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,7 +31,7 @@ public class UsuarioViewController implements Serializable {
     @PostConstruct
     public void init() {
 
-        ResourceBundle.clearCache(UsuarioViewController.class.getClassLoader());
+        ResourceBundle.clearCache(UserViewController.class.getClassLoader());
         telaGrid = true;
     }
 

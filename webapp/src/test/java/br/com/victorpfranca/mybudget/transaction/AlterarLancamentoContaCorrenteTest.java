@@ -117,7 +117,7 @@ public class AlterarLancamentoContaCorrenteTest {
 			// Alterando lançamento
 			lancamento.setValor(valorLancamentoUpdatedInput);
 			lancamento.setData(dataLancamentoUpdatedInput);
-			lancamento.setAccount(new Account().withId(contaUpdatedInput));
+			lancamento.setConta(new Account().withId(contaUpdatedInput));
 
 			lancamento = (CheckingAccountTransaction) lancamentoRulesFacade.saveLancamentoContaCorrente(lancamento);
 
@@ -135,7 +135,7 @@ public class AlterarLancamentoContaCorrenteTest {
 		for (int i = 0; i < saldosContaExpected.size(); i++) {
 			AccountBalance saldo = saldos.get(i);
 
-			assertEquals("Account", saldosContaExpected.get(i)[0], saldo.getAccount().getId());
+			assertEquals("Account", saldosContaExpected.get(i)[0], saldo.getConta().getId());
 			assertEquals("Ano", saldosContaExpected.get(i)[1], saldo.getAno());
 			assertEquals("Mes", saldosContaExpected.get(i)[2], saldo.getMes());
 			assertEquals("Valor", saldosContaExpected.get(i)[3], saldo.getValor());

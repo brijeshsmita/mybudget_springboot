@@ -197,7 +197,7 @@ public class AccountViewController implements Serializable {
 
 				CreditCardTransaction lancamentoCartao = new CreditCardTransaction();
 				lancamentoCartao.setSaldoInicial(true);
-				lancamentoCartao.setAccount(conta);
+				lancamentoCartao.setConta(conta);
 				lancamentoCartao.setData(date);
 				lancamentoCartao.setValor(valor);
 				lancamentoCartao.setQtdParcelas(1);
@@ -226,22 +226,22 @@ public class AccountViewController implements Serializable {
 		this.faturasPreview = faturas;
 	}
 
-	public List<Account> getAccountsCorrentes() {
+	public List<Account> getContasCorrentes() {
 		List<Account> accounts = new ArrayList<Account>();
-		accounts.addAll(getAccountsBancos());
-		accounts.addAll(getAccountsDinheiro());
+		accounts.addAll(getContasBancos());
+		accounts.addAll(getContasDinheiro());
 		return accounts;
 	}
 
-	public List<Account> getAccountsBancos() {
+	public List<Account> getContasBancos() {
 		return bankAccountService.findContasBancos();
 	}
 
-	public List<Account> getAccountsCartoes() {
+	public List<Account> getContasCartoes() {
 		return bankAccountService.findContasCartoes();
 	}
 
-	public List<Account> getAccountsDinheiro() {
+	public List<Account> getContasDinheiro() {
 		return bankAccountService.findContasDinheiro();
 	}
 

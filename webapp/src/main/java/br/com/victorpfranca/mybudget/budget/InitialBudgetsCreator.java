@@ -100,7 +100,7 @@ public class InitialBudgetsCreator {
 				MonthYear monthYear = (MonthYear) iterator.next();
 
 				Budget budget = new Budget();
-				budget.setCategory(category);
+				budget.setCategoria(category);
 				budget.setAno(monthYear.getAno());
 				budget.setMes(monthYear.getMes());
 				budget.setValor(new BigDecimal(valor));

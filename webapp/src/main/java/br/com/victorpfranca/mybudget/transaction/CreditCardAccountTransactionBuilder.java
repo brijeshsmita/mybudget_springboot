@@ -53,10 +53,10 @@ public class CreditCardAccountTransactionBuilder {
 		CheckingAccountTransaction lancamento = new CheckingAccountTransaction();
 
 		lancamento.setCartaoCreditoFatura(cartaoCreditoFatura);
-		lancamento.setCategory(category);
+		lancamento.setCategoria(category);
 		lancamento.setComentario(comentario);
 		lancamento.setConfirmado(confirmado);
-		lancamento.setAccount(account);
+		lancamento.setConta(account);
 		lancamento.setContaAnterior(contaAnterior);
 		lancamento.setContaDestino(contaDestino);
 		lancamento.setContaOrigem(contaOrigem);

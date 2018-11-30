@@ -237,7 +237,7 @@ public class TransactionViewController implements Serializable {
 		}
 	}
 
-	public List<Account> getAccountsFiltro() {
+	public List<Account> getContasFiltro() {
 		List<Account> accounts = bankAccountService.findContasBancos();
 		accounts.addAll(bankAccountService.findContasDinheiro());
 		return accounts;
@@ -247,7 +247,7 @@ public class TransactionViewController implements Serializable {
 		return categoriaService.findAll();
 	}
 
-	public List<Account> getAccounts() {
+	public List<Account> getContas() {
 
 		if (getLancamentoVO().isTransferencia() || getLancamentoVO().getInOut().equals(InOut.E)) {
 			List<Account> accounts = bankAccountService.findContasBancos();
@@ -330,7 +330,7 @@ public class TransactionViewController implements Serializable {
 	}
 
 	public boolean getIsLancamentoCartao() {
-		return getLancamentoVO().getAccount() instanceof CreditCardAccount;
+		return getLancamentoVO().getConta() instanceof CreditCardAccount;
 	}
 
 	public int getSelectedTab() {

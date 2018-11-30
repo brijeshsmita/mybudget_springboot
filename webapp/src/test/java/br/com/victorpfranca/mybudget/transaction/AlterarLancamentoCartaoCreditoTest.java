@@ -156,7 +156,7 @@ public class AlterarLancamentoCartaoCreditoTest {
 			assertTrue("Mes", mesLancamentoExpected.compareTo(lancamentoCartao.getMes()) == 0);
 			assertTrue("Valor", valorLancamentoInput.compareTo(lancamentoCartao.getValor()) == 0);
 			assertTrue("InOut", InOut.S.compareTo(lancamentoCartao.getInOut()) == 0);
-			assertTrue("Account", contaCartaoId.compareTo(lancamentoCartao.getAccount().getId()) == 0);
+			assertTrue("Account", contaCartaoId.compareTo(lancamentoCartao.getConta().getId()) == 0);
 		}
 
 		// Validação faturas
@@ -172,7 +172,7 @@ public class AlterarLancamentoCartaoCreditoTest {
 					.compareTo(lancamentoFatura.getData()) == 0);
 			assertTrue("Valor", ((BigDecimal) faturaExpected[1]).compareTo(lancamentoFatura.getValor()) == 0);
 			assertTrue("InOut", InOut.S.compareTo(lancamentoFatura.getInOut()) == 0);
-			assertTrue("Account", contaBancoId.compareTo(lancamentoFatura.getAccount().getId()) == 0);
+			assertTrue("Account", contaBancoId.compareTo(lancamentoFatura.getConta().getId()) == 0);
 			assertTrue("CreditCardAccount", contaCartaoId
 					.compareTo(((CheckingAccountTransaction) lancamentoFatura).getCartaoCreditoFatura().getId()) == 0);
 			assertTrue("isFatura", ((CheckingAccountTransaction) lancamentoFatura).isFaturaCartao());
@@ -206,7 +206,7 @@ public class AlterarLancamentoCartaoCreditoTest {
 			AccountBalance saldo = saldos.get(i);
 
 			// - checar ano/mes do lancamento alterado
-			assertEquals("Account", contaBancoId, saldo.getAccount().getId());
+			assertEquals("Account", contaBancoId, saldo.getConta().getId());
 			assertEquals("Ano", saldosExpected.get(i)[0], saldo.getAno());
 			assertEquals("Mes", saldosExpected.get(i)[1], saldo.getMes());
 			assertTrue("Valor", ((BigDecimal) saldosExpected.get(i)[2]).compareTo(saldo.getValor()) == 0);

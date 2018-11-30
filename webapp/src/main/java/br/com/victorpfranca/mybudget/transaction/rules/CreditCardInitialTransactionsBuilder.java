@@ -37,10 +37,10 @@ public class CreditCardInitialTransactionsBuilder extends CreditCardTransactionB
 			throws NullableAccountException {
 		List<Transaction> faturasExistentes = em
 				.createNamedQuery(Transaction.FIND_LANCAMENTO_FATURA_QUERY, Transaction.class)
-				.setParameter("cartaoCreditoFatura", (CreditCardAccount) lancamento.getAccount())
+				.setParameter("cartaoCreditoFatura", (CreditCardAccount) lancamento.getConta())
 				.setParameter("data", dataPrimeiraFatura).getResultList();
 
-		return ((CreditCardAccount) lancamento.getAccount()).carregarFaturasAPartirDe(lancamento, faturasExistentes,
+		return ((CreditCardAccount) lancamento.getConta()).carregarFaturasAPartirDe(lancamento, faturasExistentes,
 				lancamento.getData());
 	}
 

@@ -45,11 +45,11 @@ public class CheckingAccountRemover {
 	}
 
 	private void removerSaldoConta(CheckingAccount conta) {
-		em.createNamedQuery(AccountBalance.REMOVE_SALDOS_INICIAIS_QUERY).setParameter("account", conta).executeUpdate();
+		em.createNamedQuery(AccountBalance.REMOVE_SALDOS_INICIAIS_QUERY).setParameter("conta", conta).executeUpdate();
 	}
 
 	private void removerLancamentoSaldoInicial(CheckingAccount conta) {
-		em.createNamedQuery(Transaction.REMOVE_LANCAMENTOS_CONTA_CORRENTE_QUERY).setParameter("account", conta)
+		em.createNamedQuery(Transaction.REMOVE_LANCAMENTOS_CONTA_CORRENTE_QUERY).setParameter("conta", conta)
 				.setParameter("saldoInicial", true).executeUpdate();
 	}
 
@@ -67,8 +67,8 @@ public class CheckingAccountRemover {
 	private void validarSemLancamentos(Account account) throws DeletionNotPermittedException {
 		List<Transaction> lancamentosExistentes = em
 				.createNamedQuery(Transaction.FIND_LANCAMENTO_CONTA_CORRENTE_QUERY, Transaction.class)
-				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado()).setParameter("account", account)
-				.setParameter("category", null).setParameter("saldoInicial", false).setParameter("ano", null)
+				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado()).setParameter("conta", account)
+				.setParameter("categoria", null).setParameter("saldoInicial", false).setParameter("ano", null)
 				.setParameter("mes", null).setParameter("cartaoCreditoFatura", null).setParameter("faturaCartao", null).setParameter("status", null)
 				.getResultList();
 		if (!lancamentosExistentes.isEmpty())

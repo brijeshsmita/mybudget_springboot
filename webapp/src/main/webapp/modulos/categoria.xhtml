@@ -16,18 +16,18 @@
 		<div class="EmptyBox20"></div>
 
 		<p:panel id="outputPanelGrid" style="border: none">
-			<p:outputPanel rendered="#{categoriaViewController.telaGrid}">
+			<p:outputPanel rendered="#{categoryViewController.telaGrid}">
 				<h:form>
 					<ui:include src="categoria/listagem.xhtml" />
 					<p:stack icon="/resources/meussaldos/images/actionButton.png"
 						expanded="false">
 						<p:menuitem value="#{msg['crud.categoria.despesa']}"
-							actionListener="#{categoriaViewController.incluirDespesa}"
+							actionListener="#{categoryViewController.incluirDespesa}"
 							update=":outputPanelGrid" process="@this">
 							<p:resetInput target=":outputPanelGrid" />
 						</p:menuitem>
 						<p:menuitem value="#{msg['crud.categoria.receita']}"
-							actionListener="#{categoriaViewController.incluirReceita}"
+							actionListener="#{categoryViewController.incluirReceita}"
 							update=":outputPanelGrid" process="@this">
 							<p:resetInput target=":outputPanelGrid" />
 						</p:menuitem>
@@ -36,24 +36,24 @@
 				</h:form>
 			</p:outputPanel>
 
-			<p:outputPanel rendered="#{not categoriaViewController.telaGrid}">
+			<p:outputPanel rendered="#{not categoryViewController.telaGrid}">
 				<p:outputPanel
-					rendered="#{categoriaViewController.selectedTab eq 0}">
+					rendered="#{categoryViewController.selectedTab eq 0}">
 					<h:form>
 						<p:outputPanel
-							rendered="#{not empty categoriaViewController.objeto}">
+							rendered="#{not empty categoryViewController.objeto}">
 							<ui:include src="categoria/cadastro.xhtml" />
 							<div>
 								<p:commandButton value="#{msg['crud.form.salvar']}"
-									rendered="#{empty categoriaViewController.objeto.id}"
-									actionListener="#{categoriaViewController.salvar}"
+									rendered="#{empty categoryViewController.objeto.id}"
+									actionListener="#{categoryViewController.salvar}"
 									update=":growl :outputPanelGrid" />
 								<p:commandButton value="#{msg['crud.form.alterar']}"
-									rendered="#{not empty categoriaViewController.objeto.id}"
-									actionListener="#{categoriaViewController.salvar}"
+									rendered="#{not empty categoryViewController.objeto.id}"
+									actionListener="#{categoryViewController.salvar}"
 									update=":growl :outputPanelGrid" />
 								<p:commandButton value="#{msg['crud.form.fechar']}"
-									actionListener="#{categoriaViewController.voltar()}"
+									actionListener="#{categoryViewController.voltar()}"
 									update=":outputPanelGrid" process="@this" />
 							</div>
 						</p:outputPanel>

@@ -36,7 +36,7 @@ public class CheckingAccountTransactionBuilder {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Transaction save(Transaction transaction) throws TransactionMonthUpdatedException, NullableAccountException,
 			AccountTypeException, IncompatibleCategoriesException, InvalidTransactionValueException {
-		return save(transaction.getAccount(), transaction);
+		return save(transaction.getConta(), transaction);
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -51,7 +51,7 @@ public class CheckingAccountTransactionBuilder {
 			contaDao.merge(account);
 		}
 
-		transaction.setAccount(account);
+		transaction.setConta(account);
 
 		if (!transaction.contaFoiAlterada()) {
 			accountBalanceUpdater.addSaldos(transaction);
@@ -75,7 +75,7 @@ public class CheckingAccountTransactionBuilder {
 			throws TransactionMonthUpdatedException, NullableAccountException, AccountTypeException,
 			IncompatibleCategoriesException, InvalidTransactionValueException {
 
-		Account contaOrigem = ((CheckingAccountTransaction) lancamentoOrigem).getAccount();
+		Account contaOrigem = ((CheckingAccountTransaction) lancamentoOrigem).getConta();
 		Account contaDestino = ((CheckingAccountTransaction) lancamentoOrigem).getContaDestino();
 
 		((CheckingAccountTransaction) lancamentoOrigem).setContaOrigem(null);
@@ -83,7 +83,7 @@ public class CheckingAccountTransactionBuilder {
 
 		Transaction lancamentoDestino = (Transaction) lancamentoOrigem.clone();
 
-		lancamentoDestino.setAccount(contaDestino);
+		lancamentoDestino.setConta(contaDestino);
 		((CheckingAccountTransaction) lancamentoDestino).setContaOrigem(contaOrigem);
 		((CheckingAccountTransaction) lancamentoDestino).setContaDestino(null);
 

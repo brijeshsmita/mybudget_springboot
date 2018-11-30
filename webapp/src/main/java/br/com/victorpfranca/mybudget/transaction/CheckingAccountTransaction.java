@@ -58,7 +58,7 @@ public class CheckingAccountTransaction extends Transaction {
 		}
 
 		CheckingAccountTransaction lancamentoFatura = new CheckingAccountTransaction();
-		lancamentoFatura.setAccount(creditCardAccount.getAccountPagamentoFatura());
+		lancamentoFatura.setConta(creditCardAccount.getAccountPagamentoFatura());
 		lancamentoFatura.setValor(valorParcela);
 		lancamentoFatura.setSaldo(BigDecimal.ZERO);
 		lancamentoFatura.setInOut(InOut.S);
@@ -76,7 +76,7 @@ public class CheckingAccountTransaction extends Transaction {
 	public void carregarValoresAnteriores() {
 		setValorAnterior(getValor());
 		setDataAnterior(getData());
-		setContaAnterior(getAccount());
+		setContaAnterior(getConta());
 	}
 
 	public boolean isTransferencia() {
@@ -105,9 +105,9 @@ public class CheckingAccountTransaction extends Transaction {
 		lancamento.setDataAnterior(dataAnterior);
 		lancamento.setAno(ano);
 		lancamento.setMes(mes);
-		lancamento.setCategory(category);
+		lancamento.setCategoria(categoria);
 		lancamento.setComentario(comentario);
-		lancamento.setAccount(account);
+		lancamento.setConta(conta);
 		lancamento.setContaAnterior(contaAnterior);
 		lancamento.setInOut(inOut);
 		lancamento.setSerie(serie);

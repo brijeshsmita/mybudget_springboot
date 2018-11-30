@@ -55,7 +55,7 @@ public class MonthlyAccountBalanceGrouper {
                         .compareTo(new MonthYear(anoAte, mesAte)) <= 0).collect(Collectors.toList()));
 		for (Iterator<AccountBalance> iterator = saldosPorContas.iterator(); iterator.hasNext();) {
 			AccountBalance saldo = iterator.next();
-			saldosPorContasMap.get(saldo.getAccount()).add(saldo);
+			saldosPorContasMap.get(saldo.getConta()).add(saldo);
 		}
 
 		for (Iterator<List<AccountBalance>> iterator = saldosPorContasMap.values().iterator(); iterator.hasNext();) {
@@ -132,7 +132,7 @@ public class MonthlyAccountBalanceGrouper {
         ArrayList<AccountBalance> arrayList = new ArrayList<>(
                 listaSaldosPorMesComValorZero(anoFrom, mesFrom, anoAte, mesAte));
         arrayList.addAll(Optional.ofNullable(saldosPorContas).orElseGet(ArrayList::new));
-        saldosPorContas.parallelStream().map(AccountBalance::getAccount).filter(CheckingAccount.class::isInstance)
+        saldosPorContas.parallelStream().map(AccountBalance::getConta).filter(CheckingAccount.class::isInstance)
                 .map(CheckingAccount.class::cast).map(cc -> {
                     LocalDate date = LocalDateConverter.fromDate(cc.getDataSaldoInicial());
                     return new AccountBalance(date.getYear(), date.getMonthValue(), cc.getSaldoInicial());

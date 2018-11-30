@@ -42,7 +42,7 @@ public class CreditCardTransactionBuilder {
 
 		for (Iterator<Transaction> iterator = transactions.iterator(); iterator.hasNext();) {
 			Transaction transaction = (Transaction) iterator.next();
-			transaction.setAccount(account);
+			transaction.setConta(account);
 			lancamentosPersistidos.add(save(transaction));
 		}
 
@@ -81,7 +81,7 @@ public class CreditCardTransactionBuilder {
 	}
 
 	protected Date getDataPrimeiraFatura(CreditCardTransaction lancamento) {
-		Date dataPagamentoProximo = Date.from(((CreditCardAccount) lancamento.getAccount())
+		Date dataPagamentoProximo = Date.from(((CreditCardAccount) lancamento.getConta())
 				.getDataPagamentoProximo(lancamento.getData()).atStartOfDay(ZoneId.systemDefault()).toInstant());
 		return dataPagamentoProximo;
 	}
@@ -102,10 +102,10 @@ public class CreditCardTransactionBuilder {
 			throws NullableAccountException {
 
 		List<Transaction> faturasExistentes = lancamentoDAO.executeQuery(Transaction.FIND_LANCAMENTO_FATURA_QUERY,
-				QueryParam.build("cartaoCreditoFatura", (CreditCardAccount) lancamento.getAccount()),
+				QueryParam.build("cartaoCreditoFatura", (CreditCardAccount) lancamento.getConta()),
 				QueryParam.build("data", dataPrimeiraFatura));
 
-		return ((CreditCardAccount) lancamento.getAccount()).carregarFaturas(lancamento, faturasExistentes);
+		return ((CreditCardAccount) lancamento.getConta()).carregarFaturas(lancamento, faturasExistentes);
 	}
 
 	public void setLancamentoDAO(DAO<Transaction> lancamentoDAO) {

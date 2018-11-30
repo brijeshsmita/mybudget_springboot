@@ -12,33 +12,33 @@
 		<p:panelGrid styleClass="ui-panelgrid-blank" columns="3" layout="grid">
 			<p:panel style="border:0px !important; background:none;">
 				<p:commandLink styleClass="icon-left-bold"
-					actionListener="#{extratoCartaoViewController.showPreviousMonth}"
+					actionListener="#{creditCardAccountReportViewController.showPreviousMonth}"
 					update="filtro lancamentoDataTable" />
 				<p:selectOneMenu id="filtro"
-					value="#{extratoCartaoViewController.filtroMes}"
+					value="#{creditCardAccountReportViewController.filtroMes}"
 					converter="anoMesConverter">
-					<f:selectItems value="#{extratoCartaoViewController.filtrosMeses}" />
+					<f:selectItems value="#{creditCardAccountReportViewController.filtrosMeses}" />
 					<p:ajax update="pnlExtrato"
-						listener="#{extratoCartaoViewController.carregarDadosTelaListagem()}" />
+						listener="#{creditCardAccountReportViewController.carregarDadosTelaListagem()}" />
 				</p:selectOneMenu>
 				<p:commandLink styleClass="icon-right-bold"
-					actionListener="#{extratoCartaoViewController.showNextMonth}"
+					actionListener="#{creditCardAccountReportViewController.showNextMonth}"
 					update="filtro lancamentoDataTable" />
 			</p:panel>
 			<p:selectOneMenu id="conta"
-				value="#{extratoCartaoViewController.filtroConta}"
+				value="#{creditCardAccountReportViewController.filtroConta}"
 				converter="jpaEntityConverter" style="vertical-align:middle;">
-				<f:selectItems value="#{extratoCartaoViewController.contas}" />
+				<f:selectItems value="#{creditCardAccountReportViewController.contas}" />
 				<p:ajax update="pnlExtrato"
-					listener="#{extratoCartaoViewController.carregarDadosTelaListagem()}" />
+					listener="#{creditCardAccountReportViewController.carregarDadosTelaListagem()}" />
 			</p:selectOneMenu>
 			<p:selectOneMenu id="categoria"
-				value="#{extratoCartaoViewController.filtroCategoria}"
+				value="#{creditCardAccountReportViewController.filtroCategoria}"
 				converter="jpaEntityConverter" style="vertical-align:middle;">
 				<f:selectItem itemValue="" itemLabel="Todas as Categorias" />
-				<f:selectItems value="#{extratoCartaoViewController.categorias}" />
+				<f:selectItems value="#{creditCardAccountReportViewController.categorias}" />
 				<p:ajax update="pnlExtrato"
-					listener="#{extratoCartaoViewController.carregarDadosTelaListagem()}" />
+					listener="#{creditCardAccountReportViewController.carregarDadosTelaListagem()}" />
 			</p:selectOneMenu>
 
 		</p:panelGrid>
@@ -47,7 +47,7 @@
 
 		<p:scrollPanel mode="native" style="height:400px; background:none;">
 			<p:dataGrid id="lancamentoDataTable" var="obj"
-				value="#{extratoCartaoViewController.lancamentos}" columns="1"
+				value="#{creditCardAccountReportViewController.lancamentos}" columns="1"
 				style="border:0px !important; background:none"
 				emptyMessage="Você ainda não cadastrou lançamentos em cartões de crédito.">
 				<p:panelGrid columns="5" styleClass="ui-panelgrid-blank"
@@ -112,13 +112,13 @@
 					<p:column>
 						<p:menuButton>
 							<p:menuitem value="Excluir"
-								actionListener="#{extratoCartaoViewController.excluir(obj)}"
+								actionListener="#{creditCardAccountReportViewController.excluir(obj)}"
 								update=":outputPanelGrid" process="@this">
 								<p:confirm header="#{msg['crud.grid.botao.excluir']}"
 									message="#{msg['crud.excluir.confirma']}" icon="ui-icon-alert" />
 							</p:menuitem>
 							<p:menuitem value="Excluir Série"
-								actionListener="#{extratoCartaoViewController.excluirSerie(obj)}"
+								actionListener="#{creditCardAccountReportViewController.excluirSerie(obj)}"
 								update=":outputPanelGrid" process="@this"
 								rendered="#{obj.serie ne null}">
 								<p:confirm header="#{msg['crud.grid.botao.excluir']}"

@@ -11,7 +11,7 @@
 		<p:outputLabel value="#{msg['saldo_orcado.saldo_inicial']}" />
 		<p:panel id="pnlInicial" collapsed="true">
 			<f:facet name="header">
-				<p:outputLabel value="#{lancamentoViewController.saldoInicial}"
+				<p:outputLabel value="#{transactionViewController.saldoInicial}"
 					styleClass="white">
 					<f:convertNumber minFractionDigits="2" maxFractionDigits="2"
 						type="currency" locale="pt_BR" />
@@ -24,7 +24,7 @@
 		<p:panel id="pnlCorrentePrevisto" collapsed="true">
 			<f:facet name="header">
 				<p:outputLabel
-					value="#{lancamentoViewController.saldoCorrentePrevisto}"
+					value="#{transactionViewController.saldoCorrentePrevisto}"
 					styleClass="white">
 					<f:convertNumber minFractionDigits="2" maxFractionDigits="2"
 						type="currency" locale="pt_BR" />
@@ -37,7 +37,7 @@
 		<p:panel id="pnlSaldoReceitaOrcada" collapsed="true">
 			<f:facet name="header">
 				<p:outputLabel
-					value="#{lancamentoViewController.saldoReceitaOrcada}"
+					value="#{transactionViewController.saldoReceitaOrcada}"
 					styleClass="white">
 					<f:convertNumber minFractionDigits="2" maxFractionDigits="2"
 						type="currency" locale="pt_BR" />
@@ -50,7 +50,7 @@
 		<p:panel id="pnlSaldoDespesaOrcada" collapsed="true">
 			<f:facet name="header">
 				<p:outputLabel
-					value="#{lancamentoViewController.saldoDespesaOrcada}"
+					value="#{transactionViewController.saldoDespesaOrcada}"
 					styleClass="white">
 					<f:convertNumber minFractionDigits="2" maxFractionDigits="2"
 						type="currency" locale="pt_BR" />
@@ -63,7 +63,7 @@
 			value="#{msg['saldo_orcado.saldo_corrente_final_previsto']}" />
 		<p:panel id="pnlSaldoCorrenteFinalPrevisto" collapsed="true">
 			<f:facet name="header">
-				<h:outputText value="#{lancamentoViewController.saldoFinalPrevisto}">
+				<h:outputText value="#{transactionViewController.saldoFinalPrevisto}">
 					<f:convertNumber minFractionDigits="2" maxFractionDigits="2"
 						type="currency" locale="pt_BR" />
 				</h:outputText>

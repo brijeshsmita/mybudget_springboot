@@ -37,9 +37,9 @@ public class TransactionsReportGenerator {
 		List<Transaction> transactions = em
 				.createNamedQuery(Transaction.FIND_LANCAMENTO_CONTA_CORRENTE_QUERY, Transaction.class)
 				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado()).setParameter("ano", ano)
-				.setParameter("mes", mes).setParameter("account", account).setParameter("cartaoCreditoFatura", null)
+				.setParameter("mes", mes).setParameter("conta", account).setParameter("cartaoCreditoFatura", null)
 				.setParameter("faturaCartao", null).setParameter("saldoInicial", null)
-				.setParameter("category", category).setParameter("status", status).getResultList();
+				.setParameter("categoria", category).setParameter("status", status).getResultList();
 
 		List<Transaction> extrato = new ArrayList<Transaction>();
 		BigDecimal saldoAnterior = saldoInicial;

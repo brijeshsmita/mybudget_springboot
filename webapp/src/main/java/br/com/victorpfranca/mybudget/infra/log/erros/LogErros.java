@@ -23,11 +23,11 @@ public class LogErros {
     private Date dataOcorrencia;
     @Column(name = "severidade", insertable = false, updatable = false)
     private String severidade;
-    @Column(name = "category", insertable = false, updatable = false)
+    @Column(name = "categoria", insertable = false, updatable = false)
     private String categoria;
     @Column(name = "ip", insertable = false, updatable = false)
     private String ip;
-    @Column(name = "user", insertable = false, updatable = false)
+    @Column(name = "usuario", insertable = false, updatable = false)
     private String usuario;
     @Column(name = "cabecalhos_http", insertable = false, updatable = false)
     private String cabecalhosHttp;
@@ -72,7 +72,7 @@ public class LogErros {
         return categoria;
     }
 
-    public void setCategory(String categoria) {
+    public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
 

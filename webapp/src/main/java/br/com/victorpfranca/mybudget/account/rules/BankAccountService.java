@@ -95,7 +95,7 @@ public class BankAccountService {
 
 	public List<CreditCardTransaction> findLancamentosIniciaisCartao(CreditCardAccount conta) {
 		return em.createNamedQuery(Transaction.FIND_LANCAMENTO_INICIAL_CARTAO_QUERY, CreditCardTransaction.class)
-				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado()).setParameter("account", conta)
+				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado()).setParameter("conta", conta)
 				.getResultList();
 	}
 
@@ -104,7 +104,7 @@ public class BankAccountService {
 				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado())
 				.setParameter("cartaoCreditoFatura", conta).setParameter("faturaCartao", true)
 				.setParameter("saldoInicial", null).setParameter("ano", null).setParameter("mes", null)
-				.setParameter("account", null).setParameter("category", null).setParameter("status", null).getResultList();
+				.setParameter("conta", null).setParameter("categoria", null).setParameter("status", null).getResultList();
 	}
 
 	public BigDecimal getSaldosContasCorrentesAte(Integer ano, Integer mes) {
@@ -126,7 +126,7 @@ public class BankAccountService {
 
 	public BigDecimal getSaldoAte(Account account, Integer ano, Integer mes) {
 		List<AccountBalance> saldos = em.createNamedQuery(AccountBalance.FIND_UNTIL_ANO_MES_QUERY, AccountBalance.class)
-				.setParameter("user", credentialsStore.recuperarUsuarioLogado()).setParameter("account", account)
+				.setParameter("user", credentialsStore.recuperarUsuarioLogado()).setParameter("conta", account)
 				.setParameter("ano", ano).setParameter("mes", mes).setMaxResults(1).getResultList();
 
 		if (!saldos.isEmpty()) {

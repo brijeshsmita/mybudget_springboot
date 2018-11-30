@@ -39,8 +39,8 @@ public class CheckingAccountInitialBalanceRemover {
 	private Transaction removerLancamento() {
 		List<Transaction> lancamentosSaldosIniciais = em
 				.createNamedQuery(Transaction.FIND_LANCAMENTO_CONTA_CORRENTE_QUERY, Transaction.class)
-				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado()).setParameter("account", account)
-				.setParameter("category", null).setParameter("saldoInicial", true).setParameter("ano", null)
+				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado()).setParameter("conta", account)
+				.setParameter("categoria", null).setParameter("saldoInicial", true).setParameter("ano", null)
 				.setParameter("mes", null).setParameter("cartaoCreditoFatura", null).setParameter("faturaCartao", null)
 				.setParameter("status", null).getResultList();
 

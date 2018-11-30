@@ -50,7 +50,7 @@ public class BudgetCreatorDataGrid implements Serializable {
 				MonthYear monthYear = iterator.next();
 				if (categoriaMap.get(monthYear) == null) {
 					Budget budget = new Budget();
-					budget.setCategory(categoriaEntry.getKey());
+					budget.setCategoria(categoriaEntry.getKey());
 					budget.setAno(monthYear.getAno());
 					budget.setMes(monthYear.getMes());
 					categoriaMap.put(monthYear, budget);

@@ -13,7 +13,7 @@
 
 <h:body class="fontRegular login-back white-back">
 	<f:event type="preRenderView"
-		listener="#{controleAcessoViewController.checkAlreadyLoggedin}" />
+		listener="#{accessControlViewController.checkAlreadyLoggedin}" />
 	<p:growl globalOnly="true" autoUpdate="true" />
 	<ui:include src="/WEB-INF/fragments/ajaxStatus.xhtml" />
 	<div class="Container">
@@ -46,16 +46,16 @@
 
 						<div class="EmptyBox50"></div>
 						<p:inputText id="username" placeholder="#{msg['login.username']}"
-							value="#{controleAcessoViewController.username}"
+							value="#{accessControlViewController.username}"
 							styleClass="Container80 Fnone MarAuto Fs18" />
 						<div class="EmptyBox10"></div>
 						<p:password id="password" placeholder="#{msg['login.password']}"
-							value="#{controleAcessoViewController.password}"
+							value="#{accessControlViewController.password}"
 							styleClass="Container80 Fnone MarAuto Fs18" feedback="false" />
 						<div class="EmptyBox20"></div>
 						<ui:remove>
 							<p:selectBooleanCheckbox id="rememberMe"
-								value="#{controleAcessoViewController.remember}"
+								value="#{accessControlViewController.remember}"
 								itemLabel="#{msg['login.rememberMe']}" />
 							<div class="EmptyBox20"></div>
 						</ui:remove>
@@ -70,7 +70,7 @@
 						<div class="EmptyBox10"></div>
 						<p:commandButton value="#{msg['login.loginAction']}"
 							styleClass="Fs16" ajax="true" process="@form" update="@form"
-							action="#{controleAcessoViewController.login}" />
+							action="#{accessControlViewController.login}" />
 						<div class="EmptyBox20"></div>
 					</h:form>
 					<div class="login--action-btns">

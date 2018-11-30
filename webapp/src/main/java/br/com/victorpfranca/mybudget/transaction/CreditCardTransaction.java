@@ -45,9 +45,9 @@ public class CreditCardTransaction extends Transaction {
 	public CreditCardInvoiceTransactionItem buildFaturaItem(Date data, int ano, int mes, int indiceParcela) {
 		CreditCardInvoiceTransactionItem faturaItem = new CreditCardInvoiceTransactionItem();
 
-		faturaItem.setCategory(category);
+		faturaItem.setCategoria(categoria);
 		faturaItem.setComentario(comentario);
-		faturaItem.setAccount(account);
+		faturaItem.setConta(conta);
 		faturaItem.setAjuste(isAjuste());
 		faturaItem.setInOut(inOut.equals(InOut.E) ? InOut.S : InOut.E);
 		faturaItem.setLancamentoCartao(this);
@@ -81,9 +81,9 @@ public class CreditCardTransaction extends Transaction {
 		lancamento.setDataAnterior(dataAnterior);
 		lancamento.setAno(ano);
 		lancamento.setMes(mes);
-		lancamento.setCategory(category);
+		lancamento.setCategoria(categoria);
 		lancamento.setComentario(comentario);
-		lancamento.setAccount(account);
+		lancamento.setConta(conta);
 		lancamento.setContaAnterior(contaAnterior);
 		lancamento.setInOut(inOut);
 		lancamento.setSerie(serie);

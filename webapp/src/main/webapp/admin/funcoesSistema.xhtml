@@ -12,11 +12,11 @@
 				<h:form>
 					<p:panel>
 						<p:commandLink value="#{msg['admin.funcoes.reconstruir_saldos']}"
-							actionListener="#{funcoesAdminViewController.reconstruirSaldosContas()}"
+							actionListener="#{adminFunctionsViewController.reconstruirSaldosContas()}"
 							update="tblSaldosReconstruidos" />
 
 						<p:dataTable id="tblSaldosReconstruidos"
-							value="#{funcoesAdminViewController.saldosReconstruidos.entrySet()}"
+							value="#{adminFunctionsViewController.saldosReconstruidos.entrySet()}"
 							var="saldoEntry">
 							<p:column>
 								<h:outputText value="#{saldoEntry.key.nome}" />

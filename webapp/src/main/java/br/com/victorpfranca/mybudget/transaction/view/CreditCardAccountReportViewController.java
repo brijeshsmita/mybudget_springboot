@@ -52,7 +52,7 @@ public class CreditCardAccountReportViewController implements Serializable {
 	}
 
 	public void carregarDadosTelaListagem() {
-		List<Account> accounts = getAccounts();
+		List<Account> accounts = getContas();
 		if (!accounts.isEmpty() && filtroConta == null)
 			filtroConta = accounts.get(0);
 
@@ -78,7 +78,7 @@ public class CreditCardAccountReportViewController implements Serializable {
 		return transactions;
 	}
 
-	public List<Account> getAccounts() {
+	public List<Account> getContas() {
 		return bankAccountService.findContasCartoes();
 	}
 

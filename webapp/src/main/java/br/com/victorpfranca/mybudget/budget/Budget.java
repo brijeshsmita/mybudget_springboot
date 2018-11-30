@@ -33,10 +33,10 @@ import br.com.victorpfranca.mybudget.category.Category;
 @Entity
 @Table(name = "orcamento")
 @NamedQueries({
-		@NamedQuery(name = FIND_ALL, query = "SELECT o FROM Budget o WHERE o.user.id = :user ORDER BY category.nome, o.ano, o.mes ASC"),
-		@NamedQuery(name = FIND_BY_CATEGORIA_QUERY, query = "SELECT o FROM Budget o WHERE o.user.id = :user AND category = :category ORDER BY category.nome, o.ano, o.mes ASC"),
-		@NamedQuery(name = FIND_BY_RECEITA_DESPESA_QUERY, query = "SELECT o FROM Budget o WHERE (:ano is null OR ano = :ano) AND o.user.id = :user AND category.inOut = :inOut ORDER BY category.nome, o.ano, o.mes ASC"),
-		@NamedQuery(name = REMOVE_BY_CATEGORIA_QUERY, query = "DELETE FROM Budget o WHERE category = :category"), })
+		@NamedQuery(name = FIND_ALL, query = "SELECT o FROM Budget o WHERE o.user.id = :user ORDER BY categoria.nome, o.ano, o.mes ASC"),
+		@NamedQuery(name = FIND_BY_CATEGORIA_QUERY, query = "SELECT o FROM Budget o WHERE o.user.id = :user AND categoria = :categoria ORDER BY categoria.nome, o.ano, o.mes ASC"),
+		@NamedQuery(name = FIND_BY_RECEITA_DESPESA_QUERY, query = "SELECT o FROM Budget o WHERE (:ano is null OR ano = :ano) AND o.user.id = :user AND categoria.inOut = :inOut ORDER BY categoria.nome, o.ano, o.mes ASC"),
+		@NamedQuery(name = REMOVE_BY_CATEGORIA_QUERY, query = "DELETE FROM Budget o WHERE categoria = :categoria"), })
 
 public class Budget implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -57,7 +57,7 @@ public class Budget implements Serializable {
 	@NotNull
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.REFRESH }, optional = false)
 	@JoinColumn(nullable = false, name = "categoria_id")
-	private Category category;
+	private Category categoria;
 
 	@NotNull
 	@Column(name = "ano", nullable = false, unique = false)
@@ -89,11 +89,11 @@ public class Budget implements Serializable {
 	}
 
 	public Category getCategoria() {
-		return category;
+		return categoria;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategoria(Category category) {
+		this.categoria = category;
 	}
 
 	public Integer getAno() {

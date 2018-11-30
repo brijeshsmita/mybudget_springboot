@@ -36,7 +36,7 @@ public class CreditCardReportGenerator {
 				.createNamedQuery(Transaction.FIND_LANCAMENTO_FATURA_CARTAO_ITEM_QUERY, Transaction.class)
 				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado())
 				.setParameter("lancamentoCartao", null).setParameter("ano", ano).setParameter("mes", mes)
-				.setParameter("account", account).setParameter("category", category).getResultList();
+				.setParameter("conta", account).setParameter("categoria", category).getResultList();
 
 		List<Transaction> extrato = new ArrayList<Transaction>();
 		BigDecimal saldoAnterior = saldoInicial;

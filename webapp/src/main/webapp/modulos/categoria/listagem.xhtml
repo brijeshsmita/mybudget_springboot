@@ -9,8 +9,8 @@
 		style="border:0px !important; background:none;height:400px">
 
 		<p:dataTable id="categoriaDespesasDataTable" var="obj"
-			value="#{categoriaViewController.despesas}" rowKey="#{obj.id}"
-			paginator="#{categoriaViewController.despesas.size() > 8}" rows="8"
+			value="#{categoryViewController.despesas}" rowKey="#{obj.id}"
+			paginator="#{categoryViewController.despesas.size() > 8}" rows="8"
 			emptyMessage="Nenhuma categoria de despesa cadastrada">
 
 			<f:facet name="header">#{msg['crud.categoria.despesa.plural']}</f:facet>
@@ -23,13 +23,13 @@
 				<p:menuButton>
 					<p:menuitem title="#{msg['crud.grid.botao.exibir']}"
 						value="#{msg['crud.grid.botao.exibir']}"
-						actionListener="#{categoriaViewController.alterar(obj)}"
+						actionListener="#{categoryViewController.alterar(obj)}"
 						update=":growl :outputPanelGrid" process="@this">
 						<p:resetInput target=":outputPanelGrid" />
 					</p:menuitem>
 
 					<p:menuitem value="#{msg['crud.grid.botao.excluir']}"
-						actionListener="#{categoriaViewController.excluir(obj)}"
+						actionListener="#{categoryViewController.excluir(obj)}"
 						update=":growl :outputPanelGrid" process="@this">
 						<p:confirm header="#{msg['dialog.confirma.titulo']}"
 							message="#{msg['crud.grid.botao.excluir.confirma']}"
@@ -40,8 +40,8 @@
 		</p:dataTable>
 
 		<p:dataTable id="categoriaReceitasDataTable" var="obj"
-			value="#{categoriaViewController.receitas}" rowKey="#{obj.id}"
-			paginator="#{categoriaViewController.receitas.size() > 8}" rows="8"
+			value="#{categoryViewController.receitas}" rowKey="#{obj.id}"
+			paginator="#{categoryViewController.receitas.size() > 8}" rows="8"
 			emptyMessage="Nenhuma categoria de receita cadastrada">
 
 			<f:facet name="header">#{msg['crud.categoria.receita.plural']}</f:facet>
@@ -53,13 +53,13 @@
 				<p:menuButton>
 					<p:menuitem title="#{msg['crud.grid.botao.exibir']}"
 						value="#{msg['crud.grid.botao.exibir']}"
-						actionListener="#{categoriaViewController.alterar(obj)}"
+						actionListener="#{categoryViewController.alterar(obj)}"
 						update=":growl :outputPanelGrid" process="@this">
 						<p:resetInput target=":outputPanelGrid" />
 					</p:menuitem>
 
 					<p:menuitem value="#{msg['crud.grid.botao.excluir']}"
-						actionListener="#{categoriaViewController.excluir(obj)}"
+						actionListener="#{categoryViewController.excluir(obj)}"
 						update=":growl :outputPanelGrid" process="@this">
 						<p:confirm header="#{msg['dialog.confirma.titulo']}"
 							message="#{msg['crud.grid.botao.excluir.confirma']}"

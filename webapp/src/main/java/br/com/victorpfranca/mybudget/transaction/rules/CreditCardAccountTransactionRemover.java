@@ -52,7 +52,7 @@ public class CreditCardAccountTransactionRemover {
 		// recomporSaldoContas
 		if (abaterLancamentoFatura)
 			accountBalanceUpdater.removeSaldos(faturaItens,
-					((CreditCardAccount) transaction.getAccount()).getAccountPagamentoFatura());
+					((CreditCardAccount) transaction.getConta()).getAccountPagamentoFatura());
 
 	}
 
@@ -60,7 +60,7 @@ public class CreditCardAccountTransactionRemover {
 	public void removerSerie(TransactionSerie serie, boolean abaterLancamentoFatura) {
 		List<Transaction> transactions = lancamentoDAO.createNamedQuery(Transaction.FIND_LANCAMENTO_CARTAO_QUERY)
 				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado()).setParameter("serie", serie)
-				.setParameter("saldInicial", null).setParameter("account", null).getResultList();
+				.setParameter("saldInicial", null).setParameter("conta", null).getResultList();
 		for (Iterator<Transaction> iterator = transactions.iterator(); iterator.hasNext();) {
 			Transaction transaction = (Transaction) iterator.next();
 			remover(transaction, abaterLancamentoFatura);

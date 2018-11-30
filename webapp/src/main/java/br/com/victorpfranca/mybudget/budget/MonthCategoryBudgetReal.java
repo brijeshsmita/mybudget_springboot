@@ -53,7 +53,7 @@ public class MonthCategoryBudgetReal implements Serializable {
 	@Id
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.REFRESH }, optional = false)
 	@JoinColumn(nullable = true, name = "categoria_id")
-	private Category category;
+	private Category categoria;
 
 	@NotNull
 	@Column(name = "orcado", nullable = false, unique = false)
@@ -101,11 +101,11 @@ public class MonthCategoryBudgetReal implements Serializable {
 	}
 
 	public Category getCategoria() {
-		return category;
+		return categoria;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategoria(Category category) {
+		this.categoria = category;
 	}
 
 	public User getUsuario() {

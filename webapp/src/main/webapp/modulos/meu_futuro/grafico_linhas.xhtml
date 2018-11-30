@@ -62,12 +62,12 @@
 					<p:panel>
 						<h2 class="BigTopic TexAlCenter">
 							<p:outputLabel
-								value="#{meuFuturoLineChartViewController.inicio }" />
+								value="#{myFutureLineChartViewController.inicio }" />
 							-
-							<p:outputLabel value="#{ meuFuturoLineChartViewController.fim}" />
+							<p:outputLabel value="#{ myFutureLineChartViewController.fim}" />
 						</h2>
 						<p:chart id="line" type="line"
-							model="#{meuFuturoLineChartViewController.lineModel1}"
+							model="#{myFutureLineChartViewController.lineModel1}"
 							responsive="true" />
 					</p:panel>
 				</p:tab>
@@ -80,56 +80,56 @@
 						<p:panelGrid columns="3">
 							<p:outputLabel value="Mês Atual" />
 							<p:outputLabel
-								value="#{meuFuturoLineChartViewController.saldoAtual.date}">
+								value="#{myFutureLineChartViewController.saldoAtual.date}">
 								<f:convertDateTime pattern="MM/yyyy" />
 							</p:outputLabel>
 							<p:outputLabel
-								value="#{meuFuturoLineChartViewController.saldoAtual.valor}"
-								styleClass="#{meuFuturoLineChartViewController.saldoAtual.valor lt 0 ? 'softred' : 'hardblue'}">
+								value="#{myFutureLineChartViewController.saldoAtual.valor}"
+								styleClass="#{myFutureLineChartViewController.saldoAtual.valor lt 0 ? 'softred' : 'hardblue'}">
 								<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
 							</p:outputLabel>
 
 							<p:outputLabel value="Próximo Mês" />
 							<p:outputLabel
-								value="#{meuFuturoLineChartViewController.saldoProximo.date}">
+								value="#{myFutureLineChartViewController.saldoProximo.date}">
 								<f:convertDateTime pattern="MM/yyyy" />
 							</p:outputLabel>
 							<p:outputLabel
-								value="#{meuFuturoLineChartViewController.saldoProximo.valor}"
-								styleClass="#{meuFuturoLineChartViewController.saldoProximo.valor lt 0 ? 'softred' : 'hardblue'}">
+								value="#{myFutureLineChartViewController.saldoProximo.valor}"
+								styleClass="#{myFutureLineChartViewController.saldoProximo.valor lt 0 ? 'softred' : 'hardblue'}">
 								<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
 							</p:outputLabel>
 
 							<p:outputLabel value="Mês de menor saldo" />
 							<p:outputLabel
-								value="#{meuFuturoLineChartViewController.menorSaldo.date}">
+								value="#{myFutureLineChartViewController.menorSaldo.date}">
 								<f:convertDateTime pattern="MM/yyyy" />
 							</p:outputLabel>
 							<p:outputLabel
-								value="#{meuFuturoLineChartViewController.menorSaldo.valor}"
-								styleClass="#{meuFuturoLineChartViewController.menorSaldo.valor lt 0 ? 'softred' : 'hardblue'}">
+								value="#{myFutureLineChartViewController.menorSaldo.valor}"
+								styleClass="#{myFutureLineChartViewController.menorSaldo.valor lt 0 ? 'softred' : 'hardblue'}">
 								<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
 							</p:outputLabel>
 
 							<p:outputLabel value="Mês de maior saldo" />
 							<p:outputLabel
-								value="#{meuFuturoLineChartViewController.maiorSaldo.date}">
+								value="#{myFutureLineChartViewController.maiorSaldo.date}">
 								<f:convertDateTime pattern="MM/yyyy" />
 							</p:outputLabel>
 							<p:outputLabel
-								value="#{meuFuturoLineChartViewController.maiorSaldo.valor}"
-								styleClass="#{meuFuturoLineChartViewController.maiorSaldo.valor lt 0 ? 'softred' : 'hardblue'}">
+								value="#{myFutureLineChartViewController.maiorSaldo.valor}"
+								styleClass="#{myFutureLineChartViewController.maiorSaldo.valor lt 0 ? 'softred' : 'hardblue'}">
 								<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
 							</p:outputLabel>
 
 							<p:outputLabel value="Último mês(em 3 anos)" />
 							<p:outputLabel
-								value="#{meuFuturoLineChartViewController.ultimoSaldo.date}">
+								value="#{myFutureLineChartViewController.ultimoSaldo.date}">
 								<f:convertDateTime pattern="MM/yyyy" />
 							</p:outputLabel>
 							<p:outputLabel
-								value="#{meuFuturoLineChartViewController.ultimoSaldo.valor}"
-								styleClass="#{meuFuturoLineChartViewController.ultimoSaldo.valor lt 0 ? 'softred' : 'hardblue'}">
+								value="#{myFutureLineChartViewController.ultimoSaldo.valor}"
+								styleClass="#{myFutureLineChartViewController.ultimoSaldo.valor lt 0 ? 'softred' : 'hardblue'}">
 								<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
 							</p:outputLabel>
 						</p:panelGrid>

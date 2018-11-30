@@ -45,8 +45,8 @@ public class CalcularDatasSerieLancamentosTest {
 		conta.setNome("Banco");
 
 		transaction.setInOut(InOut.S);
-		transaction.setCategory(category);
-		transaction.setAccount(conta);
+		transaction.setCategoria(category);
+		transaction.setConta(conta);
 		transaction.setValor(BigDecimal.ZERO);
 
 	}

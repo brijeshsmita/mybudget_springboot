@@ -30,7 +30,7 @@ import br.com.victorpfranca.mybudget.transaction.rules.InvalidTransactionValueEx
 import br.com.victorpfranca.mybudget.transaction.rules.NullableAccountException;
 import br.com.victorpfranca.mybudget.transaction.rules.TransactionMonthUpdatedException;
 
-@Path("accounts")
+@Path("contas")
 public class AccountResourceImpl implements AccountResource {
 
 	@Inject

@@ -28,8 +28,8 @@ public class TransactionToTransactionDTOConversor {
 
 	public void aplicarValores(Transaction transaction, TransactionSerieUpdaterDTO dto,
 			Function<Integer, Category> categoriaFinder, Function<Integer, Account> contaFinder) {
-		transaction.setCategory(category(dto, categoriaFinder.compose(TransactionSerieUpdaterDTO::getCategoria)));
-		transaction.setAccount(account(dto, contaFinder.compose(TransactionSerieUpdaterDTO::getConta)));
+		transaction.setCategoria(category(dto, categoriaFinder.compose(TransactionSerieUpdaterDTO::getCategoria)));
+		transaction.setConta(account(dto, contaFinder.compose(TransactionSerieUpdaterDTO::getConta)));
 		transaction.setValor(dto.getValor());
 		transaction.setStatus(TransactionStatus.fromChar(dto.getStatus()));
 		transaction.setComentario(dto.getComentario());
@@ -37,8 +37,8 @@ public class TransactionToTransactionDTOConversor {
 
 	public void aplicarValores(Transaction transaction, TransactionUpdaterDTO dto,
 			Function<Integer, Category> categoriaFinder, Function<Integer, Account> contaFinder) {
-		transaction.setCategory(category(dto, categoriaFinder.compose(TransactionUpdaterDTO::getCategoria)));
-		transaction.setAccount(account(dto, contaFinder.compose(TransactionUpdaterDTO::getConta)));
+		transaction.setCategoria(category(dto, categoriaFinder.compose(TransactionUpdaterDTO::getCategoria)));
+		transaction.setConta(account(dto, contaFinder.compose(TransactionUpdaterDTO::getConta)));
 		transaction.setData(data(dto, TransactionUpdaterDTO::getData));
 		transaction.setValor(dto.getValor());
 		transaction.setStatus(TransactionStatus.fromChar(dto.getStatus()));
@@ -61,9 +61,9 @@ public class TransactionToTransactionDTOConversor {
 
 		}
 		resultado.setData(data(dto, TransactionRegistryDTO::getData));
-		resultado.setAccount(account);
+		resultado.setConta(account);
 		if (dto.getCategoria() != null)
-			resultado.setCategory(category(dto, categoriaFinder.compose(TransactionRegistryDTO::getCategoria)));
+			resultado.setCategoria(category(dto, categoriaFinder.compose(TransactionRegistryDTO::getCategoria)));
 		resultado.setValor(dto.getValor());
 		resultado.setInOut(InOut.fromChar(dto.getTipo()));
 		resultado.setStatus(TransactionStatus.fromChar(dto.getStatus()));
@@ -148,7 +148,7 @@ public class TransactionToTransactionDTOConversor {
 	}
 
 	private String nomeConta(Transaction transaction) {
-		return Optional.ofNullable(transaction).map(Transaction::getAccount).map(c -> c.getNome()).orElse(null);
+		return Optional.ofNullable(transaction).map(Transaction::getConta).map(c -> c.getNome()).orElse(null);
 	}
 
 	// private ContaDTO account(Transaction lancamento) {
@@ -166,11 +166,11 @@ public class TransactionToTransactionDTOConversor {
 	}
 
 	private String nomeCategoria(Transaction transaction) {
-		return Optional.ofNullable(transaction).map(Transaction::getCategory).map(c -> c.getNome()).orElse(null);
+		return Optional.ofNullable(transaction).map(Transaction::getCategoria).map(c -> c.getNome()).orElse(null);
 	}
 
 	private CategoryDTO categoria(Transaction transaction) {
-		return Optional.ofNullable(transaction).map(Transaction::getCategory)
+		return Optional.ofNullable(transaction).map(Transaction::getCategoria)
 				.map(c -> new CategoryDTO(c.getId(), c.getNome())).orElse(null);
 	}
 

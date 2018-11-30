@@ -16,23 +16,23 @@
 		<div class="EmptyBox20"></div>
 
 		<p:panel id="outputPanelGrid" style="border: none">
-			<p:outputPanel rendered="#{contaViewController.telaGrid}">
+			<p:outputPanel rendered="#{accountViewController.telaGrid}">
 				<h:form>
 					<ui:include src="conta/listagem.xhtml" />
 					<p:stack icon="/resources/meussaldos/images/actionButton.png"
 						expanded="false">
 						<p:menuitem value="#{msg['crud.conta.dinheiro']}"
-							actionListener="#{contaViewController.incluirContaDinheiro}"
+							actionListener="#{accountViewController.incluirContaDinheiro}"
 							update=":outputPanelGrid" process="@this">
 							<p:resetInput target=":outputPanelGrid" />
 						</p:menuitem>
 						<p:menuitem value="#{msg['crud.conta.cartao']}"
-							actionListener="#{contaViewController.incluirContaCartao}"
+							actionListener="#{accountViewController.incluirContaCartao}"
 							update=":outputPanelGrid" process="@this">
 							<p:resetInput target=":outputPanelGrid" />
 						</p:menuitem>
 						<p:menuitem value="#{msg['crud.conta.banco']}"
-							actionListener="#{contaViewController.incluirContaBanco}"
+							actionListener="#{accountViewController.incluirContaBanco}"
 							update=":outputPanelGrid" process="@this">
 							<p:resetInput target=":outputPanelGrid" />
 						</p:menuitem>
@@ -40,22 +40,22 @@
 				</h:form>
 			</p:outputPanel>
 
-			<p:outputPanel rendered="#{not contaViewController.telaGrid}">
-				<p:outputPanel rendered="#{contaViewController.selectedTab eq 0}">
+			<p:outputPanel rendered="#{not accountViewController.telaGrid}">
+				<p:outputPanel rendered="#{accountViewController.selectedTab eq 0}">
 					<h:form>
-						<p:outputPanel rendered="#{not empty contaViewController.objeto}">
+						<p:outputPanel rendered="#{not empty accountViewController.objeto}">
 							<ui:include src="conta/cadastro.xhtml" />
 							<div>
 								<p:commandButton value="#{msg['crud.form.salvar']}"
-									rendered="#{empty contaViewController.objeto.id}"
-									actionListener="#{contaViewController.salvar}"
+									rendered="#{empty accountViewController.objeto.id}"
+									actionListener="#{accountViewController.salvar}"
 									update=":growl :outputPanelGrid" />
 								<p:commandButton value="#{msg['crud.form.alterar']}"
-									rendered="#{not empty contaViewController.objeto.id}"
-									actionListener="#{contaViewController.salvar}"
+									rendered="#{not empty accountViewController.objeto.id}"
+									actionListener="#{accountViewController.salvar}"
 									update=":growl :outputPanelGrid" />
 								<p:commandButton value="#{msg['crud.form.fechar']}"
-									actionListener="#{contaViewController.voltar()}"
+									actionListener="#{accountViewController.voltar()}"
 									update=":outputPanelGrid" process="@this" />
 							</div>
 						</p:outputPanel>

@@ -30,7 +30,7 @@ import br.com.victorpfranca.mybudget.view.Messages;
 
 @Named
 @ViewScoped
-public class ControleAcessoViewController implements Serializable {
+public class AccessControlViewController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

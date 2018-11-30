@@ -96,14 +96,14 @@ public class CriarLancamentoTransferenciaTest {
 			AccountBalance saldoContaOrigem = saldos.get(i);
 
 			//Checar saldo account origem
-			assertEquals("Account Origem", contaOrigemIdInput, saldoContaOrigem.getAccount().getId());
+			assertEquals("Account Origem", contaOrigemIdInput, saldoContaOrigem.getConta().getId());
 			assertEquals("Ano", saldosExpected.get(i)[0], saldoContaOrigem.getAno());
 			assertEquals("Mes", saldosExpected.get(i)[1], saldoContaOrigem.getMes());
 			assertEquals("Valor", saldosExpected.get(i)[2], saldoContaOrigem.getValor());
 
 			//Checar saldo account destino
 			AccountBalance saldoContaDestino = saldos.get(i + 1);
-			assertEquals("Account Origem", contaDestinoIdInput, saldoContaDestino.getAccount().getId());
+			assertEquals("Account Origem", contaDestinoIdInput, saldoContaDestino.getConta().getId());
 			assertEquals("Ano", saldosExpected.get(i)[0], saldoContaDestino.getAno());
 			assertEquals("Mes", saldosExpected.get(i)[1], saldoContaDestino.getMes());
 			assertEquals("Valor", saldosExpected.get(i)[3], saldoContaDestino.getValor());
@@ -113,7 +113,7 @@ public class CriarLancamentoTransferenciaTest {
 		assertEquals(transactions.size(), 2);
 
 		// Checar lancamento account origem
-		assertEquals("Account", contaOrigemIdInput, transactions.get(0).getAccount().getId());
+		assertEquals("Account", contaOrigemIdInput, transactions.get(0).getConta().getId());
 		assertNull("Account Origem", ((CheckingAccountTransaction) transactions.get(0)).getContaOrigem());
 		assertEquals("Account Destino", contaDestinoIdInput,
 				((CheckingAccountTransaction) transactions.get(0)).getContaDestino().getId());
@@ -121,7 +121,7 @@ public class CriarLancamentoTransferenciaTest {
 		assertEquals("Valor", valorLancamentoInput, transactions.get(0).getValor());
 
 		// Checar lancamento account destino
-		assertEquals("Account", contaDestinoIdInput, transactions.get(1).getAccount().getId());
+		assertEquals("Account", contaDestinoIdInput, transactions.get(1).getConta().getId());
 		assertEquals("Account Origem", contaOrigemIdInput,
 				((CheckingAccountTransaction) transactions.get(1)).getContaOrigem().getId());
 		assertNull("Account Destino", ((CheckingAccountTransaction) transactions.get(1)).getContaDestino());
@@ -140,7 +140,7 @@ public class CriarLancamentoTransferenciaTest {
 		Transaction transaction = new TransactionBuilder().data(dataLancamentoInput).inOut(inOutInput)
 				.status(TransactionStatus.NAO_CONFIRMADO).valor(valorLancamentoInput).buildLancamentoContaCorrente();
 
-		transaction.setAccount(contaOrigem);
+		transaction.setConta(contaOrigem);
 		((CheckingAccountTransaction) transaction).setContaDestino(contaDestino);
 
 		return (CheckingAccountTransaction) transaction;

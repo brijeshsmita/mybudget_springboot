@@ -64,21 +64,21 @@ import lombok.Setter;
 @Table(name = "lancamento")
 @NamedQueries({
 
-		@NamedQuery(name = FIND_LANCAMENTO_QUERY, query = "SELECT l FROM Transaction l WHERE l.user.id=:user AND (:serie is null OR serie = :serie) AND (:category is null OR category = :category) ORDER BY data, id"),
+		@NamedQuery(name = FIND_LANCAMENTO_QUERY, query = "SELECT l FROM Transaction l WHERE l.user.id=:user AND (:serie is null OR serie = :serie) AND (:categoria is null OR categoria = :categoria) ORDER BY data, id"),
 		@NamedQuery(name = FIND_LANCAMENTO_FATURA_QUERY, query = "SELECT l FROM Transaction l WHERE cartaoCreditoFatura = :cartaoCreditoFatura AND data >= :data ORDER BY data ASC"),
 
-		@NamedQuery(name = FIND_LANCAMENTO_CONTA_CORRENTE_QUERY, query = "SELECT l FROM CheckingAccountTransaction l WHERE l.user.id=:user AND (:ano is null OR ano = :ano) AND (:mes is null OR mes = :mes) AND (:account is null OR account = :account) AND (:category is null OR category = :category) AND (:saldoInicial is null OR saldoInicial = :saldoInicial) AND (:cartaoCreditoFatura is null OR cartaoCreditoFatura = :cartaoCreditoFatura) AND (:faturaCartao is null OR faturaCartao = :faturaCartao) AND (:status is null OR status= :status) ORDER BY data, id"),
+		@NamedQuery(name = FIND_LANCAMENTO_CONTA_CORRENTE_QUERY, query = "SELECT l FROM CheckingAccountTransaction l WHERE l.user.id=:user AND (:ano is null OR ano = :ano) AND (:mes is null OR mes = :mes) AND (:conta is null OR conta = :conta) AND (:categoria is null OR categoria = :categoria) AND (:saldoInicial is null OR saldoInicial = :saldoInicial) AND (:cartaoCreditoFatura is null OR cartaoCreditoFatura = :cartaoCreditoFatura) AND (:faturaCartao is null OR faturaCartao = :faturaCartao) AND (:status is null OR status= :status) ORDER BY data, id"),
 
-		@NamedQuery(name = FIND_LANCAMENTO_CARTAO_QUERY, query = "SELECT l FROM CreditCardTransaction l WHERE l.user.id=:user AND (:serie is null OR serie = :serie) AND (:account is null OR account = :account) AND (:saldoInicial is null OR saldoInicial = :saldoInicial) ORDER BY data, id ASC"),
+		@NamedQuery(name = FIND_LANCAMENTO_CARTAO_QUERY, query = "SELECT l FROM CreditCardTransaction l WHERE l.user.id=:user AND (:serie is null OR serie = :serie) AND (:conta is null OR conta = :conta) AND (:saldoInicial is null OR saldoInicial = :saldoInicial) ORDER BY data, id ASC"),
 
-		@NamedQuery(name = FIND_LANCAMENTO_FATURA_CARTAO_ITEM_QUERY, query = "SELECT l FROM CreditCardInvoiceTransactionItem l WHERE l.user.id=:user AND (:lancamentoCartao is null OR lancamentoCartao = :lancamentoCartao) AND (:ano is null OR ano = :ano) AND (:mes is null OR mes = :mes) AND (:account is null OR account = :account) AND (:category is null OR category = :category) ORDER BY data, lancamentoCartao.data, id"),
+		@NamedQuery(name = FIND_LANCAMENTO_FATURA_CARTAO_ITEM_QUERY, query = "SELECT l FROM CreditCardInvoiceTransactionItem l WHERE l.user.id=:user AND (:lancamentoCartao is null OR lancamentoCartao = :lancamentoCartao) AND (:ano is null OR ano = :ano) AND (:mes is null OR mes = :mes) AND (:conta is null OR conta = :conta) AND (:categoria is null OR categoria = :categoria) ORDER BY data, lancamentoCartao.data, id"),
 
-		@NamedQuery(name = FIND_LANCAMENTO_INICIAL_CARTAO_QUERY, query = "SELECT l FROM CreditCardTransaction l WHERE l.user.id=:user AND (:account is null OR account = :account) AND saldoInicial = true ORDER BY data, id ASC"),
+		@NamedQuery(name = FIND_LANCAMENTO_INICIAL_CARTAO_QUERY, query = "SELECT l FROM CreditCardTransaction l WHERE l.user.id=:user AND (:conta is null OR conta = :conta) AND saldoInicial = true ORDER BY data, id ASC"),
 
 		@NamedQuery(name = REMOVE_BY_SERIE_QUERY, query = "DELETE FROM Transaction l WHERE serie = :serie"),
-		@NamedQuery(name = REMOVE_LANCAMENTOS_CONTA_CORRENTE_QUERY, query = "DELETE FROM CheckingAccountTransaction l WHERE (:account is null OR account = :account) AND (:saldoInicial is null OR saldoInicial = :saldoInicial)"),
-		@NamedQuery(name = REMOVE_LANCAMENTOS_CARTAO_CREDITO_QUERY, query = "DELETE FROM CreditCardTransaction l WHERE account = :account AND (:saldoInicial is null OR saldoInicial = :saldoInicial)"),
-		@NamedQuery(name = REMOVE_LANCAMENTOS_FATURA_CARTAO_ITEM_QUERY, query = "DELETE FROM CreditCardInvoiceTransactionItem l WHERE account = :account AND (:saldoInicial is null OR saldoInicial = :saldoInicial)") })
+		@NamedQuery(name = REMOVE_LANCAMENTOS_CONTA_CORRENTE_QUERY, query = "DELETE FROM CheckingAccountTransaction l WHERE (:conta is null OR conta = :conta) AND (:saldoInicial is null OR saldoInicial = :saldoInicial)"),
+		@NamedQuery(name = REMOVE_LANCAMENTOS_CARTAO_CREDITO_QUERY, query = "DELETE FROM CreditCardTransaction l WHERE conta = :conta AND (:saldoInicial is null OR saldoInicial = :saldoInicial)"),
+		@NamedQuery(name = REMOVE_LANCAMENTOS_FATURA_CARTAO_ITEM_QUERY, query = "DELETE FROM CreditCardInvoiceTransactionItem l WHERE conta = :conta AND (:saldoInicial is null OR saldoInicial = :saldoInicial)") })
 @Getter
 @Setter
 @NoArgsConstructor
@@ -142,7 +142,7 @@ public class Transaction implements Serializable, Cloneable {
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.REFRESH }, optional = false)
 	@JoinColumn(nullable = true, name = "conta_id")
-	protected Account account;
+	protected Account conta;
 
 	@Transient
 	protected Account contaAnterior;
@@ -153,7 +153,7 @@ public class Transaction implements Serializable, Cloneable {
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.REFRESH }, optional = false)
 	@JoinColumn(nullable = true, name = "categoria_id")
-	protected Category category;
+	protected Category categoria;
 
 	@NotNull
 	@JoinColumn(name = "usuario_id", nullable = false)
@@ -201,9 +201,9 @@ public class Transaction implements Serializable, Cloneable {
 
 	public TransactionVO getVO() {
 		TransactionVO transactionVO = new TransactionVO();
-		transactionVO.setCategory(getCategory());
+		transactionVO.setCategoria(getCategoria());
 		transactionVO.setComentario(getComentario());
-		transactionVO.setAccount(getAccount());
+		transactionVO.setConta(getConta());
 		transactionVO.setContaAnterior(contaAnterior);
 		transactionVO.setData(getData());
 		transactionVO.setDataAnterior(getDataAnterior());
@@ -234,9 +234,9 @@ public class Transaction implements Serializable, Cloneable {
 		transaction.setDataAnterior(dataAnterior);
 		transaction.setAno(ano);
 		transaction.setMes(mes);
-		transaction.setCategory(category);
+		transaction.setCategoria(categoria);
 		transaction.setComentario(comentario);
-		transaction.setAccount(account);
+		transaction.setConta(conta);
 		transaction.setContaAnterior(contaAnterior);
 		transaction.setInOut(inOut);
 		transaction.setSerie(serie);
@@ -250,7 +250,7 @@ public class Transaction implements Serializable, Cloneable {
 
 	public Transaction getLancamentoAnterior() {
 		Transaction lancamentoAntigo = (Transaction) clone();
-		lancamentoAntigo.setAccount(getContaAnterior());
+		lancamentoAntigo.setConta(getContaAnterior());
 		lancamentoAntigo.setValor(getValorAnterior());
 		lancamentoAntigo.setDataAnterior(getDataAnterior());
 		return lancamentoAntigo;
@@ -267,7 +267,7 @@ public class Transaction implements Serializable, Cloneable {
 	}
 
 	public boolean contaFoiAlterada() {
-		return getContaAnterior() != null && !getAccount().equals(getContaAnterior());
+		return getContaAnterior() != null && !getConta().equals(getContaAnterior());
 	}
 
 	public void validar() throws TransactionMonthUpdatedException, NullableAccountException, AccountTypeException,
@@ -284,7 +284,7 @@ public class Transaction implements Serializable, Cloneable {
 	}
 
 	protected void validarCategoriaNaoNula() throws IncompatibleCategoriesException {
-		if (!isPermiteCategoriaNula() && getCategory() == null) {
+		if (!isPermiteCategoriaNula() && getCategoria() == null) {
 			throw new IncompatibleCategoriesException("crud.lancamento.error.categoria.null");
 		}
 	}
@@ -305,16 +305,16 @@ public class Transaction implements Serializable, Cloneable {
 	}
 
 	protected void validarConta() throws NullableAccountException, AccountTypeException {
-		if (getAccount() == null) {
+		if (getConta() == null) {
 			throw new NullableAccountException("crud_lancamento_validator_conta");
 		}
-		if (getContaAnterior() != null && !getAccount().getClass().equals(getContaAnterior().getClass())) {
+		if (getContaAnterior() != null && !getConta().getClass().equals(getContaAnterior().getClass())) {
 			throw new AccountTypeException("crud_lancamento_validator_tipo_conta");
 		}
 	}
 
 	protected void validarInOut() throws IncompatibleCategoriesException {
-		if (getCategory() != null && !getCategory().getInOut().equals(getInOut())) {
+		if (getCategoria() != null && !getCategoria().getInOut().equals(getInOut())) {
 			throw new IncompatibleCategoriesException("crud.lancamento.error.tipo.categoria");
 		}
 	}

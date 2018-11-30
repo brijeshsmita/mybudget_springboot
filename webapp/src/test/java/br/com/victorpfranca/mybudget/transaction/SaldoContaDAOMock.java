@@ -22,7 +22,7 @@ public class SaldoContaDAOMock extends DAOMock<AccountBalance> {
 			Integer mes = null;
 
 			for (int i = 0; i < parameters.length; i++) {
-				if (parameters[i].getParamName().equals("account")) {
+				if (parameters[i].getParamName().equals("conta")) {
 					account = (Account) parameters[i].getParamValue();
 					continue;
 				} else if (parameters[i].getParamName().equals("ano")) {
@@ -35,7 +35,7 @@ public class SaldoContaDAOMock extends DAOMock<AccountBalance> {
 
 			for (Iterator<AccountBalance> iterator = entities.iterator(); iterator.hasNext();) {
 				AccountBalance accountBalance = iterator.next();
-				if (accountBalance.getAccount().getId().equals(account.getId()) && accountBalance.getAno().compareTo(ano) >= 0
+				if (accountBalance.getConta().getId().equals(account.getId()) && accountBalance.getAno().compareTo(ano) >= 0
 						&& accountBalance.getMes().compareTo(mes) >= 0) {
 					found.add(accountBalance);
 				}

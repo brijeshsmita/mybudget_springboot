@@ -41,12 +41,12 @@ import br.com.victorpfranca.mybudget.transaction.Transaction;
 @Table(name = "conta_saldo")
 @NamedQueries({ @NamedQuery(name = FIND_ALL_QUERY, query = "SELECT s FROM AccountBalance s WHERE s.user.id = :user"),
 
-		@NamedQuery(name = FIND_UNTIL_ANO_MES_GROUPED_QUERY, query = "SELECT new br.com.victorpfranca.mybudget.account.AccountBalance(s.ano, s.mes, SUM(valor)) FROM AccountBalance s where (:user is null OR user = :user) and (:account is null OR account = :account) and CONCAT(to_char(ano, 'FM9999'),to_char(mes, 'FM09')) <= CONCAT(to_char(:ano, 'FM9999'),to_char(:mes, 'FM09')) group by ano, mes order by ano DESC, mes DESC"),
-		@NamedQuery(name = FIND_FROM_ANO_MES_GROUPED_QUERY, query = "SELECT new br.com.victorpfranca.mybudget.account.AccountBalance(s.ano, s.mes, SUM(valor)) FROM AccountBalance s where (:user is null OR user = :user) and (:account is null OR account = :account) and CONCAT(to_char(ano, 'FM9999'),to_char(mes, 'FM09')) >= CONCAT(to_char(:ano, 'FM9999'),to_char(:mes, 'FM09')) group by ano, mes order by ano ASC, mes ASC"),
+		@NamedQuery(name = FIND_UNTIL_ANO_MES_GROUPED_QUERY, query = "SELECT new br.com.victorpfranca.mybudget.account.AccountBalance(s.ano, s.mes, SUM(valor)) FROM AccountBalance s where (:user is null OR user = :user) and (:conta is null OR conta = :conta) and CONCAT(to_char(ano, 'FM9999'),to_char(mes, 'FM09')) <= CONCAT(to_char(:ano, 'FM9999'),to_char(:mes, 'FM09')) group by ano, mes order by ano DESC, mes DESC"),
+		@NamedQuery(name = FIND_FROM_ANO_MES_GROUPED_QUERY, query = "SELECT new br.com.victorpfranca.mybudget.account.AccountBalance(s.ano, s.mes, SUM(valor)) FROM AccountBalance s where (:user is null OR user = :user) and (:conta is null OR conta = :conta) and CONCAT(to_char(ano, 'FM9999'),to_char(mes, 'FM09')) >= CONCAT(to_char(:ano, 'FM9999'),to_char(:mes, 'FM09')) group by ano, mes order by ano ASC, mes ASC"),
 
-		@NamedQuery(name = FIND_UNTIL_ANO_MES_QUERY, query = "SELECT s FROM AccountBalance s where (:user is null OR user = :user) and (:account is null OR account = :account) and CONCAT(to_char(ano, 'FM9999'),to_char(mes, 'FM09')) <= CONCAT(to_char(:ano, 'FM9999'),to_char(:mes, 'FM09')) order by ano DESC, mes DESC"),
-		@NamedQuery(name = FIND_FROM_ANO_MES_QUERY, query = "SELECT s FROM AccountBalance s where (:user is null OR user = :user) and (:account is null OR account = :account) and CONCAT(to_char(ano, 'FM9999'),to_char(mes, 'FM09')) >= CONCAT(to_char(:ano, 'FM9999'),to_char(:mes, 'FM09')) order by ano ASC, mes ASC"),
-		@NamedQuery(name = REMOVE_SALDOS_INICIAIS_QUERY, query = "DELETE FROM AccountBalance l WHERE account = :account") })
+		@NamedQuery(name = FIND_UNTIL_ANO_MES_QUERY, query = "SELECT s FROM AccountBalance s where (:user is null OR user = :user) and (:conta is null OR conta = :conta) and CONCAT(to_char(ano, 'FM9999'),to_char(mes, 'FM09')) <= CONCAT(to_char(:ano, 'FM9999'),to_char(:mes, 'FM09')) order by ano DESC, mes DESC"),
+		@NamedQuery(name = FIND_FROM_ANO_MES_QUERY, query = "SELECT s FROM AccountBalance s where (:user is null OR user = :user) and (:conta is null OR conta = :conta) and CONCAT(to_char(ano, 'FM9999'),to_char(mes, 'FM09')) >= CONCAT(to_char(:ano, 'FM9999'),to_char(:mes, 'FM09')) order by ano ASC, mes ASC"),
+		@NamedQuery(name = REMOVE_SALDOS_INICIAIS_QUERY, query = "DELETE FROM AccountBalance l WHERE conta = :conta") })
 public class AccountBalance implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -71,7 +71,7 @@ public class AccountBalance implements Serializable {
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.REFRESH }, optional = false)
 	@JoinColumn(nullable = true, name = "conta_id")
-	private Account account;
+	private Account conta;
 
 	@Column(name = "valor", nullable = false, unique = false)
 	private BigDecimal valor;
@@ -94,7 +94,7 @@ public class AccountBalance implements Serializable {
 	}
 
 	public AccountBalance(Account account, Integer ano, Integer mes, BigDecimal valor) {
-		this.account = account;
+		this.conta = account;
 		this.user = account.getUsuario();
 		this.ano = ano;
 		this.mes = mes;
@@ -138,12 +138,12 @@ public class AccountBalance implements Serializable {
 		this.id = id;
 	}
 
-	public Account getAccount() {
-		return account;
+	public Account getConta() {
+		return conta;
 	}
 
-	public void setAccount(Account account) {
-		this.account = account;
+	public void setConta(Account account) {
+		this.conta = account;
 	}
 
 	public BigDecimal getValor() {
@@ -187,7 +187,7 @@ public class AccountBalance implements Serializable {
 	}
 
 	public AccountBalance withConta(Account account) {
-		setAccount(account);
+		setConta(account);
 		return this;
 	}
 

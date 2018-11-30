@@ -8,7 +8,7 @@
 	<h:form>
 		<p:dataTable id="usuarioDespesasDataTable" var="usuario"
 			widgetVar="usuarioDespesasDataTableWV" lazy="true"
-			value="#{usuarioViewController.usuarioDataModel}" editable="true"
+			value="#{userViewController.usuarioDataModel}" editable="true"
 			editMode="cell" paginator="true" paginatorAlwaysVisible="false"
 			rows="10" sortBy="firstName"
 			emptyMessage="#{msg['crud.usuario.list.empty']}">
@@ -56,14 +56,14 @@
 					<p:menuitem title="#{msg['crud.usuario.ativar']}"
 						value="#{msg['crud.usuario.ativar']}"
 						rendered="#{not usuario.ativo}"
-						actionListener="#{usuarioViewController.ativar(usuario.id)}"
+						actionListener="#{userViewController.ativar(usuario.id)}"
 						update="@form" process="@this">
 					</p:menuitem>
 
 					<p:menuitem title="#{msg['crud.usuario.inativar']}"
 						value="#{msg['crud.usuario.inativar']}"
 						rendered="#{usuario.ativo}"
-						actionListener="#{usuarioViewController.inativar(usuario.id)}"
+						actionListener="#{userViewController.inativar(usuario.id)}"
 						update="@form" process="@this">
 						<p:confirm header="#{msg['dialog.confirma.titulo']}"
 							message="#{msg['crud.grid.botao.excluir.confirma']}"

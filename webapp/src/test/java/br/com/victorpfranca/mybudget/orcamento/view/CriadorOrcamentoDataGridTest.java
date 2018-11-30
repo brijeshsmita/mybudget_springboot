@@ -107,7 +107,7 @@ public class CriadorOrcamentoDataGridTest {
 			Budget budget = new Budget();
 			budget.setAno(ano);
 			budget.setMes(i);
-			budget.setCategory(category);
+			budget.setCategoria(category);
 			budget.setValor(valor);
 			budgets.add(budget);
 		}

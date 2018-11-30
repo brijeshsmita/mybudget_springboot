@@ -67,7 +67,7 @@ public class AccountBalanceUpdater {
 	public void removeSaldos(Transaction transaction) {
 		List<Transaction> transactions = new ArrayList<Transaction>();
 		transactions.add(transaction);
-		removeSaldos(transactions, transaction.getAccount());
+		removeSaldos(transactions, transaction.getConta());
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -104,12 +104,12 @@ public class AccountBalanceUpdater {
 		int mesPrimeiroLancamento = primeiroLancamento.getMes();
 
 		if (account == null) {
-			account = primeiroLancamento.getAccount();
+			account = primeiroLancamento.getConta();
 		}
 
 		List<AccountBalance> saldosContaLancamento = saldoContaDao.executeQuery(AccountBalance.FIND_FROM_ANO_MES_QUERY,
 				QueryParam.build("user", credentialsStore.recuperarUsuarioLogado()),
-				QueryParam.build("account", account), QueryParam.build("ano", anoPrimeiroLancamento),
+				QueryParam.build("conta", account), QueryParam.build("ano", anoPrimeiroLancamento),
 				QueryParam.build("mes", mesPrimeiroLancamento));
 
 		for (Iterator<Transaction> iterator = transactions.iterator(); iterator.hasNext();) {
@@ -132,7 +132,7 @@ public class AccountBalanceUpdater {
 
 	protected BigDecimal getSaldoAte(Account account, Integer ano, Integer mes) {
 		List<AccountBalance> saldos = saldoContaDao.createNamedQuery(AccountBalance.FIND_UNTIL_ANO_MES_QUERY)
-				.setParameter("user", credentialsStore.recuperarUsuarioLogado()).setParameter("account", account)
+				.setParameter("user", credentialsStore.recuperarUsuarioLogado()).setParameter("conta", account)
 				.setParameter("ano", ano).setParameter("mes", mes).setMaxResults(1).getResultList();
 
 		if (!saldos.isEmpty()) {

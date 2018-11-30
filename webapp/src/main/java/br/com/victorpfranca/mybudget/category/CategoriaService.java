@@ -70,7 +70,7 @@ public class CategoriaService {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void remove(Category category) throws DeletionNotPermittedException {
 		validarSemLancamentos(category);
-		em.createNamedQuery(Budget.REMOVE_BY_CATEGORIA_QUERY).setParameter("category", category).executeUpdate();
+		em.createNamedQuery(Budget.REMOVE_BY_CATEGORIA_QUERY).setParameter("categoria", category).executeUpdate();
 		em.remove(em.contains(category) ? category : em.merge(category));
 	}
 
@@ -83,7 +83,7 @@ public class CategoriaService {
 	private void validarSemLancamentos(Category category) throws DeletionNotPermittedException {
 		List<Transaction> lancamentosExistentes = em.createNamedQuery(Transaction.FIND_LANCAMENTO_QUERY, Transaction.class)
 				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado())
-				.setParameter("category", category).setParameter("serie", null).getResultList();
+				.setParameter("categoria", category).setParameter("serie", null).getResultList();
 		if (!lancamentosExistentes.isEmpty())
 			throw new DeletionNotPermittedException("crud.categoria.error.lancamentos_nao_podem_ser_removidos");
 	}

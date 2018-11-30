@@ -40,12 +40,12 @@ public class CreditCardInitialTransactionsRemover {
 	}
 
 	private void removerLancamentosCartao(Account account) {
-		em.createNamedQuery(Transaction.REMOVE_LANCAMENTOS_CARTAO_CREDITO_QUERY).setParameter("account", account)
+		em.createNamedQuery(Transaction.REMOVE_LANCAMENTOS_CARTAO_CREDITO_QUERY).setParameter("conta", account)
 				.setParameter("saldoInicial", true).executeUpdate();
 	}
 
 	private void removerLancamentosFaturaItem(Account account) {
-		em.createNamedQuery(Transaction.REMOVE_LANCAMENTOS_FATURA_CARTAO_ITEM_QUERY).setParameter("account", account)
+		em.createNamedQuery(Transaction.REMOVE_LANCAMENTOS_FATURA_CARTAO_ITEM_QUERY).setParameter("conta", account)
 				.setParameter("saldoInicial", true).executeUpdate();
 	}
 
@@ -55,7 +55,7 @@ public class CreditCardInitialTransactionsRemover {
 				.setParameter("user", credentialsStore.recuperarIdUsuarioLogado())
 				.setParameter("cartaoCreditoFatura", account).setParameter("faturaCartao", true)
 				.setParameter("saldoInicial", null).setParameter("ano", null).setParameter("mes", null)
-				.setParameter("status", null).setParameter("account", null).setParameter("category", null)
+				.setParameter("status", null).setParameter("conta", null).setParameter("categoria", null)
 				.getResultList();
 
 		for (Iterator<Transaction> iterator = lancamentosFaturas.iterator(); iterator.hasNext();) {

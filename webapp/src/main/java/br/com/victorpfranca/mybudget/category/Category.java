@@ -45,7 +45,7 @@ public class Category implements Serializable {
 	@Column(name = "id")
 	private Integer id;
 
-	@NotNull(message = "Dê um nome para esta category")
+	@NotNull(message = "Dê um nome para esta categoria")
 	@Column(name = "nome", nullable = false, unique = false)
 	private String nome;
 

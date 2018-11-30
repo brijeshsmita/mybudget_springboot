@@ -33,13 +33,13 @@ public class CreditCardInvoiceUpdater {
 			return;
 
 		CreditCardAccount creditCardAccount = (CreditCardAccount) ((CreditCardInvoiceTransactionItem) faturasItens.get(0)).getLancamentoCartao()
-				.getAccount();
+				.getConta();
 
 		List<Transaction> faturas = lancamentoDAO.executeQuery(Transaction.FIND_LANCAMENTO_CONTA_CORRENTE_QUERY,
 				new QueryParam("user", credentialsStore.recuperarIdUsuarioLogado()),
 				new QueryParam("cartaoCreditoFatura", creditCardAccount), new QueryParam("faturaCartao", true),
-				new QueryParam("saldoInicial", null), new QueryParam("ano", null), new QueryParam("mes", null), new QueryParam("account", null),
-				new QueryParam("category", null), new QueryParam("status", null));
+				new QueryParam("saldoInicial", null), new QueryParam("ano", null), new QueryParam("mes", null), new QueryParam("conta", null),
+				new QueryParam("categoria", null), new QueryParam("status", null));
 
 		for (Iterator<Transaction> iterator = faturasItens.iterator(); iterator.hasNext();) {
 			CreditCardInvoiceTransactionItem faturaItem = (CreditCardInvoiceTransactionItem) iterator.next();

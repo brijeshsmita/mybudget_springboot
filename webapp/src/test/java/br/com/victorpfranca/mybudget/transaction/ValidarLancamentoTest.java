@@ -127,7 +127,7 @@ public class ValidarLancamentoTest {
 		if (!isSaldoInicialInput) {
 			Category category = new Category();
 			category.setInOut(inOutCategoriaInput);
-			transaction.setCategory(category);
+			transaction.setCategoria(category);
 		} else {
 			((CheckingAccountTransaction) transaction).setSaldoInicial(true);
 		}
@@ -139,7 +139,7 @@ public class ValidarLancamentoTest {
 		transaction.setData(dataInput);
 		transaction.setDataAnterior(dataAnteriorInput);
 
-		transaction.setAccount(contaInput);
+		transaction.setConta(contaInput);
 		transaction.setContaAnterior(contaAnteriorInput);
 
 		return transaction;

@@ -89,8 +89,8 @@ public class AccountBalanceFixer {
 	}
 
 	private List<CheckingAccountTransaction> carregarLancamentos(Account account) {
-		return em.createQuery("select c from CheckingAccountTransaction c where account = :account order by ano asc, mes asc",
-				CheckingAccountTransaction.class).setParameter("account", account).getResultList();
+		return em.createQuery("select c from CheckingAccountTransaction c where conta = :conta order by ano asc, mes asc",
+				CheckingAccountTransaction.class).setParameter("conta", account).getResultList();
 	}
 
 	private List<CheckingAccount> carregarContas() {

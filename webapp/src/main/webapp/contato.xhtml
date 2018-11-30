@@ -12,7 +12,7 @@
 
 <h:body class="fontRegular login-back white-back">
 	<f:event type="preRenderView"
-		listener="#{controleAcessoViewController.checkAlreadyLoggedin}" />
+		listener="#{accessControlViewController.checkAlreadyLoggedin}" />
 
 	<p:growl id="growl" globalOnly="true" />
 	<ui:include src="/WEB-INF/fragments/ajaxStatus.xhtml" />
@@ -46,22 +46,22 @@
 										<p:panelGrid columns="1" styleClass="ui-panelgrid-blank"
 											layout="grid">
 											<p:outputLabel value="#{msg['contact.name']}" for="name" />
-											<p:inputText id="name" value="#{contatoViewController.name}" />
+											<p:inputText id="name" value="#{contactViewController.name}" />
 
 											<p:outputLabel value="#{msg['contact.email']}" for="email" />
 											<p:messages for="email" />
 											<p:inputText id="email"
-												value="#{contatoViewController.fromEmail}" />
+												value="#{contactViewController.fromEmail}" />
 
 											<p:outputLabel value="#{msg['contact.message']}"
 												for="mensagem" />
 											<p:inputTextarea id="mensagem"
-												value="#{contatoViewController.message}" />
+												value="#{contactViewController.message}" />
 										</p:panelGrid>
 									</div>
 									<div class="TexAlCenter">
 										<p:commandButton value="#{msg['contact.send']}"
-											action="#{contatoViewController.send}"
+											action="#{contactViewController.send}"
 											update="@this @form :growl" process="@this @form"
 											style="width:auto" />
 									</div>

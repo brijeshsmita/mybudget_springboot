@@ -29,8 +29,8 @@ public class CreditCardAccountInvoiceItemRemover {
 	public List<Transaction> remover(Transaction lancamentoCartaoCredito) {
 		List<Transaction> transactions = lancamentoDAO.executeQuery(Transaction.FIND_LANCAMENTO_FATURA_CARTAO_ITEM_QUERY,
 				new QueryParam("lancamentoCartao", lancamentoCartaoCredito), new QueryParam("ano", null), new QueryParam("mes", null),
-				new QueryParam("user", credentialsStore.recuperarIdUsuarioLogado()), new QueryParam("account", null),
-				new QueryParam("category", null));
+				new QueryParam("user", credentialsStore.recuperarIdUsuarioLogado()), new QueryParam("conta", null),
+				new QueryParam("categoria", null));
 
 		for (Iterator<Transaction> iterator = transactions.iterator(); iterator.hasNext();) {
 			Transaction transaction = (Transaction) iterator.next();

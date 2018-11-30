@@ -15,55 +15,58 @@
 		</p:panel>
 
 		<p:panel style="border:0px !important; background:none;">
-			<p:panelGrid styleClass="ui-panelgrid-blank" columns="1" style="width: 100%; text-align: center;">
+			<p:panelGrid styleClass="ui-panelgrid-blank" columns="1"
+				style="width: 100%; text-align: center;">
 				<p:panel style="border:0px !important; background:none">
 					<p:commandLink styleClass="icon-left-bold"
-						actionListener="#{lancamentoViewController.showPreviousMonth}"
+						actionListener="#{transactionViewController.showPreviousMonth}"
 						update="filtro pnlSaldos lancamentoDataTable pnlProgress" />
 					<p:selectOneMenu id="filtro"
-						value="#{lancamentoViewController.filtroMes}"
+						value="#{transactionViewController.filtroMes}"
 						converter="anoMesConverter">
-						<f:selectItems value="#{lancamentoViewController.filtrosMeses}" />
+						<f:selectItems value="#{transactionViewController.filtrosMeses}" />
 						<p:ajax update="pnlExtrato"
-							listener="#{lancamentoViewController.carregarDadosTelaListagem()}" />
+							listener="#{transactionViewController.carregarDadosTelaListagem()}" />
 					</p:selectOneMenu>
 					<p:commandLink styleClass="icon-right-bold"
-						actionListener="#{lancamentoViewController.showNextMonth}"
+						actionListener="#{transactionViewController.showNextMonth}"
 						update="filtro pnlSaldos lancamentoDataTable pnlProgress" />
 				</p:panel>
 			</p:panelGrid>
 
-			<p:panelGrid styleClass="ui-panelgrid-blank" columns="3" style="width: 100%; text-align: center;">
+			<p:panelGrid styleClass="ui-panelgrid-blank" columns="3"
+				style="width: 100%; text-align: center;">
 				<p:selectOneMenu id="conta"
-					value="#{lancamentoViewController.filtroConta}"
+					value="#{transactionViewController.filtroConta}"
 					converter="jpaEntityConverter" style="vertical-align:middle;">
-					<f:selectItem itemValue="" itemLabel="Todas as contas" />
-					<f:selectItems value="#{lancamentoViewController.contasFiltro}" />
+					<f:selectItem itemValue="" itemLabel="All accounts" />
+					<f:selectItems value="#{transactionViewController.contasFiltro}" />
 					<p:ajax update="pnlExtrato"
-						listener="#{lancamentoViewController.carregarDadosTelaListagem()}" />
+						listener="#{transactionViewController.carregarDadosTelaListagem()}" />
 				</p:selectOneMenu>
 				<p:selectOneMenu id="categoria"
-					value="#{lancamentoViewController.filtroCategoria}"
+					value="#{transactionViewController.filtroCategoria}"
 					converter="jpaEntityConverter" style="vertical-align:middle;">
-					<f:selectItem itemValue="" itemLabel="Todas as categorias" />
-					<f:selectItems value="#{lancamentoViewController.categoriasFiltro}" />
+					<f:selectItem itemValue="" itemLabel="All categories" />
+					<f:selectItems
+						value="#{transactionViewController.categoriasFiltro}" />
 					<p:ajax update="pnlExtrato"
-						listener="#{lancamentoViewController.carregarDadosTelaListagem()}" />
+						listener="#{transactionViewController.carregarDadosTelaListagem()}" />
 				</p:selectOneMenu>
 				<p:selectOneMenu id="status"
-					value="#{lancamentoViewController.filtroStatus}"
+					value="#{transactionViewController.filtroStatus}"
 					style="vertical-align:middle;">
-					<f:selectItem itemValue="0" itemLabel="Pagos/Agendados" />
-					<f:selectItem itemValue="1" itemLabel="Agendados" />
-					<f:selectItem itemValue="2" itemLabel="Pagos" />
+					<f:selectItem itemValue="0" itemLabel="Confirmed/Planned" />
+					<f:selectItem itemValue="1" itemLabel="Planned" />
+					<f:selectItem itemValue="2" itemLabel="Confirmed" />
 					<p:ajax update="pnlExtrato"
-						listener="#{lancamentoViewController.carregarDadosTelaListagem()}" />
+						listener="#{transactionViewController.carregarDadosTelaListagem()}" />
 				</p:selectOneMenu>
 			</p:panelGrid>
 
 			<p:scrollPanel style="height:400px; background:none;" mode="native">
 				<p:dataGrid id="lancamentoDataTable" var="obj"
-					value="#{lancamentoViewController.lancamentos}" columns="1"
+					value="#{transactionViewController.lancamentos}" columns="1"
 					style="border:0px !important; background:none"
 					emptyMessage="Nenhum lançamento cadastrado ainda. Para começar, clique no botão do canto inferior à sua direita na tela.">
 
@@ -105,9 +108,9 @@
 							<h:outputText value="#{obj.categoria}"
 								rendered="#{obj.categoria != null}" />
 							<h:outputText value="Fatura #{obj.cartaoCreditoFatura.nome}"
-								rendered="#{lancamentoViewController.isFaturaCartao(obj)}" />
+								rendered="#{transactionViewController.isFaturaCartao(obj)}" />
 							<h:outputText value="Saldo Inicial"
-								rendered="#{lancamentoViewController.isSaldoInicial(obj)}" />
+								rendered="#{transactionViewController.isSaldoInicial(obj)}" />
 
 							<p:spacer width="5" />
 
@@ -137,39 +140,39 @@
 						</p:column>
 						<p:column>
 							<p:menuButton>
-								<p:menuitem value="Editar"
-									actionListener="#{lancamentoViewController.alterar(obj)}"
+								<p:menuitem value="Update"
+									actionListener="#{transactionViewController.alterar(obj)}"
 									update=":outputPanelGrid" process="@this"
 									rendered="#{!obj.faturaCartao and !obj.isTransferencia()}">
 									<p:resetInput target=":outputPanelGrid" />
 								</p:menuitem>
-								<p:menuitem value="Excluir"
-									actionListener="#{lancamentoViewController.excluir(obj)}"
+								<p:menuitem value="Delete"
+									actionListener="#{transactionViewController.excluir(obj)}"
 									update=":outputPanelGrid" process="@this"
 									rendered="#{!obj.faturaCartao}">
 									<p:confirm header="#{msg['crud.grid.botao.excluir']}"
 										message="#{msg['crud.excluir.confirma']}" icon="ui-icon-alert" />
 								</p:menuitem>
-								<p:menuitem value="Editar Série"
-									actionListener="#{lancamentoViewController.alterarSerie(obj)}"
+								<p:menuitem value="Update Serie"
+									actionListener="#{transactionViewController.alterarSerie(obj)}"
 									update=":outputPanelGrid" process="@this"
 									rendered="#{obj.serie ne null and !obj.faturaCartao and !obj.isTransferencia()}">
 									<p:resetInput target=":outputPanelGrid" />
 								</p:menuitem>
-								<p:menuitem value="Excluir Série"
-									actionListener="#{lancamentoViewController.excluirSerie(obj)}"
+								<p:menuitem value="Delete Serie"
+									actionListener="#{transactionViewController.excluirSerie(obj)}"
 									update=":outputPanelGrid" process="@this"
 									rendered="#{obj.serie ne null}">
 									<p:confirm header="#{msg['crud.grid.botao.excluir']}"
 										message="#{msg['crud.lancamento.excluir.serie.confirma']}"
 										icon="ui-icon-alert" />
 								</p:menuitem>
-								<p:menuitem value="Confirmado"
-									actionListener="#{lancamentoViewController.confirmar(obj)}"
+								<p:menuitem value="Confirmed"
+									actionListener="#{transactionViewController.confirmar(obj)}"
 									update=":outputPanelGrid :growl" process="@this"
 									rendered="#{obj.status ne 'CONFIRMADO'}" />
-								<p:menuitem value="Não Confirmado"
-									actionListener="#{lancamentoViewController.confirmar(obj)}"
+								<p:menuitem value="Planned"
+									actionListener="#{transactionViewController.confirmar(obj)}"
 									update=":outputPanelGrid :growl" process="@this"
 									rendered="#{obj.status eq 'CONFIRMADO'}" />
 
@@ -201,9 +204,9 @@
 				style="height:416px; background:none;border:0px !important;"
 				mode="native">
 				<p:dataGrid layout="grid" columns="1"
-					value="#{lancamentoViewController.receitaOrcadoRealMesCategoria}"
+					value="#{transactionViewController.receitaOrcadoRealMesCategoria}"
 					var="obj"
-					rendered="#{!lancamentoViewController.receitaOrcadoRealMesCategoria.isEmpty()}"
+					rendered="#{!transactionViewController.receitaOrcadoRealMesCategoria.isEmpty()}"
 					style="border:0px !important; background:none;">
 					<p:panel styleClass="">
 						<p:outputLabel value="#{obj.categoria.nome}" />
@@ -216,9 +219,9 @@
 				</p:dataGrid>
 
 				<p:dataGrid layout="grid" columns="1"
-					value="#{lancamentoViewController.despesaOrcadoRealMesCategoria}"
+					value="#{transactionViewController.despesaOrcadoRealMesCategoria}"
 					var="obj" rowIndexVar="index"
-					rendered="#{!lancamentoViewController.despesaOrcadoRealMesCategoria.isEmpty()}"
+					rendered="#{!transactionViewController.despesaOrcadoRealMesCategoria.isEmpty()}"
 					style="border:0px !important; background:none;">
 					<p:panel>
 						<p:outputLabel value="#{obj.categoria.nome}"

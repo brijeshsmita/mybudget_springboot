@@ -22,7 +22,7 @@ import br.com.victorpfranca.mybudget.view.validation.ValidPassword;
 
 @Named
 @ViewScoped
-public class RecuperacaoSenhaViewController implements Serializable {
+public class PasswordRecoveyViewController implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

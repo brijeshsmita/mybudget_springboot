@@ -77,10 +77,10 @@ public class TransactionBuilder {
 	}
 
 	private void buildLancamento(Transaction transaction) {
-		transaction.setCategory(category);
+		transaction.setCategoria(category);
 		transaction.setComentario(comentario);
 		transaction.setConfirmado(confirmado);
-		transaction.setAccount(account);
+		transaction.setConta(account);
 		transaction.setContaAnterior(contaAnterior);
 		transaction.setData(data);
 		transaction.setDataAnterior(dataAnterior);
