@@ -8,3 +8,4 @@ logs
 .localRepo
 .idea
 *.iml
+docker/output_files/

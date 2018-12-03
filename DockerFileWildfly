@@ -1,0 +1,50 @@
+
+FROM jboss/wildfly:13.0.0.Final
+
+LABEL br.com.mybudget.version="0.0.1-snapshot"
+LABEL author="Victor Franca"
+LABEL email="victorhugof@gmail.com"
+LABEL vendor1="MyBudget"
+LABEL br.com.mybudget.release-date="2018-11-23"
+
+# Set Postgresql env variables
+ENV DB_HOST postgres
+ENV DB_PORT 5432
+ENV DB_NAME meussaldos
+ENV DB_USER postgres
+ENV DB_PASS postgres
+
+ENV DS_NAME meussaldos
+ENV JNDI_NAME java:jboss/datasources/meussaldos
+
+ENV DS_LOG_NAME LogErrosDS
+ENV JNDI_LOG_NAME java:jboss/datasources/LogErrosDS
+
+ENV MAIL_SESSION_NAME meussaldos
+ENV MAIL_SESSION_JNDI_NAME meussaldos
+ENV MAIL_FROM victorhugof@gmail.com
+ENV MAIL_SESSION_HOST aspmx.l.google.com
+ENV MAIL_SESSION_PORT 25
+
+USER root
+
+ADD https://jdbc.postgresql.org/download/postgresql-42.2.4.jar /tmp/postgresql-42.2.4.jar
+
+WORKDIR /tmp
+COPY docker/wildfly/input_files/wildfly-command.sh ./
+COPY docker/wildfly/input_files/data-source-install.cli ./
+COPY docker/wildfly/input_files/mail-session-install.cli ./
+RUN sed -i -e 's/\r$//' ./wildfly-command.sh
+RUN chmod +x ./wildfly-command.sh
+RUN ./wildfly-command.sh \
+    &&  rm -rf $JBOSS_HOME/standalone/configuration/standalone_xml_history/
+
+# Deploy the war file
+COPY webapp/target/mybudget-1.0-SNAPSHOT.war $JBOSS_HOME/standalone/deployments
+
+# Create Wildfly admin user
+RUN $JBOSS_HOME/bin/add-user.sh admin admin --silent
+
+# Set the default command to run on boot
+# This will boot WildFly in the standalone mode and bind to all interface
+CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
