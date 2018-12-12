@@ -1,0 +1,205 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="ContainerIndent ui-fluid">
+		<p:panel id="pnlLancamento">
+			<div class="Container">
+				<div class="Container100 Responsive100">
+
+					<div class="Container100">
+						<div class="Container100">
+							<div class="Container20 Responsive100">
+
+								<p:selectOneRadio id="ajusteInOut"
+									value="#{transactionViewController.lancamentoVO.inOut}"
+									rendered="#{transactionViewController.lancamentoVO.ajuste}">
+									<f:selectItems value="#{inOutOpcoes}" var="inOut"
+										itemValue="#{inOut}" itemLabel="#{inOut.descricao}" />
+								</p:selectOneRadio>
+							</div>
+						</div>
+
+
+						<div class="Container100">
+							<div class="Container20 Responsive100">
+								<p:panel id="pnlSerie">
+									<p:selectBooleanCheckbox id="repete"
+										value="#{transactionViewController.lancamentoVO.repeteLancamento}"
+										rendered="#{transactionViewController.tratarEmSerie and !transactionViewController.lancamentoVO.ajuste}"
+										disabled="#{transactionViewController.lancamentoVO.id != null}">
+										<p:ajax update="pnlSerie" />
+									</p:selectBooleanCheckbox>
+									<p:outputLabel value="#{msg['crud.lancamento.repete']}"
+										for="repete"
+										rendered="#{transactionViewController.tratarEmSerie and !transactionViewController.lancamentoVO.ajuste}" />
+
+									<p:panel style="border: 0px"
+										rendered="#{transactionViewController.lancamentoVO.repeteLancamento}">
+										<p:outputLabel value="#{msg['crud.lancamento.frequencia']}"
+											id="lblFrequencia" for="fldFrequencia" />
+										<p:selectOneMenu id="fldFrequencia"
+											value="#{transactionViewController.lancamentoVO.frequencia}"
+											style="width:96%"
+											label="#{msg['crud.lancamento.frequencia']}" required="true"
+											disabled="#{transactionViewController.lancamentoVO.id != null}">
+											<f:selectItems value="#{lancamentoFrequenciaOpcoes}" />
+										</p:selectOneMenu>
+
+										<p:outputLabel
+											value="#{msg['crud.lancamento.serie.data_inicio']}"
+											for="dataInicio" />
+										<p:calendar id="dataInicio"
+											label="#{msg['crud.lancamento.serie.data_inicio']}"
+											value="#{transactionViewController.lancamentoVO.dataInicio}"
+											pattern="dd/MM/yyyy" required="true"
+											requiredMessage="#{msg['crud.lancamento.valida.serie.data_inicio']}"
+											disabled="#{transactionViewController.lancamentoVO.id != null}" />
+
+										<p:outputLabel
+											value="#{msg['crud.lancamento.serie.data_limite']}"
+											for="dataLimite" />
+										<p:calendar id="dataLimite"
+											label="#{msg['crud.lancamento.serie.data_limite']}"
+											value="#{transactionViewController.lancamentoVO.dataLimite}"
+											pattern="dd/MM/yyyy" required="true"
+											requiredMessage="#{msg['crud.lancamento.valida.serie.data_limite']}"
+											disabled="#{transactionViewController.lancamentoVO.id != null}" />
+									</p:panel>
+
+									<p:panel style="border: 0px"
+										rendered="#{!transactionViewController.lancamentoVO.repeteLancamento}">
+										<p:outputLabel value="#{msg['crud.lancamento.data']}"
+											for="data" />
+										<p:calendar id="data" label="#{msg['crud.lancamento.data']}"
+											value="#{transactionViewController.lancamentoVO.data}"
+											pattern="dd/MM/yyyy"
+											pagedate="#{transactionViewController.mesCorrente}" />
+									</p:panel>
+
+								</p:panel>
+							</div>
+						</div>
+
+						<div class="Container100">
+							<div class="Container20 Responsive100">
+								<p:outputLabel value="#{msg['crud.lancamento.categoria']}"
+									for="categoriaReceita"
+									style="margin-right:5px;vertical-align:middle;"
+									rendered="#{transactionViewController.apresentaCategoriasReceitas()}" />
+								<p:outputLabel value="#{msg['crud.lancamento.categoria']}"
+									for="categoriaDespesa"
+									style="margin-right:5px;vertical-align:middle;"
+									rendered="#{transactionViewController.apresentaCategoriasDespesas()}" />
+								<p:selectOneMenu id="categoriaReceita"
+									value="#{transactionViewController.lancamentoVO.categoria}"
+									style="vertical-align:middle;"
+									required="true"
+									rendered="#{transactionViewController.apresentaCategoriasReceitas()}">
+									<f:selectItem itemValue="" itemLabel="Selecione..." />
+									<f:selectItems
+										value="#{transactionViewController.categoriasReceitas}" />
+								</p:selectOneMenu>
+								<p:selectOneMenu id="categoriaDespesa"
+									value="#{transactionViewController.lancamentoVO.categoria}"
+									style="vertical-align:middle;"
+									required="true"
+									rendered="#{transactionViewController.apresentaCategoriasDespesas()}">
+									<f:selectItem itemValue="" itemLabel="Selecione..." />
+									<f:selectItems
+										value="#{transactionViewController.categoriasDespesas}" />
+								</p:selectOneMenu>
+							</div>
+						</div>
+
+						<div class="Container100">
+							<div class="Container20 Responsive100">
+								<p:outputLabel value="#{msg['crud.lancamento.conta']}"
+									for="conta" style="margin-right:5px;vertical-align:middle;" />
+								<p:selectOneMenu id="conta"
+									value="#{transactionViewController.lancamentoVO.conta}"
+									style="vertical-align:middle;"
+									required="true"
+									requiredMessage="#{msg.crud_lancamento_validator_conta}">
+									<f:selectItem itemValue="" itemLabel="Selecione..." />
+									<f:selectItems value="#{transactionViewController.contas}" />
+									<p:ajax update="pnlParcelas" />
+								</p:selectOneMenu>
+							</div>
+						</div>
+
+						<div class="Container100">
+							<div class="Container20 Responsive100">
+								<p:outputLabel value="#{msg['crud.lancamento.conta_destino']}"
+									for="conta" style="margin-right:5px;vertical-align:middle;"
+									rendered="#{transactionViewController.lancamentoVO.transferencia}" />
+								<p:selectOneMenu id="contaDestino"
+									value="#{transactionViewController.lancamentoVO.contaDestino}"
+									style="vertical-align:middle;"
+									required="true"
+									rendered="#{transactionViewController.lancamentoVO.transferencia}"
+									requiredMessage="#{msg.crud_lancamento_validator_conta}">
+									<f:selectItem itemValue="" itemLabel="Selecione..." />
+									<f:selectItems value="#{transactionViewController.contas}" />
+									<p:ajax update="pnlParcelas" />
+								</p:selectOneMenu>
+							</div>
+						</div>
+
+						<div class="Container100">
+							<div class="Container20 Responsive100">
+								<p:outputLabel value="#{msg['crud.lancamento.valor']}"
+									for="valor" />
+								<p:inputNumber id="valor"
+									value="#{transactionViewController.lancamentoVO.valor}"
+									style="width:96%" label="#{msg['crud.lancamento.valor']}"
+									maxValue="9999999.99" decimalPlaces="2" />
+							</div>
+						</div>
+
+
+						<div class="Container100">
+							<div class="Container20 Responsive100">
+								<p:panel id="pnlParcelas" style="border: 0px; padding:0px"
+									visible="#{transactionViewController.isLancamentoCartao}">
+									<p:outputLabel value="#{msg['crud.lancamento.qtdParcelas']}"
+										id="lblParcelas" for="fldParcelas" />
+									<p:spinner id="fldParcelas"
+										value="#{transactionViewController.lancamentoVO.qtdParcelas}"
+										style="width:96%"
+										label="#{msg['crud.lancamento.qtdParcelas']}" min="1"
+										required="#{transactionViewController.isLancamentoCartao}"
+										requiredMessage="#{msg['crud_lancamento_validator_parcelas']}" />
+								</p:panel>
+							</div>
+						</div>
+
+						<div class="Container100">
+							<div class="Container20 Responsive100">
+								<p:outputLabel value="#{msg['crud.lancamento.comentario']}"
+									for="comentario" />
+								<p:inputText id="comentario"
+									value="#{transactionViewController.lancamentoVO.comentario}"
+									style="width:96%" label="#{msg['crud.lancamento.comentario']}" />
+							</div>
+						</div>
+
+
+						<div class="Container100">
+							<div class="Container20 Responsive100">
+								<p:inputSwitch id="status"
+									value="#{transactionViewController.lancamentoVO.confirmado}"
+									offLabel="#{msg['crud.lancamento.status.agendado']}"
+									onLabel="#{msg['crud.lancamento.status.confirmado']}" />
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</p:panel>
+	</div>
+
+</ui:composition>

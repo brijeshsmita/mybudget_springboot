@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/template.xhtml">
+
+	<ui:define name="content">
+		<div style="text-align: center;">
+			<div style="display: inline-block; text-align: left;">
+
+				<h:form>
+					<p:panel>
+						<p:commandLink value="#{msg['admin.funcoes.reconstruir_saldos']}"
+							actionListener="#{adminFunctionsViewController.reconstruirSaldosContas()}"
+							update="tblSaldosReconstruidos" />
+
+						<p:dataTable id="tblSaldosReconstruidos"
+							value="#{adminFunctionsViewController.saldosReconstruidos.entrySet()}"
+							var="saldoEntry">
+							<p:column>
+								<h:outputText value="#{saldoEntry.key.nome}" />
+							</p:column>
+						</p:dataTable>
+					</p:panel>
+				</h:form>
+
+			</div>
+		</div>
+
+	</ui:define>
+
+</ui:composition>

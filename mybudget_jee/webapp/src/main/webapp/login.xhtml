@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<title>myBudget <h:outputText rendered="#{app.developmentMode}"
+			value="#{app.projectStage}" /></title>
+</h:head>
+
+<h:body class="fontRegular login-back white-back">
+	<f:event type="preRenderView"
+		listener="#{accessControlViewController.checkAlreadyLoggedin}" />
+	<p:growl globalOnly="true" autoUpdate="true" />
+	<ui:include src="/WEB-INF/fragments/ajaxStatus.xhtml" />
+	<div class="Container">
+		<div
+			class="Container80 MaxWid500 Fnone MarAuto TexAlCenter PaddingTopPercent10">
+			<a href="" id="login-logo"> <!-- 			<h:graphicImage
+					name="images/LOGO.svg" styleClass="Fleft" library="sentinel-layout" />
+ --> <span class="Fs30 FontTitilliumSemiBoldItalic Fleft"><span
+					class="yellow">my</span><span class="hardblue">Budget</span></span>
+			</a>
+			<div class="EmptyBox10"></div>
+		</div>
+
+		<!-- LOGIN BOX COVER START -->
+		<div class="Container80 MaxWid500 white-back Fnone MarAuto BordRad10"
+			id="login-box">
+			<div class="Container">
+				<div
+					class="Container100 TexAlCenter Animated05 BoxSizeBorder TabBtn left TabBtnActiveLeft"
+					role="1">
+					<div class="Container80 Fnone MarAuto FontBold">
+						<i class="icon-lock"></i> Sign in
+					</div>
+				</div>
+				<div
+					class="Container90 Fnone MarAuto TexAlCenter TabContent OvHidden"
+					id="TAB1">
+
+					<h:form id="login" prependId="false">
+
+						<div class="EmptyBox50"></div>
+						<p:inputText id="username" placeholder="#{msg['login.username']}"
+							value="#{accessControlViewController.username}"
+							styleClass="Container80 Fnone MarAuto Fs18" />
+						<div class="EmptyBox10"></div>
+						<p:password id="password" placeholder="#{msg['login.password']}"
+							value="#{accessControlViewController.password}"
+							styleClass="Container80 Fnone MarAuto Fs18" feedback="false" />
+						<div class="EmptyBox20"></div>
+						<ui:remove>
+							<p:selectBooleanCheckbox id="rememberMe"
+								value="#{accessControlViewController.remember}"
+								itemLabel="#{msg['login.rememberMe']}" />
+							<div class="EmptyBox20"></div>
+						</ui:remove>
+						<div class="EmptyBox10"></div>
+						<div class="TexAlCenter DispInlBlock">
+							<p:captcha id="captcha"
+								language="#{facesContext.viewRoot.locale}" required="#{!app.developmentMode}" rendered="#{!app.developmentMode}"/>
+						</div>
+						<div>
+							<p:messages for="captcha" severity="error" />
+						</div>
+						<div class="EmptyBox10"></div>
+						<p:commandButton value="#{msg['login.loginAction']}"
+							styleClass="Fs16" ajax="true" process="@form" update="@form"
+							action="#{accessControlViewController.login}" />
+						<div class="EmptyBox20"></div>
+					</h:form>
+					<div class="login--action-btns">
+						<p:button outcome="/signup" value="#{msg['signup.pageTitle']}" />
+						<p:button outcome="/recoverPassword" value="Recuperar senha" />
+					</div>
+					<div class="EmptyBox20"></div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- LOGIN BOX COVER END -->
+
+</h:body>
+
+</html>

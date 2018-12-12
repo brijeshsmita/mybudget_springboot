@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<faces-config version="2.0"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+
+	<application>
+		<resource-bundle>
+			<base-name>br.com.victorpfranca.mybudget.messages</base-name>
+			<var>msg</var>
+		</resource-bundle>
+		<message-bundle>br.com.victorpfranca.mybudget.messages</message-bundle>
+		<locale-config>
+			<default-locale>pt_BR</default-locale>
+		</locale-config>
+	</application>
+
+	<component>
+		<component-type>org.primefaces.component.SentinelMenu</component-type>
+		<component-class>br.com.victorpfranca.mybudget.view.component.Menu</component-class>
+	</component>
+
+	<render-kit>
+		<renderer>
+			<component-family>org.primefaces.component</component-family>
+			<renderer-type>org.primefaces.component.SentinelMenuRenderer</renderer-type>
+			<renderer-class>br.com.victorpfranca.mybudget.view.component.MenuRenderer</renderer-class>
+		</renderer>
+		<renderer>
+			<component-family>javax.faces.Output</component-family>
+			<renderer-type>javax.faces.Head</renderer-type>
+			<renderer-class>br.com.victorpfranca.mybudget.primefaces.renderkit.HeadRenderer</renderer-class>
+		</renderer>
+	</render-kit>
+
+	<application>
+		<action-listener>org.primefaces.application.DialogActionListener</action-listener>
+		<navigation-handler>org.primefaces.application.DialogNavigationHandler</navigation-handler>
+		<view-handler>org.primefaces.application.DialogViewHandler</view-handler>
+	</application>
+
+	<factory>
+		<exception-handler-factory>br.com.victorpfranca.mybudget.infra.jsf.AppExceptionHandlerFactory</exception-handler-factory>
+	</factory>
+</faces-config>

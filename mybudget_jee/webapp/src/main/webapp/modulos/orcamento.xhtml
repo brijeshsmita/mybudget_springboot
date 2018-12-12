@@ -1,0 +1,74 @@
+<ui:composition template="/WEB-INF/templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:cruds="http://java.sun.com/jsf/composite/cruds">
+
+	<ui:define name="content">
+		<div class="Container100 PosFixed FontTitilliumSemiBold ShadowGray"
+			id="topbar">
+			<div class="Wid90 OvHidden MarAuto">
+				<a id="menu-button"><i class="fa icon-target"></i></a>
+			</div>
+		</div>
+		<div class="EmptyBox20"></div>
+		
+		<p:panel id="outputPanelGrid" style="border: none">
+			<h:form style="display:flex;">
+				<div style="flex: 1;"></div>
+				<div style="flex: 1;">
+					<p:selectOneButton value="#{budgetViewController.selectedTab}"
+						rendered="#{not budgetViewController.telaGrid}"
+						converter="javax.faces.Integer">
+						<p:ajax event="change" update=":outputPanelGrid" process="@this" />
+						<f:selectItem itemLabel="#{msg['crud.orcamento.dadosGerais']}"
+							itemValue="0" />
+					</p:selectOneButton>
+				</div>
+			</h:form>
+			<p:outputPanel id="outputPanel">
+				<h:form id="formListagem">
+					<ui:include src="orcamento/listagem.xhtml" />
+				</h:form>
+			</p:outputPanel>
+
+			<p:outputPanel rendered="#{not budgetViewController.telaGrid}">
+				<p:outputPanel
+					rendered="#{budgetViewController.selectedTab eq 0}">
+					<h:form>
+						<p:outputPanel rendered="#{empty budgetViewController.objeto}">
+							<p:outputLabel value="#{msg['crud.registro.selecionado.vazio']}" />
+							<p:commandButton value="#{msg['crud.form.voltar']}"
+								actionListener="#{budgetViewController.voltar()}"
+								update=":outputPanelGrid" />
+						</p:outputPanel>
+						<p:outputPanel
+							rendered="#{not empty budgetViewController.objeto}">
+							<!-- <ui:include src="orcamento/cadastro.xhtml" />  -->
+							<div>
+								<p:commandButton value="#{msg['crud.form.salvar']}"
+									rendered="#{empty budgetViewController.objeto.id}"
+									actionListener="#{budgetViewController.salvar}"
+									update=":growl :outputPanelGrid" />
+								<p:commandButton value="#{msg['crud.form.alterar']}"
+									rendered="#{not empty budgetViewController.objeto.id}"
+									actionListener="#{budgetViewController.salvar}"
+									update=":growl :outputPanelGrid" />
+								<p:commandButton value="#{msg['crud.form.fechar']}"
+									actionListener="#{budgetViewController.voltar()}"
+									update=":outputPanelGrid" process="@this" />
+							</div>
+						</p:outputPanel>
+					</h:form>
+				</p:outputPanel>
+
+			</p:outputPanel>
+
+		</p:panel>
+
+	</ui:define>
+	<ui:define name="footer">
+	</ui:define>
+</ui:composition>

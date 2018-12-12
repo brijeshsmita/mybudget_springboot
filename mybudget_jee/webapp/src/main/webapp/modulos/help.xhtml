@@ -1,0 +1,303 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/template.xhtml">
+
+	<ui:define name="content">
+
+
+		<h:form>
+
+			<div class="Container100 PosFixed FontTitilliumSemiBold ShadowGray"
+				id="topbar">
+				<div class="Wid90 OvHidden MarAuto">
+					<a id="menu-button"><i class="fa icon-help"></i></a>
+					<ul class="" style="padding: 0px;" id="menubody">
+						<li class=""><a href="#passo1" class="icon-lightbulb">
+								Planejando suas finanças</a></li>
+						<li class=""><a href="#passo2" class="icon-graduation-cap">
+								Aprendendo a usar</a></li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="Container100 " id="passo1"
+				style="background-color: #F0F2F5; padding: 0px 3rem; box-sizing: border-box;">
+
+				<div class="EmptyBox80"></div>
+
+				<div class="Wid90 OvHidden MarAuto">
+					<div class="Container100">
+
+						<div class="Container100 Responsive50">
+							<div class="ContainerIndent">
+								<i class="fa icon-lightbulb red Fs60 DispBlock Fleft"></i>
+								<div class="Container80 Responsive50">
+									<div class="ContainerIndent"></div>
+								</div>
+								<div class="Container50 Responsive50">
+									<h2 class="gray FontTitilliumRegular Fs30">1. Planejando
+										suas finanças</h2>
+									<h3 class="gray FontTitilliumRegular Fs20">Descubra como
+										planejar sua vida financeira pode te ajudar</h3>
+
+									<div class="Container100 Responsive100">
+										<iframe class="Responsive100"
+											src="https://www.youtube.com/embed/PrEA1k0IBXE"
+											frameborder="0" allow="encrypted-media" gesture="media"
+											allowfullscreen="true"></iframe>
+									</div>
+
+									<div class="EmptyBox30"></div>
+
+									<div class="Container33 Responsive50 ui-fluid">
+										<div class="ContainerIndent">
+											<p:commandButton value="Aprenda mais"
+												styleClass="GreenButton Fleft" />
+										</div>
+									</div>
+									<div class="Container33 Responsive50 ui-fluid">
+										<div class="ContainerIndent">
+											<p:commandButton value="Comece agora"
+												styleClass="CyanButton Fleft" />
+										</div>
+									</div>
+								</div>
+								<div class="EmptyBox30"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="EmptyBox50"></div>
+			</div>
+
+			<div class="Container100 " id="passo2"
+				style="background-color: #F0F2F5; padding: 0px 3rem; box-sizing: border-box;">
+
+				<div class="EmptyBox80"></div>
+
+				<div class="Wid90 OvHidden MarAuto">
+					<div class="Container100">
+
+						<div class="Container100 Responsive50">
+							<div class="ContainerIndent">
+								<i class="fa icon-graduation-cap red Fs60 DispBlock Fleft"></i>
+								<div class="Container80 Responsive50">
+									<div class="ContainerIndent"></div>
+								</div>
+								<div class="Container50 Responsive50">
+									<h2 class="gray FontTitilliumRegular Fs30">2. Aprendendo a
+										usar</h2>
+									<h3 class="gray FontTitilliumRegular Fs20">
+										Veja como o <span class="Fs19 FontTitilliumSemiBoldItalic"><span
+											class="yellow">my</span><span class="hardblue">Budget </span></span>pode
+										te ajudar
+									</h3>
+
+									<div class="Container100 Responsive100">
+										<iframe class="Responsive100"
+											src="https://www.youtube.com/embed/i746Jf-pFsA"
+											frameborder="0" allow="encrypted-media" gesture="media"
+											allowfullscreen="true"></iframe>
+									</div>
+
+									<div class="EmptyBox30"></div>
+
+									<div class="Container33 Responsive50 ui-fluid">
+										<div class="ContainerIndent">
+											<p:commandButton value="Aprenda mais"
+												styleClass="GreenButton Fleft" />
+										</div>
+									</div>
+									<div class="Container33 Responsive50 ui-fluid">
+										<div class="ContainerIndent">
+											<p:commandButton value="Comece agora"
+												styleClass="CyanButton Fleft" />
+										</div>
+									</div>
+								</div>
+								<div class="EmptyBox30"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="EmptyBox50"></div>
+			</div>
+
+		</h:form>
+
+
+
+		<!-- 		<h:form>
+			<div class="Container100 PosFixed FontTitilliumSemiBold ShadowGray"
+				style="z-index: 999;" id="topbar">
+				<div class="Wid90 OvHidden MarAuto">
+					<a id="menu-button"><i class="fa icon-help"></i></a>
+					<ul class="" style="padding: 0px;" id="menubody">
+						<li class=""><a href="#passo1" class=""> Visão Geral</a></li>
+						<li class=""><a href="#passo2" class="icon-bank"> Contas</a></li>
+						<li class=""><a href="#passo3" class="icon-menu"> Categorias</a></li>
+						<li class=""><a href="#passo4" class=""> Planejamento</a></li>
+						<li class=""><a href="#passo4" class=""> Extrato de contas</a></li>
+						<li class=""><a href="#passo4" class=""> Extrato de cartão</a></li>
+					</ul>
+				</div>
+			</div>
+
+			
+
+			<div class="Container100 " id="passo1"
+				style="background-color: #F0F2F5; padding: 0px 3rem; box-sizing: border-box;">
+
+				<div class="EmptyBox80"></div>
+
+				<div class="Wid90 OvHidden MarAuto">
+					<div class="Container100">
+
+						<div class="Container50 Responsive50">
+							<div class="ContainerIndent">
+								<i class="fa icon-bank red Fs60 DispBlock Fleft"></i>
+								<div class="Container10 Responsive50">
+									<div class="ContainerIndent"></div>
+								</div>
+								<div class="Container70 Responsive50">
+									<h2 class="gray FontTitilliumRegular Fs30">1. Visão Geral</h2>
+									<h3 class="gray FontTitilliumRegular Fs20">Monitor the app
+										ecosystem and your competitors.</h3>
+									<span class="gray Fs14 FontTitilliumRegular">Vitae
+										potenti ante praesent a dui eget nibh eu quam accumsan
+										porttitor tincidunt ultrices vel auctor aenean placerat
+										viverra ac vel parturient tristique malesuada hac conubia sed
+										tincidunt.Quisque a imperdiet suspendisse parturient
+										adipiscing justo sem a in eros eros luctus a turpis urna
+										sapien ullamcorper vulputate at mi.Dis vestibulum vel lectus
+										sed vestibulum consectetur vivamus a feugiat pharetra fames
+										ullamcorper adipiscing condimentum tempor egestas at at lacus.</span>
+									<div class="EmptyBox30"></div>
+									<div class="Container50 Responsive50 ui-fluid">
+										<div class="ContainerIndent">
+											<p:commandButton value="Learn More"
+												styleClass="GreenButton Fleft" />
+										</div>
+									</div>
+									<div class="Container50 Responsive50 ui-fluid">
+										<div class="ContainerIndent">
+											<p:commandButton value="Try Now"
+												styleClass="CyanButton Fleft" />
+										</div>
+									</div>
+								</div>
+								<div class="EmptyBox30"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="EmptyBox50"></div>
+			</div>
+
+
+
+			<div class="Container100 " id="passo2"
+				style="background-color: #F0F2F5; padding: 0px 3rem; box-sizing: border-box;">
+
+				<div class="EmptyBox80"></div>
+
+				<div class="Wid90 OvHidden MarAuto">
+					<div class="Container100">
+
+						<div class="Container50 Responsive50">
+							<div class="ContainerIndent">
+								<i class="fa icon-menu red Fs60 DispBlock Fleft"></i>
+								<div class="Container10 Responsive50">
+									<div class="ContainerIndent"></div>
+								</div>
+								<div class="Container70 Responsive50">
+									<h2 class="gray FontTitilliumRegular Fs30">2. Contas</h2>
+									<h3 class="gray FontTitilliumRegular Fs20">Monitor the app
+										ecosystem and your competitors.</h3>
+									<span class="gray Fs14 FontTitilliumRegular">Vitae
+										potenti ante praesent a dui eget nibh eu quam accumsan
+										porttitor tincidunt ultrices vel auctor aenean placerat
+										viverra ac vel parturient tristique malesuada hac conubia sed
+										tincidunt.Quisque a imperdiet suspendisse parturient
+										adipiscing justo sem a in eros eros luctus a turpis urna
+										sapien ullamcorper vulputate at mi.Dis vestibulum vel lectus
+										sed vestibulum consectetur vivamus a feugiat pharetra fames
+										ullamcorper adipiscing condimentum tempor egestas at at lacus.</span>
+									<div class="EmptyBox30"></div>
+									<div class="Container50 Responsive50 ui-fluid">
+										<div class="ContainerIndent">
+											<p:commandButton value="Learn More"
+												styleClass="GreenButton Fleft" />
+										</div>
+									</div>
+									<div class="Container50 Responsive50 ui-fluid">
+										<div class="ContainerIndent">
+											<p:commandButton value="Try Now"
+												styleClass="CyanButton Fleft" />
+										</div>
+									</div>
+								</div>
+								<div class="EmptyBox30"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="EmptyBox50"></div>
+			</div>
+		</h:form>
+
+-->
+		<script>
+			// FNC for detecting for click outside of any elements ============== 
+			$.fn.clickOff = function(callback, selfDestroy) {
+				var clicked = false;
+				var parent = this;
+				var destroy = selfDestroy || true;
+
+				parent.click(function() {
+					clicked = true;
+				});
+
+				$(document).click(function(event) {
+					if (!clicked) {
+						callback(parent, event);
+					}
+					if (destroy) {
+					}
+					;
+					clicked = false;
+				});
+			};
+
+			var menubtn = $(document.getElementById("menu-button")), menubody = $(document
+					.getElementById("menubody")), menustatus = true, menuButtonClick = false;
+
+			menubtn.on("click", function() {
+				menuButtonClick = true;
+
+				if (menustatus) {
+					menubody.addClass('active');
+					menustatus = false;
+				} else {
+					menubody.removeClass('active');
+					menustatus = true;
+				}
+			});
+
+			menubody.clickOff(function(e) {
+				if (menuButtonClick) {
+					menuButtonClick = false;
+				} else {
+					menubody.removeClass('active');
+					menustatus = true;
+				}
+			});
+		</script>
+
+
+	</ui:define>
+
+</ui:composition>

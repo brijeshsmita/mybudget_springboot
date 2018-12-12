@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+	</f:facet>
+
+	<title>myBudget <h:outputText rendered="#{app.developmentMode}"
+			value="#{app.projectStage}" /></title>
+	<script type="text/javascript"
+		src="http://maps.google.com/maps/api/js?sensor=true"></script>
+
+	<style>
+#menu-button {
+	height: 25px;
+	width: 25px;
+	float: left;
+	display: block;
+	text-align: center;
+	cursor: pointer;
+	margin-left: 20px;
+}
+
+#menu-button i {
+	color: #fff;
+	font-size: 20px;
+	margin: 0px auto 0px auto;
+	vertical-align: middle;
+}
+
+#menu-button:hover i, #menu-button:active i, #menu-button:focus i {
+	color: rgba(255, 255, 255, 0.7);
+}
+
+#menubody {
+	width: 270px;
+	height: auto;
+	background-color: #fff;
+	position: absolute;
+	overflow: hidden;
+	border-radius: 5px;
+	margin-top: 30px;
+	display: none;
+	box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
+}
+
+#menubody.active {
+	display: block;
+}
+
+#menubody li {
+	display: block;
+	padding: 0px;
+}
+
+#menubody li a {
+	display: block;
+	padding: 15px 20px;
+	color: #567a84;
+	font-size: 16px;
+}
+
+#menubody li a:hover, #menubody li a:active, #menubody li a:focus {
+	background-color: #f2f2f2;
+}
+
+#topbar {
+	background: #1578c9;
+	background: -moz-linear-gradient(top, #1578c9 0%, #0b66b1 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, #1578c9),
+		color-stop(100%, #0b66b1));
+	background: -webkit-linear-gradient(top, #1578c9 0%, #0b66b1 100%);
+	background: -o-linear-gradient(top, #1578c9 0%, #0b66b1 100%);
+	background: -ms-linear-gradient(top, #1578c9 0%, #0b66b1 100%);
+	background: linear-gradient(to bottom, #1578c9 0%, #0b66b1 100%);
+	-webkit-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.4);
+	-moz-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.4);
+	box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.4);
+}
+</style>
+	<ui:insert name="head" />
+</h:head>
+
+<h:body>
+	<h:form>
+		<p:poll interval="#{session.maxInactiveInterval - 10}" update="@none"
+			global="false" />
+	</h:form>
+	<ui:include src="/WEB-INF/fragments/ajaxStatus.xhtml" />
+
+
+	<ui:insert name="top">
+		<ui:include src="topbar.xhtml" />
+	</ui:insert>
+	
+	<ui:insert name="left">
+		<ui:include src="leftmenu.xhtml" />
+	</ui:insert>
+	
+	<div id="layout-portlets-cover" class="fontRegular">
+		<ui:insert name="content">
+			<h:form id="form1">
+
+				<ui:insert name="gridDados" />
+
+				<ui:insert name="telaInclusaoAlteracao" />
+
+			</h:form>
+		</ui:insert>
+
+		<ui:include src="footer.xhtml" />
+
+		<h:outputStylesheet name="css/font-icon-layout.css"
+			library="sentinel-layout" />
+		<h:outputStylesheet name="css/sentinel-layout.css"
+			library="sentinel-layout" />
+		<h:outputStylesheet name="css/core-layout.css"
+			library="sentinel-layout" />
+
+	</div>
+	<p:growl id="growl" life="4000" />
+	<p:ajaxStatus
+		style="width:32px; height:32px; position:fixed; right:12px; bottom:10px">
+		<f:facet name="start">
+			<p:graphicImage name="images/preloader.gif" library="sentinel-layout" />
+		</f:facet>
+
+		<f:facet name="complete">
+			<h:outputText value="" />
+		</f:facet>
+	</p:ajaxStatus>
+	<h:form>
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+			<p:commandButton value="#{msg['sim']}" type="button"
+				styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="#{msg['nao']}" type="button"
+				styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		</p:confirmDialog>
+	</h:form>
+	<h:outputScript name="js/layout.js" library="sentinel-layout" />
+</h:body>
+
+</html>
