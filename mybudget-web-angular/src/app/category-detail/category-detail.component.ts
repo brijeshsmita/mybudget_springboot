@@ -1,7 +1,7 @@
+import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { Component, OnInit, Input } from '@angular/core';
 import { Category } from '../category'
 import { CategoryService } from '../category.service';
 
@@ -31,6 +31,10 @@ export class CategoryDetailComponent implements OnInit {
 
 	goBack(): void {
 		this.location.back();
+	}
+
+	save(): void {
+		this.categoryService.update(this.category).subscribe(() => this.goBack());
 	}
 
 }

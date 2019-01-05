@@ -21,4 +21,18 @@ export class CategoriesComponent implements OnInit {
     this.categoryService.getCategories().subscribe(categories => this.categories = categories)
   }
 
+  add(name: string): void {
+    name = name.trim();
+  
+    if (!name) { 
+      return; 
+    }
+
+    this.categoryService.save({ name } as Category).subscribe(category => this.getCategories());
+  }
+
+  delete(category: Category): void {
+    this.categoryService.delete(category).subscribe(_ => this.getCategories());
+  }
+
 }
