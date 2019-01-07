@@ -1,5 +1,6 @@
 package br.com.victorpfranca.mybudget.core.category;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,11 @@ public class CategoryServiceImpl implements CategoryService {
 
 	public Iterable<Category> findAll() {
 		return categoryRepository.findAll();
+	}
+	
+	@Override
+	public Collection<Category> search(String name) {
+		return categoryRepository.findByNameContaining(name);
 	}
 
 	public Category save(Category category) {

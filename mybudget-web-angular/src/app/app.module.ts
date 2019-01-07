@@ -13,6 +13,7 @@ import { CategoriesComponent } from './categories/categories.component';
 import { CategoryDetailComponent } from './category-detail/category-detail.component';
 import { MessagesComponent } from './messages/messages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { CategorySearchComponent } from './category-search/category-search.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     CategoriesComponent,
     CategoryDetailComponent,
     MessagesComponent,
-    DashboardComponent    
+    DashboardComponent,
+    CategorySearchComponent    
   ],
   imports: [
     BrowserModule,    

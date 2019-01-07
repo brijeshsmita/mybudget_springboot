@@ -63,11 +63,25 @@ export class CategoryService {
     
     const id = typeof category === 'number' ? category : category.id;
     const url = `${this.categoriesUrl}/${id}`;
-    console.info(url);
     return this.http.delete<Category>(url, httpOptions)
       .pipe(
         tap(_ => this.log(`deleted category id=${id}`)),
         catchError(this.handleError<Category>('deleteCategory'))
+      );
+  }
+
+
+  /* GET categories whose name search term */
+  search(term: string): Observable<Category[]> {
+    if(!term.trim()){
+      //if not search term, return empty array
+      return of([]);
+    }
+
+    return this.http.get<Category[]>(`${this.categoriesUrl}/search?name=${term}`)
+      .pipe(
+        tap(_ => this.log(`found categories matching "${term}"`)),
+        catchError(this.handleError<Category[]>('searchCategories', []))
       );
   }  
 
