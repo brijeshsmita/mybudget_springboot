@@ -1,0 +1,32 @@
+version: '3'
+services:
+    mybudget-service-registry:
+        image: victorhugofranca/mybudget-service-registry
+        container_name: mybudget-service-registry
+        build: ./mybudget-service-registry
+        ports:
+          - "8761:8761"
+    mybudget-gateway:
+        image: victorhugofranca/mybudget-gateway
+        container_name: mybudget-gateway
+        build: ./mybudget-gateway
+        ports:
+          - "8000:8000"
+        depends_on:
+            - mybudget-service-registry
+    mybudget-core:
+        image: victorhugofranca/mybudget-core
+        container_name: mybudget-core
+        build: ./mybudget-core
+        ports:
+          - "8180:8180"
+        depends_on:
+            - mybudget-service-registry
+    mybudget-core:
+        image: victorhugofranca/mybudget-budget
+        container_name: mybudget-budget
+        build: ./mybudget-budget
+        ports:
+          - "8081:8081"
+        depends_on:
+            - mybudget-service-registry                        
