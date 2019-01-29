@@ -1,9 +1,0 @@
-batch
-
-/subsystem=mail/mail-session=${env.MAIL_SESSION_NAME}:add(jndi-name=java:jboss/mail/${env.MAIL_SESSION_JNDI_NAME},from=${env.MAIL_FROM})
-
-/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=smtp-binding:add(host=${env.MAIL_SESSION_HOST},port=${env.MAIL_SESSION_PORT})
-
-/subsystem=mail/mail-session=${env.MAIL_SESSION_NAME}/server=smtp:add(outbound-socket-binding-ref=smtp-binding)
-
-run-batch
