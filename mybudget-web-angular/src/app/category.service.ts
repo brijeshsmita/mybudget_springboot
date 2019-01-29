@@ -17,7 +17,7 @@ const httpOptions = {
 })
 export class CategoryService {
 
-  private categoriesUrl = 'http://localhost:8080/categories';
+  private categoriesUrl = 'http://localhost:8000/api/categories/';
 
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
@@ -32,7 +32,7 @@ export class CategoryService {
   /** GET category by id. Will 404 if id not found */
   getCategory(id: number): Observable<Category> {
   	const url = `${this.categoriesUrl}/${id}`;
-
+    
   	return this.http.get<Category>(url)
       .pipe(
         tap(_ => this.log(`fetched category id=${id}`)),

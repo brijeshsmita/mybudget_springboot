@@ -7,9 +7,14 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import br.com.victorpfranca.mybudget.core.event.EventDispatcher;
+
 public class CategoryServiceImplTest {
 
 	private CategoryService categoryService;
+
+	@Mock
+	private EventDispatcher eventDispatcher;
 
 	@Mock
 	private CategoryRepository categoryRepository;
@@ -19,7 +24,7 @@ public class CategoryServiceImplTest {
 		// With this call to initMocks we tell Mockito to process the annotations
 		MockitoAnnotations.initMocks(this);
 
-		this.categoryService = new CategoryServiceImpl(categoryRepository);
+		this.categoryService = new CategoryServiceImpl(categoryRepository, eventDispatcher);
 	}
 
 	@Test

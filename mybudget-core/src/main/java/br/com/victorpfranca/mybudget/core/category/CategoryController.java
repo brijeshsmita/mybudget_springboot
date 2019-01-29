@@ -1,7 +1,6 @@
 package br.com.victorpfranca.mybudget.core.category;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,12 +37,27 @@ public class CategoryController {
 	}
 
 	@GetMapping("/categories/search")
-	ResponseEntity<Collection<Category>> search(final @RequestParam(value="name") String name) {
+	ResponseEntity<Collection<Category>> search(final @RequestParam(value = "name") String name) {
 		return ResponseEntity.ok(categoryService.search(name));
 	}
 
 	@PostMapping("/categories")
 	ResponseEntity<Category> save(@RequestBody Category category) {
+
+//		ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+//
+//		Runnable task = () -> {
+//			Category categorya = new Category();
+//
+//			BigDecimal roundNameSufix = new BigDecimal(new Date().getTime() * Math.random());
+//			roundNameSufix = roundNameSufix.setScale(6, RoundingMode.HALF_UP);
+//
+//			categorya.setName("name_" + roundNameSufix);
+//			categoryService.save(categorya);
+//		};
+//
+//		scheduledExecutorService.scheduleAtFixedRate(task, 0, 10, TimeUnit.MILLISECONDS);
+
 		return ResponseEntity.ok(categoryService.save(category));
 	}
 
